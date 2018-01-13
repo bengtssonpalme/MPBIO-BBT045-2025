@@ -45,8 +45,7 @@ nano living_room.txt
 Add some tasks to this file, e.g.
 ~~~
 - paint
-- bookcase
-- couch
+- move furniture
 ~~~
 then save and close it.
 
