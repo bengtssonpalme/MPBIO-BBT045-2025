@@ -81,8 +81,8 @@ git commit -m "Start planning living room"
 > should be short and in the imperative mood (i.e. "do thing" instead
 > of "done thing") to reflect project to-do items. It's also not
 > supposed to describe *what* has been done in detail, since that can
-> be seen by inspecting the revision. Stating the context or
-> purpose is preferred.
+> be seen by inspecting the revision. Stating the context or purpose
+> is preferred.
 >
 > Git really wants you to write a commit message. So if you only write
 > `git commit`, git will open a text editor in which you are to write
