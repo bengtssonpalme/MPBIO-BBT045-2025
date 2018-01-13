@@ -77,9 +77,12 @@ git commit -m "Start planning living room"
 
 > *Notes*: 
 >
-> `-m` stands for "message". According to widespread practice, this should
-> be short and in active form (i.e. "do thing" instead of "done thing") to reflect
-> project to-do items
+> `-m` stands for "message". According to widespread practice, this
+> should be short and in the imperative mood (i.e. "do thing" instead
+> of "done thing") to reflect project to-do items. It's also not
+> supposed to describe *what* has been done in detail, since that can
+> be seen by inspecting the revision. Stating the context or
+> purpose is preferred.
 >
 > Git really wants you to write a commit message. So if you only write
 > `git commit`, git will open a text editor in which you are to write
@@ -87,8 +90,8 @@ git commit -m "Start planning living room"
 > description. Just add a blank line after the message and write what
 > you think is informative.
 
-That's it! Now the current state of the project is saved and you can always
-compare future states to this one or come back to it.
+That's it! Now the current state of the project is saved and you can
+always compare future states to this one or come back to it.
 
 To get the list of all revisions, along with relevant information, write:
 
