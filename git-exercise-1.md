@@ -57,7 +57,7 @@ Take a look at the current status of the repo:
 git status
 ~~~
 
-Git tries to be helpful. It's worth reading these messages.
+Git tries to be helpful. It's worth reading the messages it outputs.
 Sometimes they will tell you exactly what to do next.
 
 Let's add our new file:
@@ -67,8 +67,9 @@ git add living_room.txt
 ~~~
 
 Look at the status again. You will see that the file is now marked for
-tracking at the next commit. Right now, it's only in the staging area
-as a "new" file. To actually record all we've marked for
+tracking. But right now, it's only in the staging area as a "new"
+file. To actually record its addition, we need to commit the contents of
+the staing area:
 
 ~~~
 git commit -m "Start planning living room"
