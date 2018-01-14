@@ -32,7 +32,8 @@ git init
 
 > **Note**: Git will give you a confirmation message that a repo has
 > been created.  Note that a hidden directory called `.git` has been
-> created in your project directory. This contains the actual
+> created in your project directory. This contains the actual revision
+> database (all snapshots are in there).
 
 Now let's add some tasks for the living room. 
 
