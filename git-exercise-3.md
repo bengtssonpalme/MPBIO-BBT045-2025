@@ -47,12 +47,12 @@ off from it.
 
 Git encourages you to work with branches. Every new feature or fix you
 work on should be on its own branch. The "master" branch is considered
-the authorative version of the project. It should always be usable.
+the authoritative version of the project. It should always be usable.
 The people responsible for the repo will merge in changes from other
 branches into the master branch once e.g. testing is done.
 
 Let's start work on our own branch. Replace `<team name>` with your
-team's name. Different workds may be separated by a "-" (minus)
+team's name. Different words may be separated by a "-" (minus)
 character:
 
 ~~~
@@ -87,7 +87,7 @@ git commit -m "Ideas from <team-name>"
 git log --graph
 ~~~
 
-> **Note**: The `--graph` parameter will connect revisions in the loog by lines so
+> **Note**: The `--graph` parameter will connect revisions in the log by lines so
 > you can visually trace the branches. A GUI applications is definitely
 > better for this though.
 
@@ -109,7 +109,7 @@ etc) and password.
 > provided for you.
 >
 > It is possible to use SSH instead of HTTPS when transferring changes
-> to and from Github. SSH keys take more work to set up but afterwords
+> to and from Github. SSH keys take more work to set up but afterwards
 > you no longer need to enter credentials on each push.
 
 > You will decide with your collaborators how to manage

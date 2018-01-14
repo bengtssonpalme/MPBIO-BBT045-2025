@@ -132,7 +132,7 @@ staging area. So we need to commit this change:
 git commit -m "Revert file after further consideration"
 ~~~
 
-This action can be performed on ucommitted changes. To undo any
+This action can be performed on uncommitted changes. To undo any
 changes since then, simply run the command below. The `HEAD` tag
 points to the current revision in the repo, normally the last to be
 committed. Some operations can move this tag to a given branch or

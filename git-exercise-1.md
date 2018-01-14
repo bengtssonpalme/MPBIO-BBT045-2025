@@ -14,7 +14,7 @@ exit with `q`.)
 You and your friends need to plan some apartment work.  Let's start
 writing all those ideas down. Create a directory for this project:
 
-At the termial, type:
+At the terminal, type:
 ~~~
 mkdir apartment
 cd apartment
@@ -71,7 +71,7 @@ git add living_room.txt
 Look at the status again. You will see that the file is now marked for
 tracking. But right now, it's only in the staging area as a "new"
 file. To actually record its addition, we need to commit the contents of
-the staing area:
+the staging area:
 
 ~~~
 git commit -m "Start planning living room"
@@ -102,7 +102,7 @@ git log
 ~~~
 
 Sometimes output like this from git can be very long.  Git will
-display ("pipe") this text through a programm that allows scrolling
+display ("pipe") this text through a program that allows scrolling
 vertically through the whole output (using up / page up and down /
 page down keys). You will notice this happens since at the bottom of
 the screen you will see a `:` prompt, not the bash terminal. Press `q`
