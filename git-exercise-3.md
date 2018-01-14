@@ -18,6 +18,10 @@ This is done with `git clone` command, followed by the repo address.
 git clone https://github.com/MPBIO-BBT015/apartment-project.git
 ~~~
 
+> **Note**: Github is a hosting platform for git projects and is
+> independent of git itself. There are other hosting platforms
+> (GitLab, Atlassian, etc).
+
 This a more developed version of the project we've worked on so far.
 Another difference is that the git repo has an "origin" set, namely
 the address from which we cloned. You can inspect this by running:
