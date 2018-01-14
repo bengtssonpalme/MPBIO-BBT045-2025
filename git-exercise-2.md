@@ -41,7 +41,7 @@ The format can be a bit hard to read, but look for lines marked with
 `-` and `+`. These mark lines that were removed and added,
 respectively.
 
-> *Notes*:
+> **Notes**:
 >
 > The diff tool marks changes per line. So for changes inside a line,
 > you'll see that line removed and added with the changes.
@@ -60,7 +60,7 @@ area:
 git add living_room.txt
 ~~~
 
-> *Notes*: 
+> **Notes**: 
 >
 > Everything that is to be tracked needs to pass through the
 > staging area before being committed. While this seems tedious, it
@@ -72,7 +72,7 @@ git add living_room.txt
 > files (in all files!), run `git add -all`.
 
 
-> **Important Note**: 
+> **_Important Note_**: 
 > 
 >Always remember to commit as little as sensible in one go. It will
 >save people headaches in the future, especially when you're modifying
@@ -117,7 +117,7 @@ it), then find the commit message that you know was set to the
 revision you're looking for. When in doubt, diff with revision to
 check.
 
-*Note*: your IDs will be different.
+**Note**: your IDs will be different.
 ~~~
 git checkout 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
 ~~~
@@ -142,7 +142,7 @@ revision.
 git checkout HEAD living_room.txt
 ~~~
 
-> **Important note**
+> **_Important Note_**
 >
 > Here we have looked at operations per file. You can also perform
 > similar operations on entire revisions. *However*, the commands work
@@ -165,6 +165,10 @@ git checkout HEAD living_room.txt
 * you can always explore and retrieve any committed version of a file
 
 
-
 ## Further Reading
 * [Reset, Checkout, and Revert](https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting)
+
+
+# Next
+
+[Exercise 3](git-exercise-3.md)
