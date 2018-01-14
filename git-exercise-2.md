@@ -158,7 +158,6 @@ git checkout HEAD living_room.txt
 > details.
 
 
-
 ## Take-aways
 
 * `git status` is your friend

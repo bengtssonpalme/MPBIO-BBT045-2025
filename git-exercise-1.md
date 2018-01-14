@@ -4,6 +4,10 @@ title: Git Exercise 1
 
 # Git Exercise 1 - Start tracking files
 
+Quick note: Git has extensive documentation. If you are unsure about
+any command or want to explore the many possible options, run `git
+help <command>` to get this information. (Scroll with arrow keys and
+exit with `q`.)
 
 ## Create a directory to house your work
 
@@ -109,4 +113,17 @@ to quit this scrollable display and return to the command line.
 > unique identifier of the revision. After merging branches, simply
 > saying "revision 1" and "revision 2" stops making sense since the
 > history is no longer linear.
+
+
+## Take-aways
+
+* `git help <command>` probably has the information you need, if
+  slightly technical. Scroll down to the bottom of these pages for
+  examples.
+  
+* A git repo can be created anywhere with ease. A hidden directory
+  called `.git` is created at that location and contains all the
+  bookkeeping.
+  
+* Save a snapshot of your work by committing a git revision.
 
