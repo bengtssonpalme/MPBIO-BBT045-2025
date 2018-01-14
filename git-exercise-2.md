@@ -5,7 +5,7 @@ title: Git Exercise 2
 # Git Exercise 2 - Making changes
 
 
-## Keeping Track of New Work
+## Keeping track of new work
 
 You thought of a few more things for the living room after talking
 with your friends.  Open the file with `nano living_room.txt`, then
@@ -19,7 +19,7 @@ below. Save it and exit the editor.
 - change lights
 ~~~
 
-How has this changed the state of the repo? Run
+How has this changed the state of the repo? Run:
 
 ~~~
 git status
@@ -27,7 +27,7 @@ git status
 
 Git will list `living_room.txt` as modified. You can always inspect
 how the current working version differs from any previous revision
-version. To simply compare with the latest committed version, execute
+version. To simply compare with the latest committed version, execute:
 
 ~~~
 git diff
@@ -69,7 +69,7 @@ git add living_room.txt
 > commit --all` but be careful about adding unwanted files and changes. 
 >
 > If you want to add all changes made to the repo or add all untracked
-> files (in all files!), run `git add -all`.
+> files (in all files!), run `git add --all`.
 
 
 > **_Important Note_**: 
@@ -83,9 +83,7 @@ git add living_room.txt
 >
 >- you need to undo changes in a single file at some point in the
 >future
->
 >- somebody else needs changes from only one of these files
->
 >- quickly making sense of what has been changed in any revision
 
 And now commit the changes and inspect the log.
@@ -104,7 +102,7 @@ git diff 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
 ~~~
 
 
-## Reverting Changes
+## Reverting changes
 
 Let's say you've changed your mind and the extra tasks aren't
 feasible. So we should revert the living room file to a previous

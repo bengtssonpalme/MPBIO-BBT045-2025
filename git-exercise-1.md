@@ -24,7 +24,8 @@ cd apartment
 ## Start tracking changes
 
 Now we can create a git repository inside this directory to track our
-work. This step can be done at any time but let's see what happens:
+work. This step can be done at any time but let's see what happens in
+a very simple situation:
 
 ~~~
 git init
