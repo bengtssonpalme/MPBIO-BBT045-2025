@@ -98,6 +98,13 @@ To get the list of all revisions, along with relevant information, write:
 git log
 ~~~
 
+Sometimes output like this from git can be very long.  Git will
+display ("pipe") this text through a programm that allows scrolling
+vertically through the whole output (using up / page up and down /
+page down keys). You will notice this happens since at the bottom of
+the screen you will see a `:` prompt, not the bash terminal. Press `q`
+to quit this scrollable display and return to the command line.
+
 > *Note*: The long alphanumeric code after the word "commit" is the
 > unique identifier of the revision. After merging branches, simply
 > saying "revision 1" and "revision 2" stops making sense since the
