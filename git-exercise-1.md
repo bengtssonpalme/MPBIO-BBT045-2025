@@ -30,16 +30,15 @@ work. This step can be done at any time but let's see what happens:
 git init
 ~~~
 
-> *Note*: Git will give you a confirmation message that a repo has
+> **Note**: Git will give you a confirmation message that a repo has
 > been created.  Note that a hidden directory called `.git` has been
 > created in your project directory. This contains the actual
 
 Now let's add some tasks for the living room. 
 
-> *Note*: We'll be using a very basic text editor called `nano`.
+> **Note**: We'll be using a very basic text editor called `nano`.
 >
 > - To save, press `Ctrl-o`, then `[Enter]`.
->
 > - To exit, press `Ctrl-x`
 
 ~~~
@@ -78,7 +77,7 @@ the staing area:
 git commit -m "Start planning living room"
 ~~~
 
-> *Notes*: 
+> **Notes**: 
 >
 > `-m` stands for "message". According to widespread practice, this
 > should be short and in the imperative mood (i.e. "do thing" instead
@@ -109,7 +108,7 @@ page down keys). You will notice this happens since at the bottom of
 the screen you will see a `:` prompt, not the bash terminal. Press `q`
 to quit this scrollable display and return to the command line.
 
-> *Note*: The long alphanumeric code after the word "commit" is the
+> **Note**: The long alphanumeric code after the word "commit" is the
 > unique identifier of the revision. After merging branches, simply
 > saying "revision 1" and "revision 2" stops making sense since the
 > history is no longer linear.
@@ -127,3 +126,7 @@ to quit this scrollable display and return to the command line.
   
 * Save a snapshot of your work by committing a git revision.
 
+
+# Next
+
+[Exercise 2](git-exercise-2.md)
