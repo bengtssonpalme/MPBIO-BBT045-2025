@@ -129,6 +129,11 @@ to quit this scrollable display and return to the command line.
 * Save a snapshot of your work by committing a git revision.
 
 
+## Further reading
+
+* [Good commit messages](https://chris.beams.io/posts/git-commit/)
+
+
 # Next
 
 [Exercise 2](git-exercise-2.md)

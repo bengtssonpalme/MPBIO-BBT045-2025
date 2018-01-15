@@ -7,6 +7,12 @@
 * [Exercise 3](git-exercise-3.md)
 
 
+## Git Cheat Sheet
+
+[Essential commands (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
+
+
+
 <hr />
 
 Chalmers University of Technology
