@@ -150,3 +150,17 @@ these changes. To do so:
 * https://help.github.com/articles/connecting-to-github-with-ssh/
 * Rather influential blog post on a branching model http://nvie.com/posts/a-successful-git-branching-model/
 
+
+
+<hr />
+
+Chalmers University of Technology 2018
+
+<footer font size="6">
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+</a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+</footer>
+
