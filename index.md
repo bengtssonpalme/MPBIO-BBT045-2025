@@ -7,9 +7,10 @@
 * [Exercise 3](git-exercise-3.md)
 
 
-## Git Cheat Sheet
+## Reading
 
-[Essential commands (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
+* [Slides](git-tutorial-chalmers-2018.pdf)
+* [Git Cheat Sheet (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
 
 
 
