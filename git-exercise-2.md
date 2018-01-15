@@ -52,6 +52,14 @@ respectively.
 > [DiffMerge](https://sourcegear.com/diffmerge/) and FileMerge
 > (included in XCode). These can be used independently of any
 > versioning tracking system to compare any files and directories.
+>
+> This ability to inspect differences using standard tools is another
+> reason so many projects have documentation in plain text formats
+> (Markdown, HTML, etc.).  While possible, diffing e.g. PDFs and Word
+> files require extra programs that may or may not work and the
+> process is no longer transparent. Text is (almost) universal and is
+> accessible by any program.
+
 
 Let's record the changes. These first need to be added to the staging
 area:
