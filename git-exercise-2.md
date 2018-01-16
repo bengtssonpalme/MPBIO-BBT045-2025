@@ -133,6 +133,11 @@ revision you're looking for. When in doubt, diff with revision to
 check.
 
 **Note**: your IDs will be different.
+
+**Careful** though that you write the name of the file. 
+`checkout` without a specified file name does something quite different
+(confusingly enough).
+
 ~~~
 git checkout 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
 ~~~
@@ -141,7 +146,10 @@ But remember that git considers anything deviating from the **last**
 revision as a difference. (Well, technically, from the revision marked
 as `HEAD` - more below). If you run `git status` you will see
 that `living_room.txt` is marked as modified and it's already in the
-staging area. So we need to commit this change:
+staging area.
+This is because we haven't modified the version we checked out any way.
+
+So we only need to commit this change:
 
 ~~~
 git commit -m "Revert file after further consideration"
@@ -175,7 +183,7 @@ git checkout HEAD living_room.txt
 
 ## Take-aways
 
-* `git status` is your friend
+* `git status` and `git log` are your friends :octocat:
 * make small commits
 * you can always explore and retrieve any committed version of a file
 
