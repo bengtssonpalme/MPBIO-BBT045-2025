@@ -40,10 +40,10 @@ commands by clicking around, only one operation is performed at a time.
  
 For instance, the graphical alternative would be something like:
 
-1) enter text in search box of your folder window: get results in same window
-2) right click files > call extractor program: opens new window waiting for 
+1. enter text in search box of your folder window: get results in same window
+2. right click files > call extractor program: opens new window waiting for 
    your commands or dumps results somewhere and you need find them
-3) etc..
+3. etc..
  
 Not to mention that you're constantly flipping between various programs and
 folders.
