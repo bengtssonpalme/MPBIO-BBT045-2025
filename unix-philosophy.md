@@ -103,4 +103,4 @@ by looking at the buttons and menus. On the command line, you're just staring
 at a blinking cursor.
  
 This environment is simply one solution to a huge variety of technical and
-human demands. Like any tool, its useful for certain things.
+human demands. Like any tool, it's useful for certain things.
