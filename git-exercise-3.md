@@ -22,6 +22,13 @@ git clone https://github.com/MPBIO-BBT015/apartment-project.git
 > independent of git itself. There are other hosting platforms
 > (GitLab, Atlassian, etc).
 
+This will create a directory (clone) called `apartment-project`.
+Move into it to allow git to perform operations on it:
+
+~~~
+cd apartment-project
+~~~
+
 This a more developed version of the project we've worked on so far.
 Another difference is that the git repo has an "origin" set, namely
 the address from which we cloned. You can inspect this by running:
