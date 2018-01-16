@@ -103,12 +103,21 @@ git log
 
 You will see the revisions in reverse chronological order.
 To compare any file to its state in any of the listed revisions,
-give the revision ID as a parameter:
+give the revision ID as a parameter, as below.
+(You should be able copy and paste in the terminal window, to spare
+yourself the typing.)
 
 ~~~
 git diff 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
 ~~~
 
+> **Note**: Some tools (e.g. Github) will show you a shorter ID.
+> The reason is that for a single repo, shorter sequences may be used
+> to uniquely identify revisions, but git tries to be absolutely sure
+> each ID is unique, hence the longer "true" ID.
+> You're of course not supposed to know these IDs. 
+> Rather, go through the log and look for the appropriate commit message
+> and use whatever ID is given there.
 
 ## Reverting changes
 
