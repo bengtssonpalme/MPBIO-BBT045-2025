@@ -7,9 +7,7 @@
 ### Windows
 
 * Install MobaXterm: https://mobaxterm.mobatek.net/download-home-edition.html
-
    * The portable edition should be quicker. It simply unpacks MobaXterm in a folder and you can start it from there
-   
 * Open MobaXtern
 * In the toolbar: Session > SSH 
 * In the field "Remote host" write the IP address and "student1" in "Specify username
