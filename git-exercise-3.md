@@ -91,7 +91,7 @@ delete some. Go wild! When you're done, go through the daily routine:
 git status
 git add <file names you changed, added or deleted>
 git commit -m "Ideas from <team-name>"
-git log --graph
+git log --branches --graph
 ~~~
 
 > **Note**: The `--graph` parameter will connect revisions in the log by lines so
