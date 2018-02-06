@@ -1,24 +1,10 @@
 # BBT015 Git Tutorial
 
 
-## How to connect to remote accounts
+## Some Orientation
 
-
-### Windows
-
-* Install MobaXterm: https://mobaxterm.mobatek.net/download-home-edition.html
-   * The portable edition should be quicker. It simply unpacks MobaXterm in a folder and you can start it from there
-* Open MobaXtern
-* In the toolbar: Session > SSH 
-* In the field "Remote host" write the IP address and "student1" in "Specify username
-* Click OK
-* Enter password  (you won't see any feedback - like `*******` - on the screen)
-
-### Linux or macOS: 
-
-* Open Terminal
-* Run:  `ssh <username>@<ip-address>`
-* Enter password  (you won't see any feedback - like `*******` - on the screen)
+* [How to connect to remote accounts](remote-hosts.md)
+* [Unix philosophy](unix-philosophy.md)
 
 
 ## Exercises
