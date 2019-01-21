@@ -5,6 +5,9 @@
 
 * [Basic Unix operations for bioinformatics](unix-tasks.md)
 * [How to connect to remote accounts](remote-hosts.md)
+
+### Reading
+* [The Unix Shell](https://swcarpentry.github.io/shell-novice/) tutorial from the Software Carpentry Foundation
 * [Unix philosophy](unix-philosophy.md)
 
 
