@@ -1,4 +1,4 @@
-# The philosophy of UNIX tools 
+# The Philosophy of UNIX Tools 
 ## And the main reason they are still popular after 40+ years)
  
 One quick formulation of this philosophy is:
