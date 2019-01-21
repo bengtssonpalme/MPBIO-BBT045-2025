@@ -3,7 +3,7 @@
 
 ## Unix
 
-* [Basic Unix operations for bioinformatics](unix_tasks.md)
+* [Basic Unix operations for bioinformatics](unix-tasks.md)
 * [How to connect to remote accounts](remote-hosts.md)
 * [Unix philosophy](unix-philosophy.md)
 
