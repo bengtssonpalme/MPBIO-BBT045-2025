@@ -9,7 +9,9 @@ One quick formulation of this philosophy is:
  
 *Note*: macOS and Linux are both different types of UNIX operating systems.
 So they work quite similarly under the hood.
- 
+
+A good read on this: https://swcarpentry.github.io/shell-novice/01-intro/index.html
+
 ## Principles 1 and 2
  
 The great strength of these standard tools is the ability to chain together
