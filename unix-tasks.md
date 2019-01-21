@@ -304,4 +304,5 @@ For the homework tasks, make sure to explain shortly what each command and optio
 ## Recommended Reading
 
 1. [The Unix Shell](https://swcarpentry.github.io/shell-novice/) from Software Carpentry Foundation
-2. [Perl and Unix for Bioinformaticians](http://www.cbs.dtu.dk/courses/27619/) course from DTU (initial inspiration for this exercise)
+2. [The Philosophy of UNIX Tools](unix-philosophy.md) - some motivation for command line work
+3. [Perl and Unix for Bioinformaticians](http://www.cbs.dtu.dk/courses/27619/) course from DTU (initial inspiration for this exercise)
