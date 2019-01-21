@@ -284,11 +284,11 @@ The hat `^` means beginning of line, so the inner part simply says lines startin
 
 ## 5. Homework
 
-Write your answers in the text file you've used to keep track of commands and output so far
-and email it when you're done.
+Write your answers in the text file you've used to keep track of commands and output so far.
+Create a repo on GitHub to keep track of this file and send us the link to this repo.
 For the homework tasks, make sure to explain shortly what each command and option in your solution does.
 
-1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff`
+1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
 2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`
 3. Download another strain: `TODO` and:
 
