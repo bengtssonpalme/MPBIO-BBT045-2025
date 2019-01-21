@@ -62,14 +62,18 @@ with visually similar versions that are not understood by the Unix commands.
 Keep in mind that spelling
 and spacing is crucially important. Generally, commands have the structure
 
-`command -option --option-with-long-name ARGUMENTS`
+```bash
+command -option --option-with-long-name ARGUMENTS
+```
 
 Note the spaces separating the different elements.
 Generally it's not important how many spaces there are.
 
 Compare this with how you would write a command in a language like R or MATLAB:
 
-`command(option, option_with_long_name, ARGUMENTS)`
+```c
+command(option, option_with_long_name, ARGUMENTS)
+```
 
 * *Arguments* are the things on which you issue the command on (e.g. files, directories). E.g. `fix all_problems.txt` (not a real command :) )
 * *Options* or *"flags"* are parameters that control the command's behaviour.
@@ -228,7 +232,9 @@ The `comm` command returns:
 
 We only care about the size of the intersectin, so we run
 
-`comm -12 groups_hsapiens.txt groups_scerevisiae.txt | wc -l`
+```bash
+comm -12 groups_hsapiens.txt groups_scerevisiae.txt | wc -l
+```
 
 where `-12` inhibits the first 2 results and we pipe to `wc -l` (only counts lines).
 
@@ -251,7 +257,9 @@ and processes the text according to various rules.
 These rules can be very complex (it's a full programming language),
 but here's a simple use for it:
 
-`sed 'y/ACGT/UGCA/' FILE > FILE_RNA`
+```bash
+sed 'y/ACGT/UGCA/' FILE > FILE_RNA
+```
 
 The sed command (between quotes) substitutes (`/y`)
 each letter in the first list (`ACGT`)
@@ -262,7 +270,9 @@ we redirect the result to a new file.
 We can also make sed skip FASTA header lines with a slightly more complex
 (and less understandable) command:
 
-`sed '/^>/!y/ACGT/UGCA/' FILE.fasta > FILE_RNA.fasta`
+```bash
+sed '/^>/!y/ACGT/UGCA/' FILE.fasta > FILE_RNA.fasta
+```
 
 The first part (`/^>/!`) selects locations in the file. The exclamation mark
 makes it a negative, in the sense "please de-select these lines and don't process them".
