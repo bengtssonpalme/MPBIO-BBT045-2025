@@ -232,6 +232,14 @@ We only care about the size of the intersectin, so we run
 
 where `-12` inhibits the first 2 results and we pipe to `wc -l` (only counts lines).
 
+**Bonus** One can get fancier, avoid intermediate files, and do all of the above in one go:
+
+```bash
+comm -12 <(grep "4891." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_members.tsv | cut -f 2 | sort) | wc -l
+```
+
+Here we're feeding `comm` with two ad-hoc data streams as if they were files. 
+The pattern here is `<(command that yields text output)` which replaces the result files.
 
 ## 4. Sequence Processing
 
