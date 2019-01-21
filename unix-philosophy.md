@@ -1,5 +1,5 @@
 # The Philosophy of UNIX Tools 
-## And the main reason they are still popular after 40+ years)
+## (And the main reason they are still popular after 40+ years)
  
 One quick formulation of this philosophy is:
 
