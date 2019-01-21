@@ -1,20 +1,22 @@
-# BBT015 Git Tutorial
+# BBT015
 
 
-## Some Orientation
+## Unix
 
+* [Basic Unix operations for bioinformatics](unix_tasks.md)
 * [How to connect to remote accounts](remote-hosts.md)
 * [Unix philosophy](unix-philosophy.md)
 
 
-## Exercises
+## Git Tutorial
+### Exercises
 
 * [Exercise 1](git-exercise-1.md)
 * [Exercise 2](git-exercise-2.md)
 * [Exercise 3](git-exercise-3.md)
 
 
-## Reading
+### Reading
 
 * [Slides](git-tutorial-chalmers-2018.pdf)
 * [Git Cheat Sheet (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
