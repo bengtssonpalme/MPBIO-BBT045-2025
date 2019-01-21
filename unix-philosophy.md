@@ -41,8 +41,8 @@ There are of course graphical tools on any platform that allow you to do this
 different issue). Even the built-in tools or file operations on Windows or
 macOS can be used for some of these tasks. But since you are running such
 commands by clicking around, only one operation is performed at a time.
-Consider the situations where this needs to be done for thousands of files.
-Oonce you run into repetitive procedures, the computer should do the work, not you.
+Consider the situation where this needs to be done for thousands of files.
+Once you run into repetitive procedures, the computer should do the work, not you.
  
 Furthermore, graphical tools tend be tailored to exactly one purpose and
 difficult or impossible to change. And the software and its formats *will*
@@ -77,7 +77,7 @@ do and it responds.
  
 This way of working is obviously not perfect
 (see [the Wikipedia article](https://en.wikipedia.org/wiki/Unix_philosophy#Criticism)
-(and many angry forum discussions).
+and many angry forum discussions).
  
 One problem (on a standard system) is the lack of immediate feedback to the user -
 the feeling of working blind. Cognitive ergonomics ("UX" in some
