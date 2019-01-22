@@ -178,7 +178,7 @@ The idea is to merge experimental result `ex1.dat` with the annotations from
 `ex1.acc`  Do this with the paste command:
 
 ```bash
-paste FILE1 FILE2
+paste ex1.acc ex1.dat
 ```
 
 
