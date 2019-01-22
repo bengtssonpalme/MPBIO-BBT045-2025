@@ -16,7 +16,7 @@
 
 * Open Terminal
 * Run:  `ssh <username>@<ip-address>`
-* If promted about about host authenticity ("ECDSA key fingerprint is SHA256:... Are you sure you want to continue connecting (yes/no)?") write, `yes` then pres [Enter]
+* If promted about about host authenticity ("*ECDSA key fingerprint is SHA256:... Are you sure you want to continue connecting (yes/no)?"*) write, `yes` then pres `[Enter]`
 * Enter password  (you *won't* see any feedback - like `*******` - on the screen)
 
 
