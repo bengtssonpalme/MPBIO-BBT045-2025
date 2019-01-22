@@ -258,7 +258,8 @@ For replacing single characters, one could use the `tr` (translate) tool like:
 tr "A" "C" < FILE.fasta | less
 ```
 
-This will replace all occruences of "A" with "C" in *FILE.fasta*
+This will replace all occruences of "A" with "C" in *FILE.fasta* and shows
+contents on screen with `less`.
 We add the `<` before the file name since `tr` expects the actual contents, not
 the file name. The `<` redirector feeds the content as a stream to `tr`.
 Normally, `tr` will print results to screen. So we redirect that output and
