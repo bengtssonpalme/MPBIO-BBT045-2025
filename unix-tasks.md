@@ -200,11 +200,11 @@ paste FILE1 FILE2
 
 ## 4. Count yeast-human orthologs
 
-First, move back the directory one level up. This relative location is always marked as `..`
+First, move back to your home directory (`cd` with no argument).
 Then download and decompress the EggNOG list of orthologous groups across Eukaryotes.
 
 ```bash
-cd ..
+cd
 wget http://eggnog5.embl.de/download/eggnog_5.0/data/2759/2759_members.tsv.gz
 gunzip 2759_members.tsv.gz
 ```
