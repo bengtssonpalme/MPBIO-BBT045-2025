@@ -23,7 +23,7 @@
 ## 0.2. Keep track of what you're doing
 
 Create a text file called `unix_exercises_FIRSTNAME_LASTNAME.txt`
-(replacing first and second name with yours)
+on your own computer (replacing first and second name with yours)
 and keep it open in a text editor (not Word).
 In there, paste the commands you use for the tasks below, e.g.
 
