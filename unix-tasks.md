@@ -159,7 +159,7 @@ This will download and extract the data to a directory called
 
 4. Count how many `tRNA` genes are in `rna_coding_R64-2-1_20150113.fasta` (Hint: `grep`)
 
-5. Save the results of command 4 to `counts.txt` by appending to the file using the `>>` (double `>`) redirect symbol, similar to before. Make sure to not replace existing content. Or use  `nano`
+5. Save the results of command 4 to `counts.txt` by appending to the file using the `>>` (double `>`) redirect symbol, similar to before. Make sure to not replace existing content. Or use `nano`
 
 6. Inspect that `counts.txt` has the content you expect.
   It's a small file so run `cat results_2019_01_22/counts.txt`.
@@ -245,14 +245,30 @@ where `-12` inhibits the first 2 results and we pipe to `wc -l` (only counts lin
 comm -12 <(grep "4891." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_members.tsv | cut -f 2 | sort) | wc -l
 ```
 
-Here we're feeding `comm` with two ad-hoc data streams as if they were files. 
+Here we're feeding `comm` with two ad-hoc data streams as if they were files.
 The pattern here is `<(command that yields text output)` which replaces the result files.
 
 ## 4. Sequence Processing
 
 ### Produce the complementary RNA sequence of a DNA string
 
-We're going to use a standard Unix tool called `sed` (stream editor).
+For replacing single characters, one could use the `tr` (translate) tool like:
+
+```bash
+tr "A" "C" < FILE.fasta | less
+```
+
+This will replace all occruences of "A" with "C" in *FILE.fasta*
+We add the `<` before the file name since `tr` expects the actual contents, not
+the file name. The `<` redirector feeds the content as a stream to `tr`.
+Normally, `tr` will print results to screen. So we redirect that output and
+pipe it (`|`) to `less` which will only show you a screen at a time. (exit by pressing `q`)
+
+While useful for one-shot substitutions, this tool is a bit limited.
+If we were to use multiple `tr` runs for each nucleotide, given the complementary nature
+of the pairs, we would revert previous substitutions. We can't do it in one go with `tr` either.
+
+We're instead going to use a standard Unix tool called `sed` (stream editor).
 Like the name implies, it takes either a file or the output of another command
 and processes the text according to various rules.
 These rules can be very complex (it's a full programming language),
@@ -290,15 +306,20 @@ Create a repo on GitHub to keep track of this file and send us the link to this 
 For the homework tasks, make sure to explain shortly what each command and option in your solution does.
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
+
 2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`
-3. Download another strain: `TODO` and:
+
+3. Download and decompress the ORFs of another strain (Y55) from
+   https://downloads.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/Y55_JRIF00000000_SGD_pep.fsa.gz
+   (Careful to use the right program to decompress - see in the exercises above which to use for the `.gz` format)
+   Then:
 
    a) compare GC content
-   (make sure you're not also counting letters in the headers)
+      (make sure you're not also counting letters in the headers)
 
-   b) compare number of coding ORFs
+   b) compare number of ORFs
 
-   c) find common ORFs between the diff yeast strains.
+   c) find the common ORFs between the diff yeast strains.
       Note: remove strain suffixes from names in the non-reference strain.
 
 
