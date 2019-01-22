@@ -15,7 +15,7 @@
 ### Linux or macOS:
 
 * Open Terminal
-* Run:  `ssh <username>@<ip-address>`
+* Run: `ssh <username>@<ip-address>`
 * If promted about about host authenticity ("*ECDSA key fingerprint is SHA256:... Are you sure you want to continue connecting (yes/no)?"*) write, `yes` then pres `[Enter]`
 * Enter password  (you *won't* see any feedback - like `*******` - on the screen)
 
@@ -322,9 +322,11 @@ The hat `^` means beginning of line, so the inner part simply says lines startin
 
 ## 6. Homework
 
-Write your answers in the text file you've used to keep track of commands and output so far.
-Create a repo on GitHub to keep track of this file and send us the link to this repo.
-For the homework tasks, make sure to explain shortly what each command and option in your solution does.
+* Write your answers in the text file you've used to keep track of commands and output so far.
+* Create a repo on GitHub to keep track of this file and send us the link to this repo.
+* For the homework tasks, make sure to explain shortly what each command and option in your solution does.
+
+Tasks:
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
 
@@ -332,9 +334,11 @@ For the homework tasks, make sure to explain shortly what each command and optio
 
 3. Download and decompress the ORFs of another strain (Y55) from
    https://downloads.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/Y55_JRIF00000000_SGD_pep.fsa.gz
-   (Careful to use the right program to decompress - see in the exercises above which to use for the `.gz` format)
-   Then:
 
+   (Careful to use the right program to decompress - see in the exercises above which to use for the `.gz` format)
+
+   Then:
+ 
    a) compare GC content
       (make sure you're not also counting letters in the headers)
 
@@ -342,7 +346,7 @@ For the homework tasks, make sure to explain shortly what each command and optio
 
    c) count the common ORFs between this yeast strain and the reference we
       worked previously in sections 1 and 2.
-      Note: remove strain suffixes from names in the non-reference strain.
+      *Note*: remove strain suffixes from names in the non-reference strain.
 
 
 ## Recommended Reading
