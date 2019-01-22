@@ -178,7 +178,27 @@ The editor will run "full screen", hiding the command line.
 * To exit, press `Ctrl-x`
 
 
-## 3. Count yeast-human orthologs
+## 3. Working with text columns
+
+We'll be using another data set with gene expression data.
+
+```bash
+# gene experssion data (fold change)
+wget http://www.cbs.dtu.dk/courses/27619/ex1.dat
+
+# annotation
+wget http://www.cbs.dtu.dk/courses/27619/ex1.acc
+```
+
+The idea is to merge experimental result `ex1.dat` with the annotations from
+`ex1.acc`  Do this with the paste command:
+
+```bash
+paste FILE1 FILE2
+```
+
+
+## 4. Count yeast-human orthologs
 
 First, move back the directory one level up. This relative location is always marked as `..`
 Then download and decompress the EggNOG list of orthologous groups across Eukaryotes.
@@ -248,7 +268,7 @@ comm -12 <(grep "4891." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_
 Here we're feeding `comm` with two ad-hoc data streams as if they were files.
 The pattern here is `<(command that yields text output)` which replaces the result files.
 
-## 4. Sequence Processing
+## 5. Sequence Processing
 
 ### Produce the complementary RNA sequence of a DNA string
 
@@ -300,7 +320,7 @@ The hat `^` means beginning of line, so the inner part simply says lines startin
 `S288C_reference_genome_R64-2-1_20150113/orf_coding_all_R64-2-1_20150113.fasta`
 
 
-## 5. Homework
+## 6. Homework
 
 Write your answers in the text file you've used to keep track of commands and output so far.
 Create a repo on GitHub to keep track of this file and send us the link to this repo.
