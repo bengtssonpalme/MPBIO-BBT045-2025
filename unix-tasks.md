@@ -338,3 +338,17 @@ Tasks:
 1. [The Unix Shell](https://swcarpentry.github.io/shell-novice/) from Software Carpentry Foundation
 2. [The Philosophy of UNIX Tools](unix-philosophy.md) - some motivation for command line work
 3. [Perl and Unix for Bioinformaticians](http://www.cbs.dtu.dk/courses/27619/) course from DTU (initial inspiration for this exercise)
+
+
+
+<hr />
+
+Chalmers University of Technology 2018
+
+<footer style="font-size:0.6em">
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+</a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+</footer>
