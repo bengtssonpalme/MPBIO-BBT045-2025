@@ -320,7 +320,8 @@ For the homework tasks, make sure to explain shortly what each command and optio
 
    b) compare number of ORFs
 
-   c) find the common ORFs between the diff yeast strains.
+   c) count the common ORFs between this yeast strain and the reference we
+      worked previously in sections 1 and 2.
       Note: remove strain suffixes from names in the non-reference strain.
 
 
