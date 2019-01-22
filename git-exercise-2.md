@@ -183,7 +183,7 @@ git checkout HEAD living_room.txt
 
 ## Take-aways
 
-* `git status` and `git log` are your friends :octocat:
+* `git status` and `git log` are your friends
 * make small commits
 * you can always explore and retrieve any committed version of a file
 
