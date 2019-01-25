@@ -313,6 +313,7 @@ The hat `^` means beginning of line, so the inner part simply says lines startin
 Tasks:
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
+   Note that the chromosome column is followed by a TAB charachter, which is encoded as `\t` (without quotes).
 
 2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`
 
