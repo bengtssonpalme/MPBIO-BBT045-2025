@@ -317,8 +317,8 @@ Tasks:
 2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`
 
 3. Download and decompress the ORFs of another strain (Y55) from
-   https://downloads.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/Y55_JRIF00000000_SGD_pep.fsa.gz
-
+   https://downloads.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/Y55_JRIF00000000_SGD_cds.fsa.gz
+   
    (Careful to use the right program to decompress - see in the exercises above which to use for the `.gz` format)
 
    Then:
