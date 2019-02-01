@@ -310,6 +310,10 @@ The hat `^` means beginning of line, so the inner part simply says lines startin
 * Create a repo on GitHub to keep track of this file and send us the link to this repo.
 * For the homework tasks, make sure to explain shortly what each command and option in your solution does.
 
+**Note** Make sure to save your work often on the server and/or on your laptop. 
+SSH connections to remote computers like our exercise server can be interrupted for many reasons: 
+e.g. loss of Wi-Fi connection, computer going to sleep, network issues, server overload.
+
 Tasks:
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
