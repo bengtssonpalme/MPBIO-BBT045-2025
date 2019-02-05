@@ -83,27 +83,16 @@ blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database 
 
 cp /home/ubuntu/gene_prediction/results .
 ```
-
-
  
  
- 
+<hr />
 
+Chalmers University of Technology 2019
 
+<footer style="font-size:0.6em">
 
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+</a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</footer>
