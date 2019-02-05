@@ -348,7 +348,7 @@ Tasks:
 
 <hr />
 
-Chalmers University of Technology 2018
+Chalmers University of Technology 2019
 
 <footer style="font-size:0.6em">
 
