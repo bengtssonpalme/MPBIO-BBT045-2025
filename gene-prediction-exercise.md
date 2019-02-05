@@ -26,7 +26,7 @@ On Windows use file transfer function integtated into client.
 
 Unarchive file:
 
-gunzip GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fna.gz
+`gunzip GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fna.gz`
 
 ### Step 2: Use prodigal to predict all open reading frames of protein coding genes
 Get yourself familiar with different Prodigal options, more information: https://github.com/hyattpd/Prodigal
@@ -79,7 +79,7 @@ We will use `blastp` to blast your identified sequences to the database of Unipr
 ```bash
 makeblastdb -in uniprot_sprot.fasta -dbtype prot -out uniprot_database`
 
-blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database -outfmt 7 -out results`
+blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database -outfmt 7 -out results
 
 cp /home/ubuntu/gene_prediction/results .
 ```
