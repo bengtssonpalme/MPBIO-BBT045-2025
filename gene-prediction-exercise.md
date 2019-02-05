@@ -56,7 +56,7 @@ Unarchive file:
 ### Step 2: Use Augustus to predict all open reading frames of protein coding genes
 
 For eukaryotes it might take considerable time to run, instead copy the file from the existing precomputed directory:
-`#augustus GCA_000447455.1_Cand_albi_A123_V1_genomic.fna --species=candida_albicans > GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
+`augustus GCA_000447455.1_Cand_albi_A123_V1_genomic.fna --species=candida_albicans > GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
 
 `cp  /home/ubuntu/gene_prediction/GCA_000447455.1_Cand_albi_A123_V1_genomic.gff .`
 
@@ -76,11 +76,13 @@ First dowload database of sequences from https://www.uniprot.org/downloads. The 
 
 We will use `blastp` to blast your identified sequences to the database of Uniprot sequences, but before this we need to create a blast database (takes time to run).
 
-`#makeblastdb -in uniprot_sprot.fasta -dbtype prot -out uniprot_database`
+```bash
+makeblastdb -in uniprot_sprot.fasta -dbtype prot -out uniprot_database`
 
-`#blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database -outfmt 7 -out results`
+blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database -outfmt 7 -out results`
 
-`cp /home/ubuntu/gene_prediction/results .`
+cp /home/ubuntu/gene_prediction/results .
+```
 
 
  
