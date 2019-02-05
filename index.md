@@ -1,4 +1,4 @@
-# BBT015
+# BBT015 - Advanced Bioinformatics
 
 
 ## Unix
@@ -24,7 +24,7 @@
 * [Slides](git-tutorial-chalmers.pdf)
 * [Git Cheat Sheet (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
 
-### Gene annotation
+## Gene annotation
 * [Exercise 1](gene-prediction-exercise.md)
 
 <hr />
