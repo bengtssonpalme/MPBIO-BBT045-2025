@@ -77,7 +77,7 @@ First dowload database of sequences from https://www.uniprot.org/downloads. The 
 We will use `blastp` to blast your identified sequences to the database of Uniprot sequences, but before this we need to create a blast database (takes time to run).
 
 ```bash
-makeblastdb -in uniprot_sprot.fasta -dbtype prot -out uniprot_database`
+makeblastdb -in uniprot_sprot.fasta -dbtype prot -out uniprot_database
 
 blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database -outfmt 7 -out results
 
