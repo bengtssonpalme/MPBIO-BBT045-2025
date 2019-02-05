@@ -25,7 +25,7 @@
 * [Git Cheat Sheet (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
 
 ### Gene annotation
-* [Exercise 1](gene_prediction_exercise.md)
+* [Exercise 1](gene-prediction-exercise.md)
 
 <hr />
 
