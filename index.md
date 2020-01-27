@@ -3,13 +3,16 @@
 
 ## Unix
 
+Please read this first: [How to connect to remote accounts](remote-hosts.md)
+
+### Exercises
 * [Basic Unix operations for bioinformatics](unix-tasks.md)
-* [How to connect to remote accounts](remote-hosts.md)
-* [Intro slides](unix-intro.pdf)
 
 ### Reading
+* [Intro slides](unix-intro.pdf)
 * [The Unix Shell](https://swcarpentry.github.io/shell-novice/) tutorial from the Software Carpentry Foundation
 * [Unix philosophy](unix-philosophy.md)
+
 
 ## Git Tutorial
 ### Exercises
@@ -17,7 +20,6 @@
 * [Exercise 1](git-exercise-1.md)
 * [Exercise 2](git-exercise-2.md)
 * [Exercise 3](git-exercise-3.md)
-
 
 ### Reading
 
