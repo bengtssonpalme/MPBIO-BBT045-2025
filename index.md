@@ -1,4 +1,4 @@
-# BBT015 - Advanced Bioinformatics
+# BBT045 - Advanced Bioinformatics
 
 
 ## Unix
