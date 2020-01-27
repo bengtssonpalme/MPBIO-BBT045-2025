@@ -1,4 +1,4 @@
-# BBT045 - Advanced Bioinformatics
+# BBT045 - Applied Bioinformatics
 
 
 ## Unix
