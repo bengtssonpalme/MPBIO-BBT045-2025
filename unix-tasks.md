@@ -128,9 +128,11 @@ This will download and extract the data to a directory called
 
 6. Inspect the contents of file `rna_coding_R64-2-1_20150113.fasta`. It's quite large, so you should use `less FILENAME` to view it. Press the arrow keys to move up/down and `q` to exit.
 
-7. Make a directory called `results` and create an empty file inside it called `counts.txt`. One quick (and safe) way is `touch results/counts.txt` This command normally just changes the time the file was last accessed ("touched") but will crate an empty file if it doesn't exist.
+7. Move back outside of `data` with `cd .. ` and make a directory called `results` 
 
-8. Actually, let's timestamp the `results` directory for posterity. Rename it to `results_2019_01_22`
+8. Create an empty file inside it called `counts.txt`. One quick (and safe) way is `touch results/counts.txt` This command normally just changes the time the file was last accessed ("touched") but will crate an empty file if it doesn't exist.
+
+9. Actually, let's timestamp the `results` directory for posterity. Rename it to `results_2020_01_28`
 
 
 ## 2. Analyze files
@@ -139,17 +141,17 @@ This will download and extract the data to a directory called
 
 2. Count how many genes are in `orf_coding_all_R64-2-1_20150113.fasta` (using `grep` or `wc`)
 
-3. Save the number of genes in `results_2019_01_22/counts.txt` Use ether `nano` to manually edit (see section below) or use the redirect symbol `>` to save the output of the previous command to the file, like `count_genes_command > results_2019_01_22/counts.txt` If you do the latter, you'll no longer also get output to the screen (this is on purpose).
+3. Save the number of genes in `results_2020_01_28/counts.txt` Use ether `nano` to manually edit (see section below) or use the redirect symbol `>` to save the output of the previous command to the file, like `count_genes_command > results_2019_01_22/counts.txt` If you do the latter, you'll no longer also get output to the screen (this is on purpose).
 
 4. Count how many `tRNA` genes are in `rna_coding_R64-2-1_20150113.fasta` (Hint: `grep`)
 
 5. Save the results of command 4 to `counts.txt` by appending to the file using the `>>` (double `>`) redirect symbol, similar to before. Make sure to not replace existing content. Or use `nano`
 
 6. Inspect that `counts.txt` has the content you expect.
-  It's a small file so run `cat results_2019_01_22/counts.txt`.
+  It's a small file so run `cat results_2020_01_28/counts.txt`.
 
 7. Make a copy of `counts.txt` called `counts.txt.orig`
-  (it should also be placed in the `results_2019_01_22` directory)
+  (it should also be placed in the `results_2020_01_28` directory)
 
 ### How to use the `nano` editor
 
@@ -165,13 +167,15 @@ The editor will run "full screen", hiding the command line.
 ## 3. Working with text columns
 
 We'll be using another data set with gene expression data.
+Move back to your home directory (`cd` with no argument).
+Make a new directory for this exercise and change location to it.
 
 ```bash
 # gene experssion data (fold change)
-wget http://www.cbs.dtu.dk/courses/27619/ex1.dat
+wget https://web.archive.org/web/20130211035221/http://www.cbs.dtu.dk/courses/27619/ex1.dat
 
 # annotation
-wget http://www.cbs.dtu.dk/courses/27619/ex1.acc
+wget https://web.archive.org/web/20170706124217/http://www.cbs.dtu.dk/courses/27619/ex1.acc
 ```
 
 The idea is to merge experimental result `ex1.dat` with the annotations from
@@ -181,19 +185,23 @@ The idea is to merge experimental result `ex1.dat` with the annotations from
 paste ex1.acc ex1.dat
 ```
 
+What did the command do? 
+Inspect both files and compare with the output you got from `paste`
+
 
 ## 4. Count yeast-human orthologs
 
-First, move back to your home directory (`cd` with no argument).
+First, move back to your home directory (`cd` with no argument), then
+make a new directory for this exercise and change location to it.
 Then download and decompress the EggNOG list of orthologous groups across Eukaryotes.
 
 ```bash
-cd
-wget http://eggnog5.embl.de/download/eggnog_5.0/data/2759/2759_members.tsv.gz
+wget http://eggnog5.embl.de/download/eggnog_5.0/per_tax_level/2759/2759_members.tsv.gz
 gunzip 2759_members.tsv.gz
 ```
 
-The file `2759_members.tsv` contains 6 columns. Each row is an orthologous group.
+The file `2759_members.tsv` contains 6 columns (you can view it with `less -S`).
+Each row is an orthologous group.
 The 2nd column is the group ID and the 5th column contains the list of protein IDs contained in that group.
 The format of each protein ID is `Taxon_ID.Sequence_ID` (note the dot).
 
