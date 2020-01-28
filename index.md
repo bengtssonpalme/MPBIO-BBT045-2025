@@ -30,6 +30,8 @@ Please read this first: [How to connect to remote accounts](remote-hosts.md)
 * [Slides](git-tutorial-chalmers.pdf)
 * [Git Cheat Sheet (PDF)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)
 
+<hr />
+
 ## Gene annotation
 * [Exercise 1](gene-prediction-exercise.md)
 
