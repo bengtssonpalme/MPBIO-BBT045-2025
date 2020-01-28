@@ -23,7 +23,7 @@ Please read this first: [How to connect to remote accounts](remote-hosts.md)
 
 * [Exercise 1](git-exercise-1.md)
 * [Exercise 2](git-exercise-2.md)
-* [Exercise 3](git-exercise-3.md)
+* (Optional: [Exercise 3](git-exercise-3.md))  Suggested instead to read about [uploading your repos to GitHub](https://help.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line)
 
 ### Reading
 
