@@ -15,10 +15,11 @@ You and your friends need to plan some apartment work.  Let's start
 writing all those ideas down. Create a directory for this project:
 
 At the terminal, type:
-~~~
+
+```bash
 mkdir apartment
 cd apartment
-~~~
+```
 
 
 ## Start tracking changes
@@ -27,9 +28,9 @@ Now we can create a git repository inside this directory to track our
 work. This step can be done at any time but let's see what happens in
 a very simple situation:
 
-~~~
+```bash
 git init
-~~~
+```
 
 > **Note**: Git will give you a confirmation message that a repo has
 > been created.  Note that a hidden directory called `.git` has been
@@ -43,41 +44,45 @@ Now let's add some tasks for the living room.
 > - To save, press `Ctrl-o`, then `[Enter]`.
 > - To exit, press `Ctrl-x`
 
-~~~
+```bash
 nano living_room.txt
-~~~
+```
 
 Add some tasks to this file, e.g.
-~~~
+
+```
 - paint
 - move furniture
-~~~
+```
+
 then save and close it.
 
 How is this file handled by git? It isn't yet!
 Take a look at the current status of the repo:
 
-~~~
+```bash
 git status
-~~~
+```
 
 Git tries to be helpful. It's worth reading the messages it outputs.
 Sometimes they will tell you exactly what to do next.
 
-Let's add our new file:
+Let's **add our new file**:
 
-~~~
+```bash
 git add living_room.txt
-~~~
+```
 
 Look at the status again. You will see that the file is now marked for
-tracking. But right now, it's only in the staging area as a "new"
-file. To actually record its addition, we need to commit the contents of
+tracking. But right now, it's only in the *staging area* as a "new"
+file.
+
+To actually **record** its addition, we need to *commit* the contents of
 the staging area:
 
-~~~
+```bash
 git commit -m "Start planning living room"
-~~~
+```
 
 > **Notes**: 
 >
@@ -97,11 +102,17 @@ git commit -m "Start planning living room"
 That's it! Now the current state of the project is saved and you can
 always compare future states to this one or come back to it.
 
-To get the list of all revisions, along with relevant information, write:
+To get the **list of all revisions**, along with relevant information, run:
 
-~~~
+```bash
 git log
-~~~
+```
+
+If you only want the last `K` revisions, run
+
+```bash
+git log -n K
+```
 
 Sometimes output like this from git can be very long.  Git will
 display ("pipe") this text through a program that allows scrolling
