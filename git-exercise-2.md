@@ -21,17 +21,19 @@ below. Save it and exit the editor.
 
 How has this changed the state of the repo? Run:
 
-~~~
+```bash
 git status
-~~~
+```
 
-Git will list `living_room.txt` as modified. You can always inspect
-how the current working version differs from any previous revision
-version. To simply compare with the latest committed version, execute:
+Git will list `living_room.txt` as modified. 
 
-~~~
+You can always inspect how the current working version differs from any previous revision.
+
+To simply **compare current files with the latest committed versions**, run:
+
+```bash
 git diff
-~~~
+```
 
 This will list all differences from the last revision. If you had more
 files and only wanted to see differences in some of these, run `git
@@ -61,12 +63,12 @@ respectively.
 > accessible by any program.
 
 
-Let's record the changes. These first need to be added to the staging
+Let's **record the changes**. These first need to be added to the staging
 area:
 
-~~~
+```bash
 git add living_room.txt
-~~~
+```
 
 > **Notes**: 
 >
@@ -94,24 +96,36 @@ git add living_room.txt
 >- somebody else needs changes from only one of these files
 >- quickly making sense of what has been changed in any revision
 
-And now commit the changes and inspect the log.
+And now **commit the changes** and inspect the log.
 
-~~~
+```bash
 git commit -m "Add items as per discussion"
 git log
-~~~
+```
 
-You will see the revisions in reverse chronological order.
-To compare any file to its state in any of the listed revisions,
-give the revision ID as a parameter, as below.
+You will see the revisions in reverse chronological order, marked by
+their revision IDs (long alphanumerical sequences). These uniquely mark
+a given revision.
+
+To **compare any current file to its state in a certain revision**,
+give that revision ID as a parameter, as below.
+
+**Note**: your IDs will be different.
+
+```bash
+git diff 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
+```
+
 (You should be able copy and paste in the terminal window, to spare
 yourself the typing.)
 
-~~~
-git diff 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
-~~~
+Or you can use only the first 6 letters
 
-> **Note**: Some tools (e.g. Github) will show you a shorter ID.
+```bash
+git diff 0ecfb8 living_room.txt
+```
+
+> **Note**: Some tools (e.g. Github) will show you the shorter ID (first 6 characters)
 > The reason is that for a single repo, shorter sequences may be used
 > to uniquely identify revisions, but git tries to be absolutely sure
 > each ID is unique, hence the longer "true" ID.
@@ -134,13 +148,13 @@ check.
 
 **Note**: your IDs will be different.
 
-**Careful** though that you write the name of the file. 
-`checkout` without a specified file name does something quite different
+**Careful** that you **write the name of the file**. 
+`checkout` does something quite different without a specified file name 
 (confusingly enough).
 
-~~~
-git checkout 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c living_room.txt
-~~~
+```bash
+git checkout 0ecfb8 living_room.txt
+```
 
 But remember that git considers anything deviating from the **last**
 revision as a difference. (Well, technically, from the revision marked
@@ -151,19 +165,20 @@ This is because we haven't modified the version we checked out any way.
 
 So we only need to commit this change:
 
-~~~
+```bash
 git commit -m "Revert file after further consideration"
-~~~
+```
 
-This action can be performed on uncommitted changes. To undo any
-changes since then, simply run the command below. The `HEAD` tag
-points to the current revision in the repo, normally the last to be
-committed. Some operations can move this tag to a given branch or
-revision.
+This action can be performed on uncommitted changes. 
 
-~~~
+To **undo any changes since the latest commit**,
+simply run the command below. The `HEAD` tag points to the current revision 
+in the repo, normally the last to be committed. 
+(Some operations can move this tag to a given branch or revision.)
+
+```bash
 git checkout HEAD living_room.txt
-~~~
+```
 
 > **_Important Note_**
 >
@@ -190,7 +205,8 @@ git checkout HEAD living_room.txt
 
 ## Further Reading
 * [Reset, Checkout, and Revert](https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting)
-
+* The many ways you can diff between revisions (including ranges and across branches) https://git-scm.com/docs/git-diff
+* The many ways to refer to revisions (including things like "5 revisions before X") https://git-scm.com/docs/gitrevisions
 
 # Next
 
