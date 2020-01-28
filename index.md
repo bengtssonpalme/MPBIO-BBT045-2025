@@ -11,7 +11,9 @@ Please read this first: [How to connect to remote accounts](remote-hosts.md)
 ### Reading
 * [Intro slides](unix-intro.pdf)
 * [The Unix Shell](https://swcarpentry.github.io/shell-novice/) tutorial from the Software Carpentry Foundation
-* [Unix commands cheat sheet](http://cheatsheetworld.com/programming/unix-linux-cheat-sheet/)
+* Unix commands cheat sheets:
+  * https://www.git-tower.com/blog/command-line-cheat-sheet/
+  * http://cheatsheetworld.com/programming/unix-linux-cheat-sheet/
 * [Unix philosophy](unix-philosophy.md)
 
 <hr />
