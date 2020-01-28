@@ -135,7 +135,7 @@ This will download and extract the data to a directory called
 9. Actually, let's timestamp the `results` directory for posterity. Rename it to `results_2020_01_28`
 
 
-## 2. Analyze files
+## 2. Analyzing files
 
 1. Count the lines in `orf_coding_all_R64-2-1_20150113.fasta` and `orf_trans_all_R64-2-1_20150113.fasta`  (Hint: the `wc` command, run `man wc`)
 
@@ -189,7 +189,7 @@ What did the command do?
 Inspect both files and compare with the output you got from `paste`
 
 
-## 4. Count yeast-human orthologs
+## 4. Counting yeast-human orthologs
 
 First, move back to your home directory (`cd` with no argument), then
 make a new directory for this exercise and change location to it.
