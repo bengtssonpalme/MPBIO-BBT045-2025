@@ -137,9 +137,9 @@ This will download and extract the data to a directory called
 
 ## 2. Analyze files
 
-1. Count the lines in `orf_coding_all_R64-2-1_20150113.fasta` and `orf_trans_all_R64-2-1_20150113.fasta`  (Hint: the `wc` command)
+1. Count the lines in `orf_coding_all_R64-2-1_20150113.fasta` and `orf_trans_all_R64-2-1_20150113.fasta`  (Hint: the `wc` command, run `man wc`)
 
-2. Count how many genes are in `orf_coding_all_R64-2-1_20150113.fasta` (using `grep` or `wc`)
+2. Count how many genes are in `orf_coding_all_R64-2-1_20150113.fasta`. Use `grep` and/ror `wc`, see `man grep` and `man wc`. `grep` is a standard (and very powerful) text search tool. The general usage is `grep "TEXT_PATTERN" FILE`.
 
 3. Save the number of genes in `results_2020_01_28/counts.txt` Use ether `nano` to manually edit (see section below) or use the redirect symbol `>` to save the output of the previous command to the file, like `count_genes_command > results_2019_01_22/counts.txt` If you do the latter, you'll no longer also get output to the screen (this is on purpose).
 
