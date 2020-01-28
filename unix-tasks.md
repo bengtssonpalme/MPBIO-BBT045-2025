@@ -312,7 +312,27 @@ The hat `^` means beginning of line, so the inner part simply says lines startin
 `S288C_reference_genome_R64-2-1_20150113/orf_coding_all_R64-2-1_20150113.fasta`
 
 
-## 6. Homework
+## 6. Bonus: Useful Commands
+
+These are not required for the homework but it's highly advised to be aware of them.
+You can read about them online or by reading their documentation.
+
+* `man` (manual) gives the documentation for a given command (e.g. `man ls`)
+* most commands accept a `--help` and/or `-h` flag that gives brief instructions on using it
+
+* `scp` and `rsync` are commands that allow you to transfer files between computers. The second one is recommended (more flexible and generally has better performance)
+* `pushd` and `popd` are handy alternatives to `cd`. They manage a list of visited locations: `pushd DIR` takes you to that directory and `popd` (no argument) brings you back to your original location. You can use `pushd` however many times and `popd` will always be a "step back"
+* `find` is the command to use if searching for files by name. The syntax is a bit different than other tools: `find DIR -name PATTERN`
+* `ls -larth` is a useful way to use the list command: `-l` gives a detailed list, `-a` shows all files, even hidden ones, `-h` shows file sizes in human-readable format (i.e. 'KB', 'MB' instead of bytes), `-t` sorts by file modification time, `-r` is reveresed order, so that the most recent files are at the bottom, closest to your prompt (useful for long file lists)
+
+* `column` allows displaying tablular files in nice, aligned columns, regardless of how columns are separated in the file (i.e. by `,`, `;`, tab). It's however slower than using processing commands like `cut`, `sed` etc. so it's recommended for small files or on `head`/`tail` of files
+
+* `[Ctrl]-R` enters reverse history search mode. Just start typing something close to a command you remember using before. The search will fuzzy match in the command history. Press `[Ctrl]-R` again to go to the next match (previously in time). Arrow keys allow you to edit the command and `[Enter]` to run it, like usual.
+
+It's also recommended to start using a more advanced text editor, either `vi` or `emacs`, and get reasonably comfortable with it. These have a steeper learning curve than `nano` but have high productivity gains, as they allow for advanced text processing commands and scripting. There are plenty of online tutorials for these, so try both out and see what makes more sense for you. `vi` is more likely to be installed on any given system, but its modal way of working (view mode/edit mode) can be confusing. 
+
+
+## 7. Homework
 
 * Write your answers in the text file you've used to keep track of commands and output so far.
 * Create a repo on GitHub to keep track of this file and send us the link to this repo.
