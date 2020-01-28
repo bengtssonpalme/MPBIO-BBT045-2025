@@ -331,6 +331,10 @@ You can read about them online or by reading their documentation.
 
 It's also recommended to start using a more advanced text editor, either `vi` or `emacs`, and get reasonably comfortable with it. These have a steeper learning curve than `nano` but have high productivity gains, as they allow for advanced text processing commands and scripting. There are plenty of online tutorials for these, so try both out and see what makes more sense for you. `vi` is more likely to be installed on any given system, but its modal way of working (view mode/edit mode) can be confusing. 
 
+You can use these quick command references:
+* http://cheatsheetworld.com/programming/unix-linux-cheat-sheet/
+* https://www.git-tower.com/blog/command-line-cheat-sheet/
+
 
 ## 7. Homework
 
