@@ -293,7 +293,8 @@ sed 'y/ACGT/UGCA/' FILE > FILE_RNA
 
 The sed command (between quotes) substitutes (`/y`)
 each letter in the first list (`ACGT`)
-with each corresponding letter in the second (`UGCA`).
+with each corresponding letter in the second (`UGCA`), 
+individually (so `A` -> `U`, `C` -> `G`, etc.).
 This command is applied on FILE and, since `sed` outputs to screen by default,
 we redirect the result to a new file.
 
