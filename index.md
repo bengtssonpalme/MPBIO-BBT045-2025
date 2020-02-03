@@ -30,6 +30,13 @@ Please read this first: [How to connect to remote accounts](remote-hosts.md)
 * [Slides](git-tutorial-chalmers.pdf)
 * [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
 
+
+<hr />
+
+## Sequencing Technologies
+
+[Exercises](sequencing_technologies_exercises.md)
+
 <hr />
 
 ## Gene annotation
