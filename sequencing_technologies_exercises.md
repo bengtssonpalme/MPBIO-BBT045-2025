@@ -206,7 +206,7 @@ See [What is a VCF and how should I interpret it?](https://gatkforums.broadinsti
 
 Are all mutations homozygous? Should you expect any heterozygous mutations in this case?
 
-#### Q3
+#### Q2
 
 What assumption does `samtools mpileup` make about the model of genetic mutations?
 (Try running `bcftools mpileup` for help and scroll down.) 
@@ -220,7 +220,7 @@ Since viruses only have one copy of the genome, this model is not correct and
 it is not possible for a single genomic position to have two different bases.
 </font>
 
-#### Q4
+#### Q3
 
 Use `samtools mpileup` to inspect the site 73233. What is the frequency of each base on this site?
 Rune the command below and see [Pileup format](https://en.wikipedia.org/wiki/Pileup_format)
