@@ -7,6 +7,7 @@ without the need for administrative privileges.
 (If you've used Linux before, it's similar to `apt`.)
 
 Many standard bioinformatics tools have been published for conda, most notably on the "bioconda" channel (list of packges).
+See [here](https://bioconda.github.io/contributor/faqs.html#conda-anaconda-minconda) for more info about bioconda and conda in general.
 
 ### Environment
 
