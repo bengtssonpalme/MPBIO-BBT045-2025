@@ -202,7 +202,7 @@ Inspect the VCF file columns using the (Unix) commands `grep -v "^#"  results/va
 
 How can you interpret the [PHRED](https://en.wikipedia.org/wiki/Phred_quality_score) 
 score values in the last column? 
-See [What is a VCF and how should I interpret it?](https://gatkforums.broadinstitute.org/gatk/discussion/1268/how-should-i-interpret-vcf-files-produced-by-the-gatk)
+See [What is a VCF and how should I interpret it?](https://gatkforums.broadinstitute.org/gatk/discussion/1268/how-should-i-interpret-vcf-files-produced-by-the-gatk) (Section 5)
 
 Are all mutations homozygous? Should you expect any heterozygous mutations in this case?
 
