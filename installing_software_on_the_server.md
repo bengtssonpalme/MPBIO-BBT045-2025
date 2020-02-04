@@ -2,7 +2,7 @@
 
 ## Using the conda package manager
 
-`conda` is a cross-platform package manager that can install both full programs, and Python and R libraries for you, 
+`conda` is a cross-platform package manager that can install both full programs, as well as Python and R libraries for you, 
 without the need for administrative privileges.
 (If you've used Linux before, it's similar to `apt`.)
 
