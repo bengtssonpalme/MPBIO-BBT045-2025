@@ -3,7 +3,7 @@
 
 ## Unix
 
-Please read this first: [How to connect to remote accounts](remote-hosts.md)
+Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 
 ### Exercises
 * [Basic Unix operations for bioinformatics](unix-tasks.md)
@@ -43,6 +43,13 @@ Please read this first: [How to connect to remote accounts](remote-hosts.md)
 * [Exercise 1](gene-prediction-exercise.md)
 
 <hr />
+
+## Practical info for projects
+
+* [How to install your own software on the server](installing_software_on_the_server.md)
+
+<hr />
+
 
 Chalmers University of Technology
 
