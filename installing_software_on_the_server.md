@@ -1,4 +1,4 @@
-# How to intall software on the exercise server
+# How to install software on the exercise server
 
 ## Using the conda package manager
 
