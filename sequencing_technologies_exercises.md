@@ -13,14 +13,16 @@ Please copy the exercise data directory `/home/fburic/NGS_algorithms` to your ow
 Using `bowtie2` to align short-read sequencing data to a reference genome and 
 `samtools` to visualize process the result:
 
+Go to the appropriate directory:
+
+`cd ~/NGS_algorithms/Exercise_1`
+
 Material/Files needed
 
 - Varicella reference genome: `data/varicella.gb`
 - Sequencing files: `data/varicella1.fastq`, `data/varicella2.fastq`
 
-Go to the appropriate directory:
 
-`cd ~/NGS_algorithms/Exercise_1`
 
 ### Protocol
 
@@ -140,16 +142,17 @@ Using `bowtie2` and `samtools` to:
 
 Material/Files needed:
 
-- Varicella reference genome: `data/varicella.gb`
+- Varicella reference genome: `data/varicella.fasta`
 - Sequencing files from *dumas* strain: `data/varicella_mut1.fastq`, `data/varicella_mut2.fastq`
 
 ### Protocol
 
 #### Step 1
 
-Create a sorted and indexed BAM file using the steps 1-5 from exercise 1
-
 Go to the appropriate directory `cd ~/NGS_algorithms/Exercise_2`
+
+Create a sorted and indexed BAM file using the steps 1-5 from exercise 1 
+(you can skip conversion to FASTA since that format is already provided).
 
 Commands: Same Exercise 1, except skip converting GFF3 > FASTA 
 (you already have a reference `data/varicella.fasta`).
