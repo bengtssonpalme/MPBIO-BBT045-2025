@@ -151,8 +151,7 @@ Material/Files needed:
 
 Go to the appropriate directory `cd ~/NGS_algorithms/Exercise_2`
 
-Create a sorted and indexed BAM file using the steps 1-5 from exercise 1 
-(you can skip conversion to FASTA since that format is already provided).
+Create a sorted and indexed BAM file using the steps 1-5 from exercise 1.
 
 Commands: Same Exercise 1, except skip converting GFF3 > FASTA 
 (you already have a reference `data/varicella.fasta`).
