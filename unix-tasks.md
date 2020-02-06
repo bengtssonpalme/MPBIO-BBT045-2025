@@ -347,7 +347,14 @@ You can use these quick command references:
 SSH connections to remote computers like our exercise server can be interrupted for many reasons: 
 e.g. loss of Wi-Fi connection, computer going to sleep, network issues, server overload.
 
-Tasks:
+*Advice*: It's always a good idea to spend some time inspecting your data.
+What are the possible values for a given variable of interest?
+Is data represented in a uniform way? 
+What type of unique identifiers or numerical codes does the data use? 
+Is the formatting consistent?
+etc.
+
+### Tasks:
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
    Note that the chromosome column is followed by a TAB charachter, which is encoded as `\t`. Here we're primarily concerned with protein-coding genes (just "gene") so you can ignore other things like "tRNA_gene" (though either count is fine).
