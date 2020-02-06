@@ -350,9 +350,9 @@ e.g. loss of Wi-Fi connection, computer going to sleep, network issues, server o
 Tasks:
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
-   Note that the chromosome column is followed by a TAB charachter, which is encoded as `\t`
+   Note that the chromosome column is followed by a TAB charachter, which is encoded as `\t`. Here we're primarily concerned with protein-coding genes (just "gene") so you can ignore other things like "tRNA_gene" (though either count is fine).
 
-2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`. You can do the final part (i.e. calculating a percentage) by hand or using Unix tools like `expr` or `bc`. The important thing is to get the base counts.
+2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`. You can do the final part (i.e. calculating a percentage) by hand or using Unix tools like `expr` or `bc`. The important thing is to get the base counts. **Note** that the sequence files may contain characters like `N` ("nucleobase" - basically unknown) or lowercase letters in the sequence. The `N`s you can ignore and the lowercase letters you can either convert to uppercase or ignore (they're not that many)
 
 3. Download and decompress the ORFs of another strain (Y55) from
    https://downloads.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/Y55_JRIF00000000_SGD_cds.fsa.gz
