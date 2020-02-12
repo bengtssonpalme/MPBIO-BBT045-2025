@@ -51,7 +51,7 @@ Alternatively, download genome to remote computer by running the following comma
 `wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/fungi/Candida_albicans/all_assembly_versions/GCA_000447455.1_Cand_albi_A123_V1/GCA_000447455.1_Cand_albi_A123_V1_genomic.fna.gz`
 
 Unarchive file:
-`gunzip GCA_000447455.1_Cand_albi_A123_V1/GCA_000447455.1_Cand_albi_A123_V1_genomic.fna.gz`
+`gunzip GCA_000447455.1_Cand_albi_A123_V1_genomic.fna.gz`
 
 ### Step 2: Use Augustus to predict all open reading frames of protein coding genes
 
