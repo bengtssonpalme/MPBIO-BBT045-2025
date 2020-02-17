@@ -15,6 +15,7 @@ Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
   * https://www.git-tower.com/blog/command-line-cheat-sheet/
   * http://cheatsheetworld.com/programming/unix-linux-cheat-sheet/
 * [Unix philosophy](unix-philosophy.md)
+* [Regular expression learning resources](regex.md)
 
 <hr />
 
