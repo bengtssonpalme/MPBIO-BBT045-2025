@@ -1,6 +1,3 @@
-# BBT045 - Applied Bioinformatics
-
-
 ## Unix
 
 Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
