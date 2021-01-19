@@ -10,7 +10,7 @@
 
 ### Windows
 
-* Install Git Bash: [Link] (https://gitforwindows.org).
+* Install Git Bash: [Link](https://gitforwindows.org "Git Bash").
   * The pre-set installation settings should be fine, as long as text editor is Nano
 * Open Git Bash
 * Run: `ssh <username>@<ip-address>`
