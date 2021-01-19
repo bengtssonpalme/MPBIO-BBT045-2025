@@ -11,7 +11,7 @@
 ### Windows
 
 * Install Git Bash: [Link] (https://gitforwindows.org).
-  * The pre-set installation settings should be fine as long as thext editor is Nano
+  * The pre-set installation settings should be fine, as long as text editor is Nano
 * Open Git Bash
 * Run: `ssh <username>@<ip-address>`
   Your username is `studentX` (where X = the number assigned to you)
