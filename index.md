@@ -1,5 +1,12 @@
 # Study Material and Exercises
 
+## Homework
+
+* [HW 1: Unix](homework1.md)
+
+<hr />
+
+
 ## Unix
 
 Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
@@ -18,6 +25,7 @@ Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 
 <hr />
 
+
 ## Git Tutorial
 ### Exercises
 
@@ -30,8 +38,8 @@ Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 * [Slides](git-tutorial-chalmers.pdf)
 * [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
 
-
 <hr />
+
 
 ## Sequencing Technologies
 
@@ -39,10 +47,12 @@ Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 
 <hr />
 
+
 ## Gene annotation
 * [Exercise 1](gene-prediction-exercise.md)
 
 <hr />
+
 
 ## Practical info for projects
 
