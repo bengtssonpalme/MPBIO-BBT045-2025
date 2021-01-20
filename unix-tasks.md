@@ -87,6 +87,29 @@ Press down to get back to the "present"
   While they look the same, programs ultimately only care about
   the numerical encoding of these symbols, so they will complain.
 
+## 0.4. Managing directories
+
+As you may have noticed there is no specific directories other then your home directory when you first log on to your server account.
+You thus need to create the directories that you want to structure your projects in.
+
+You can create a new directory with the command mkdir [Directory-name]
+
+If you for example is in your home directory and want to create the Documents directory you would run the command `mkdir Documents`
+
+If you at some point make a mistake or for other reasons want to rename either a file or a directory you can do that with the
+command mv [Origin-File] [Target-File]. Thus, if you want to rename File1.txt to File2.txt you would type `mv File1.txt File2.txt
+
+The mv command can also be used to move files or directories to new locations, mv [Original-location] [Target-location].
+For instance, if file1.txt is located in your home directory and you want to move it to your newly created directory Documents
+You would use the command `mv file1.txt Documents/file1.txt`
+
+If you want to delete files or directories you can use the command rm [File].
+If you want to delete a directory you need to include the option -r.
+the -r option will make rm delete all the files and other directories recursively in the specified directory.
+
+**Note**
+There is no "bin" directory that deleted files will go to as a first deletion like in windows and MacOS when using rm.
+  
 ## 1. Managing files
 
 **Note**
