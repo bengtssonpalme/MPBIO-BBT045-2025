@@ -216,11 +216,13 @@ Inspect both files and compare with the output you got from `paste`
 
 First, move back to your home directory (`cd` with no argument), then
 make a new directory for this exercise and change location to it.
-Then download and decompress the EggNOG list of orthologous groups across Eukaryotes.
+Then download and decompress the EggNOG list of orthologous groups across Eukaryotes,
+as well as a table of taxonomic IDs:
 
 ```bash
 wget http://eggnog5.embl.de/download/eggnog_5.0/per_tax_level/2759/2759_members.tsv.gz
 gunzip 2759_members.tsv.gz
+wget http://eggnog5.embl.de/download/eggnog_5.0/e5.taxid_info.tsv
 ```
 
 The file `2759_members.tsv` contains 6 columns (you can view it with `less -S`).
@@ -232,8 +234,8 @@ We want to find all the groups that contain genes in both humans and yeast.
 There are multiple ways to do this. One way is to separately search for yeast and then human
 and intersect the results.
 
-We know that TaxonID for *H. sapiens* == `9606` and for
-*Saccharomyces cerevisiae* == `4932`.
+The TaxonID for *H. sapiens* == `9606` and for *Saccharomyces cerevisiae* == `4932`.
+We find this out by grepping in the taxonomic information table `e5.taxid_info.tsv` for "cerevisiae" and "sapiens".
 
 For each of the two organisms, the process consists of:
 1. filtering in the lines that contain proteins found in the organism
@@ -249,7 +251,7 @@ The structure is `filter "TaxonID." | cut out column 2 | sort > RESULTS_FILE`.
 The actual commands for this are:
 
 ```bash
-grep "4891." 2759_members.tsv | cut -f 2 | sort > groups_scerevisiae.txt
+grep "4932." 2759_members.tsv | cut -f 2 | sort > groups_scerevisiae.txt
 grep "9606." 2759_members.tsv | cut -f 2 | sort > groups_hsapiens.txt
 ```
 
@@ -277,7 +279,7 @@ where `-12` inhibits the first 2 results and we pipe to `wc -l` (only counts lin
 **Bonus** One can get fancier, avoid intermediate files, and do all of the above in one go:
 
 ```bash
-comm -12 <(grep "4891." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_members.tsv | cut -f 2 | sort) | wc -l
+comm -12 <(grep "4932." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_members.tsv | cut -f 2 | sort) | wc -l
 ```
 
 Here we're feeding `comm` with two ad-hoc data streams as if they were files.
