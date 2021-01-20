@@ -1,5 +1,9 @@
 # Study Material and Exercises
 
+## Homework
+
+* [HW 1: Unix](homework1.md)
+
 ## Unix
 
 Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
