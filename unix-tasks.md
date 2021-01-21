@@ -7,7 +7,7 @@ See [here](remote-hosts.md).
 ## 0.2. Keep track of what you're doing
 
 Create a text file called `unix_exercises_FIRSTNAME_LASTNAME.txt`
-on your own computer (replacing first and second name with yours)
+on your own computer or directly on the server (replacing first and second name with yours)
 and keep it open in a text editor (not Word).
 In there, paste the commands you use for the tasks below, e.g.
 
@@ -40,6 +40,14 @@ but these are a pain for any non-trivial editing.
 
 **Avoid Word** though. It insists on replacing some characters
 with visually similar versions that are not understood by the Unix commands.
+
+If you want to work directly on the server, you can connect from a second terminal window.
+In one terminal window you can keep an open `nano`, where you write down your solutions. 
+And in the other you would test out your commands.
+Alternatively, you can write everyting on your laptop, then later paste the text into nano on the server.
+
+Keep in mind that the *homework should be handed in from the server* however 
+(more on this in the Git tutorial).
 
 
 ## 0.3. Quick note on command syntax for beginners
