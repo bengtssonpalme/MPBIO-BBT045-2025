@@ -16,6 +16,8 @@ Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 
 ### Reading
 * [Intro slides](unix-intro.pdf)
+
+### Recommended Reading
 * [The Unix Shell](https://swcarpentry.github.io/shell-novice/) tutorial from the Software Carpentry Foundation
 * Unix commands cheat sheets:
   * https://www.git-tower.com/blog/command-line-cheat-sheet/
@@ -36,6 +38,8 @@ Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 ### Reading
 
 * [Slides](git-tutorial-chalmers.pdf)
+
+### Recommended Reading
 * [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
 
 <hr />
