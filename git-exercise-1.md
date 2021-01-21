@@ -41,8 +41,10 @@ Now let's add some tasks for the living room.
 
 > **Note**: We'll be using a very basic text editor called `nano`.
 >
-> - To save, press `Ctrl-o`, then `[Enter]`.
-> - To exit, press `Ctrl-x`
+> - To save, press `[Ctrl]-s` (So `the Control and S key at the same time`)
+> - To exit, press `[Ctrl]-x`
+>
+> Note thtat the Control key is used if you have a Mac as well
 
 ```bash
 nano living_room.txt
