@@ -9,7 +9,8 @@
 
 ## Unix
 
-Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
+* Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
+* [Conda installation instructions](unix/conda_install.md)
 
 ### Exercises
 * [Basic Unix operations for bioinformatics](unix-tasks.md)
