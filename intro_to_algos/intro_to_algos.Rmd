@@ -84,7 +84,9 @@ i.e. getting and setting atomic values, as well as arithmetic operations with th
 protein_count <- 2345                          
 
 # 3 atomic operations: 
-# getting the protein_count value, adding an atomic value, then setting the value)
+# - getting the protein_count value from RAM into the CPU
+# - adding an atomic value 
+# - then setting the resulting value from the CPU into RAM
 adjusted_protein_count <- protein_count + 100 
 ```
 
