@@ -12,13 +12,16 @@
 * Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 * [Conda installation instructions](unix/conda_install.md)
 
-### Exercises
+**Exercises**
+
 * [Basic Unix operations for bioinformatics](unix-tasks.md)
 
-### Reading
+**Reading**
+
 * [Intro slides](unix-intro.pdf)
 
-### Recommended Reading
+**Recommended Reading**
+
 * [The Unix Shell](https://swcarpentry.github.io/shell-novice/) tutorial from the Software Carpentry Foundation
 * Unix commands cheat sheets:
   * https://www.git-tower.com/blog/command-line-cheat-sheet/
@@ -30,17 +33,19 @@
 
 
 ## Git Tutorial
-### Exercises
+
+**Exercises**
 
 * [Exercise 1](git-exercise-1.md)
 * [Exercise 2](git-exercise-2.md)
 * (Optional: [Exercise 3](git-exercise-3.md))  Suggested instead to read about [uploading your repos to GitHub](https://help.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line)
 
-### Reading
+**Reading**
 
 * [Slides](git-tutorial-chalmers.pdf)
 
-### Recommended Reading
+**Recommended Reading**
+
 * [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
 
 <hr />
@@ -49,6 +54,13 @@
 ## Sequencing Technologies
 
 [Exercises](seq_tech/seq_tech_tutorial.md)
+
+<hr />
+
+
+## Introduction to Algorithmic Thinking
+
+[Self-study notebook](intro_to_algos/intro_to_algos.html)
 
 <hr />
 
