@@ -1,8 +1,29 @@
-# NGS Aligners practical
+# Sequencing Technologies Tutorial
 
 (Slightly adapted version of Rui Pereira's exercise protcol)
 
 ## Prep
+
+We will be working in RStudio and writing the commands in a notebook.
+The notebook will serve as a rudimentary pipeline.
+
+Reminder: Quick RStudio tour + config
+
+Please create a directory for this tutorial and inside there
+copy the starter notebook from my directory. So:
+
+```shell
+mkdir sequencing
+cp /home/fburic/sequencing/sequencing_technologies_tutorial.Rmd sequencing/
+cd sequencing
+```
+
+The starter notebook contains instructions for setting up your conda
+environment. Please follow these instructions, then continue using
+the notebook to write the commands and take notes for the exercises.
+
+
+
 
 Please copy the exercise data directory `/home/fburic/NGS_algorithms` to your own home directory:
 
