@@ -43,4 +43,16 @@ Later on / in real life, it's good to to examine what changes are made when inst
 conda install samtools bowtie2 breseq abyss bcftools wgsim emboss
 ```
 
+Run the code chunk below to enable running conda commands from this notebook.
+For future reference, this functionality is achieved with the built-in 
+[knitr](https://yihui.org/knitr/options/) package.
+
+```{r, setup}
+knitr::opts_chunk$set(engine.opts = "-i")
+```
+
+Ignore the errors about " Inappropriate ioctl for device" 
+and "no job control in this shell". They're a harmless consequence of this.
+
+
 # Exercise 1
