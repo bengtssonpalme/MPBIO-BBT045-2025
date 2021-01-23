@@ -7,12 +7,10 @@
 We will be working in RStudio and writing the commands in a notebook.
 The notebook will serve as a rudimentary pipeline.
 
-Reminder: Quick RStudio tour + config
-
 Please create a directory for this tutorial and inside there
 copy the starter notebook from my directory. So:
 
-```shell
+```bash
 mkdir sequencing
 cp /home/fburic/sequencing/sequencing_technologies_tutorial.Rmd sequencing/
 cd sequencing
@@ -20,126 +18,200 @@ cd sequencing
 
 The starter notebook contains instructions for setting up your conda
 environment. Please follow these instructions, then continue using
-the notebook to write the commands and take notes for the exercises.
+the notebook to write the commands used here and take notes for the exercises.
+If you have not done so already, you need to first install conda.
+See instructions [here](../unix/conda_install.md)
+
+**Make sure you activated the `sequencing` environment!**
+
+> (Explained in class:) R notebooks can contain Linux terminal (bash) commands,
+> and you are encouraged to write the commands inside these "bash chunks".
+> The only thing to remember is that each chunk is run independently,
+> so each one starts from the same location as the notebook and without the conda environment activated.
 
 
+Now fetch a copy of the data we will be using:
+
+```bash
+cp -r /home/fburic/sequencing/data .
+```
+
+To nicely see the contents of (small) directories, you can use
+the `tree` program, but you need to install it first (`conda install tree`)
+
+```bash
+tree data
+```
+
+You can also run `ls *` (which works on any system)
+
+To make sure this data is protected from accidental writes, 
+remove the write permission (`-w`) for anyone on the server (`ugo`) 
+on it by running:
+
+```bash
+chmod -R ugo-w data  # -R means "recursive" (exhaustively apply to all files)
+```
+
+Then create results directory
+
+```bash
+mkdir results
+```
 
 
-Please copy the exercise data directory `/home/fburic/NGS_algorithms` to your own home directory:
+## Exercise 1: Alignment
 
-`cp -r /home/fburic/NGS_algorithms ~/`
+We'll be aligning sequencing data against the reference genome of a Varicella virus.
 
-## Exercise 1
+This mainly involves using `bowtie2` to align short-read sequencing data to the reference genome and 
+`samtools` to post-process and visualize the result:
 
-Using `bowtie2` to align short-read sequencing data to a reference genome and 
-`samtools` to visualize process the result:
+Raw data files:
 
-Go to the appropriate directory:
+- Varicella reference genome: `data/ref/varicella.gb`
+- Sequencing files: `data/seq/varicella1.fastq`, `data/seq/varicella2.fastq`
 
-`cd ~/NGS_algorithms/Exercise_1`
-
-Material/Files needed
-
-- Varicella reference genome: `data/varicella.gb`
-- Sequencing files: `data/varicella1.fastq`, `data/varicella2.fastq`
-
-
+You can run the commands in the terminal directly, but we'll be building a
+rudimentary pipeline using the R notebook, so copy the code chunks 
+(including the surrounding `{bash}` marker) and run the chunk from the notebook.
 
 ### Protocol
 
-#### Step 1
+#### Step 1: Init
 
-`Bowtie2` requires an index file for the reference sequence.
-Create an index file from the varicella genome using bowtie2-build.
+Create a separate results dir
 
-Command:
-
-```bash
-bowtie2-build -f data/varicella.gb varicella
+~~~
+```{bash}
+mkdir results/exercise1
 ```
+~~~
 
-Did it work? What went wrong? 
+#### Step 2: Preprocess
 
-`bowtie2-build` requires a FASTA file, not a GenBank (GFF3) file.
+`bowtie2` requires an index file for the reference sequence.
+This index can only be constructed from a FASTA file but it's common practice to
+find reference genomes in GenBank (GFF3) format.
 
 Convert `varicella.gb` to FASTA using the 
 [seqret](http://emboss.sourceforge.net/apps/cvs/emboss/apps/seqret.html) converter from the EMBOSS package,
 then build the bowtie index accordingly.
 
-```bash
+> (Computation time: seconds)
+
+~~~
+```{bash}
+conda activate sequencing
+
 # Convert GFF3 > FASTA
-seqret -sequence data/varicella.gb -feature -fformat gff3 -osformat fasta data/varicella.fasta
+seqret -sequence data/ref/varicella.gb -feature -fformat gff3 -osformat fasta data/ref/varicella.fasta
+
+# This file is outptut by seqret in the current directory (because bad design)
+# So we move it where it belongs
+mv varicella.gff data/ref/
+
+# Document how the FASTA file was created
+echo "vaircella.fasta converted from GFF as:" > data/ref/README.txt
+echo "seqret -sequence data/ref/varicella.gb -feature -fformat gff3 -osformat fasta data/ref/varicella.fasta" >> data/ref/README.txt
+
 # Save index files in own directory
-mkdir bowtie_index
+mkdir results/exercise1/bowtie_index
 # Build the bowtie2 index
-bowtie2-build -f data/varicella.fasta bowtie_index/varicella
+bowtie2-build -f data/ref/varicella.fasta results/exercise1/bowtie_index/varicella
 ```
+~~~
 
-(Computation time: seconds)
 
-#### Step 2
 
-Align the sequencing data to the reference genome using Bowtie2
+#### Step 3: Align sequences to reference
 
-```bash
-mkdir alignment
-bowtie2 -x bowtie_index/varicella -1 data/varicella1.fastq -2 data/varicella2.fastq -S alignment/varicella.sam
+Align the sequencing data to the reference genome using `bowtie2`.
+The `\` symbol simply breaks the command across multiple lines for readability.
+
+> (Computation time: 1 min)
+
+~~~
+```{bash}
+conda activate sequencing
+mkdir results/exercise1/alignment
+bowtie2 -x results/exercise1/bowtie_index/varicella \
+	-1 data/seq/varicella1.fastq -2 data/seq/varicella2.fastq \
+	-S results/exercise1/alignment/varicella.sam
 ```
+~~~
 
-(Computation time: 1 min)
 
-#### Step 3
+
+#### Step 4: Convert alignment to binary format
 
 To make reading the alignment info easier for the computer,
 convert the sequence alignment map (SAM) file to binary alignment map (BAM)
 using the `samtools` `view` command:
 
-```bash
-samtools view -b -S -o alignment/varicella.bam alignment/varicella.sam
+> (Computation time: seconds)
+> 
+~~~
+```{bash}
+conda activate sequencing
+samtools view -b -S -o results/exercise1/alignment/varicella.bam \
+    results/exercise1/alignment/varicella.sam
 ```
+~~~
 
-(Computation time: seconds)
 
-#### Step 4
+#### Step 5: Optimize alignment (part 1)
 
 To optimize the lookup in the alignment map,
-sort the BAM file using `samtools` `sort` command.
+sort the BAM file using `samtools sort` command.
 
-```bash
-samtools sort alignment/varicella.bam -o alignment/varicella.sorted.bam
+> (Computation time: seconds)
+
+~~~
+```{bash}
+conda activate sequencing
+samtools sort results/exercise1/alignment/varicella.bam -o \
+    results/exercise1/alignment/varicella.sorted.bam
 ```
+~~~
 
-(Computation time: seconds)
 
-#### Step 5
+#### Step 6: Optimize alignment (part 2)
 
 To speed up reading the BAM file even more,
 index the sorted BAM file using `samtools` `index` command:
 
-```bash
-samtools index alignment/varicella.sorted.bam
+> (Computation time: seconds)
+
+~~~
+```{bash}
+conda activate sequencing
+samtools index results/exercise1/alignment/varicella.sorted.bam
 ```
+~~~
 
-This will create a BAI file called `alignment/varicella.sorted.bam.bai`
+This will create a BAI file called `results/exercise1/alignment/varicella.sorted.bam.bai`
 
-(Computation time: seconds)
 
-#### Step 6
 
-Calculate the average coverage of the alignment using the `samtools` `depth` command
+#### Step 7: Calculate alignment coverage
+
+Calculate the average coverage of the alignment using the `samtools depth` command
 and the Unix `awk` text processor to extract the values of interest:
 
-```bash
-samtools depth alignment/varicella.sorted.bam | awk '{sum+=$3} END {print "Average = ",sum/124884}'
+> (Computation time: 1s)
+
+~~~
+```{bash}
+conda activate sequencing
+samtools depth results/exercise1/alignment/varicella.sorted.bam | awk '{sum+=$3} END {print "Average = ", sum/124884}'
 ```
+~~~
 
 Output should be: `Answer: average =  199.775`
 
-(Computation time: 1s)
 
-### Questions
-
-#### Q1
+### Question
 
 Use the `samtools depth` command to extract coverage info 
 and create a coverage map of the genome (position vs. coverage).
@@ -148,13 +220,34 @@ The output format is described at the end of the help.
 
 Answer:  
 
-```bash
-samtools depth alignment/varicella.sorted.bam > alignment/coverage.tsv
+~~~
+```{bash}
+conda activate sequencing
+samtools depth results/exercise1/alignment/varicella.sorted.bam > results/exercise1/alignment/coverage.tsv
 ```
+~~~
 
-Plot the result with R / Excel / similar
+Plot the result with R
 
-## Exercise 2
+~~~
+```{r, message=F}
+library(tidyverse)
+
+alignment_coverage <-
+  read_tsv('results/exercise1/alignment/coverage.tsv',
+           col_names = c("reference_name", "position", "coverage_depth"))
+
+alignment_coverage %>% 
+  ggplot() + geom_histogram(aes(x = coverage_depth))
+```
+~~~
+
+
+
+
+## Exercise 2: Finding Mutations
+
+We now look at a second set of sequencing data, with mutations.
 
 Using `bowtie2` and `samtools` to:
 
