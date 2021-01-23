@@ -1,11 +1,13 @@
 # Sequencing Technologies Tutorial
 
-(Slightly adapted version of Rui Pereira's exercise protcol)
+Filip Buric (adapted from Rui Pereira's exercise protcol)
+2021-01-24
+
 
 ## Prep
 
 We will be working in RStudio and writing the commands in a notebook.
-The notebook will serve as a rudimentary pipeline.
+The notebook will serve as both a rudimentary pipeline and final (reproducible) report.
 
 Please create a directory for this tutorial and inside there
 copy the starter notebook from my directory. So:
@@ -72,8 +74,7 @@ Raw data files:
 - Varicella reference genome: `data/ref/varicella.gb`
 - Sequencing files: `data/seq/varicella1.fastq`, `data/seq/varicella2.fastq`
 
-You can run the commands in the terminal directly, but we'll be building a
-rudimentary pipeline using the R notebook, so copy the code chunks 
+You can run the commands in the terminal directly to test them out, but they should be included (in order) in the R notebook, so copy the code chunks 
 (including the surrounding `{bash}` marker) and run the chunk from the notebook.
 
 ### Protocol
@@ -247,31 +248,110 @@ alignment_coverage %>%
 
 ## Exercise 2: Finding Mutations
 
-We now look at a second set of sequencing data, with mutations.
+We now look at a second set of sequencing data, with mutations (`data/seq/varicella_mut1.fastq` and `data/seq/varicella_mut1.fastq`)
 
-Using `bowtie2` and `samtools` to:
+We'll still be using `bowtie2` and `samtools` to perform these tasks,
+however we'll be doing this in R instead of running the commands directly.
 
-* align short-read sequencing data 
-* compute the mutations present
+This approach has the great advantage that we stay within the same environment
 
-Material/Files needed:
+and we don't need to copy-paste all we did above just to change the name of the input files. That's cumbersome and *very* error-prone.
 
-- Varicella reference genome: `data/varicella.fasta`
-- Sequencing files from *dumas* strain: `data/varicella_mut1.fastq`, `data/varicella_mut2.fastq`
+To do this, we need to install some R packages from Bioconductor. Run the following lines of code in the R *console* (not the notebook, sine you only need to do this once):
+
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+    
+BiocManager::install("Rbowtie2")
+BiocManager::install("Rsamtools")
+install.packages("filesstrings")
+```
+
+Consult the documentation of these packages for more details on how to use them:
+
+- [Rbowtie2](https://bioconductor.org/packages/release/bioc/vignettes/Rbowtie2/inst/doc/Rbowtie2-Introduction.html)
+- [Rsamtools](https://bioconductor.org/packages/release/bioc/vignettes/Rsamtools/inst/doc/Rsamtools-Overview.pdf)
+
+
+Next paste in and run this R code chunk which contains the workflow for the previous exercise:
+
+~~~
+```{r, message=F}
+library(Rbowtie2)
+library(Rsamtools)
+library(filesstrings)
+
+workflow_align_reads <- function(reads_1, reads_2, reference_genome, results_dir) {
+    # Create output directories
+    dir.create(file.path(results_dir, "bowtie_index"))
+    dir.create(file.path(results_dir, "alignment"))
+    
+    # Set the name of the output files
+    index_basename <- file.path(results_dir, "bowtie_index",
+                                before_last_dot(basename(reference_genome)))
+    alignment_filename <- file.path(results_dir, "alignment", 
+                                    before_last_dot(basename(reads_1)))
+    alignment_filename <- 
+        give_ext(substr(alignment_filename, 1, nchar(alignment_filename) - 1), "sam")
+    
+    
+    # Build index
+    # Runs: bowtie2-build -f REFERENCE_FASTA OUTPUT_INDEX
+    bowtie2_build(references = c(reference_genome),
+                  bt2Index = index_basename,
+                  overwrite = TRUE)
+    
+    # Align seq to ref
+    # Runs: bowtie2 -x INDEX -1 READS_1 -2 READS_2 -S OUTPUT_SAM
+    bowtie2(bt2Index = index_basename,
+            samOutput = alignment_filename,
+            seq1 = reads_1, seq2 = reads_2, 
+            overwrite = TRUE)
+    
+    # Convert and optimize alignment file
+    alignment_basename <- before_last_dot(alignment_filename)
+    asBam(file = alignment_filename, 
+          destination = alignment_basename)
+    
+    sortBam(file = give_ext(before_last_dot(alignment_filename), "bam"),
+            destination = paste0(alignment_basename, ".sorted"))
+    
+    indexBam(file = paste0(alignment_basename, ".sorted.bam"))
+}
+```
+~~~
+
+
 
 ### Protocol
 
-#### Step 1
+#### Step 1: Init
 
-Go to the appropriate directory `cd ~/NGS_algorithms/Exercise_2`
+~~~
+```{bash}
+mkdir results/exercise2
+mkdir results/exercise2
+```
+~~~
 
-Create a sorted and indexed BAM file using the steps 1-5 from exercise 1.
+Create a sorted and indexed BAM file using the code below, which encapsulates steps 2-6 from Exercise 1 (except for the GFF > FASTA conversion).
 
-Commands: Same Exercise 1, except skip converting GFF3 > FASTA 
-(you already have a reference `data/varicella.fasta`).
-Tip: Run `ls -l data` if you forget what files you're working on.
+Tip: Run `ls -l data/*` to `tree data` if you forget what files you're working on.
 
-(Computation time: 5 minutes)
+> (Computation time: 5 minutes)
+
+~~~
+```{r}
+results_dir <- "results/exercise2"
+reference_genome <- "data/ref/varicella.fasta"
+reads_1 <- "data/seq/varicella_mut1.fastq"
+reads_2 <- "data/seq/varicella_mut2.fastq"
+
+workflow_align_reads(reads_1, reads_2, reference_genome, results_dir)
+```
+~~~
+
 
 #### Step 2
 
@@ -411,7 +491,10 @@ Breseq missed this mutation in the output table.
 Open the `summary.html` file and find the mean coverage of the alignment.
 Find also the coverage plot.
 
-## Exercise 4
+
+
+
+## Exercise 4: De novo genome assembly
 
 De novo genome assembly of the varicella virus strain *dumas* using the `abyss` assembler
 
