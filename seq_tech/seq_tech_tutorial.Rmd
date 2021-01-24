@@ -4,7 +4,6 @@ author: Filip Buric (adapted from Rui Pereira's exercise protcol)
 date: "`r Sys.Date()`"
 output:
   html_document:
-    number_sections: true
     toc: true
     toc_float: true
     toc_depth: 3
@@ -174,7 +173,7 @@ samtools view -b -S -o results/exercise1/alignment/varicella.bam \
 ~~~
 
 
-#### Step 5: Optimize alignment (part 1)
+### Step 5: Optimize alignment (pt 1)
 
 To optimize the lookup in the alignment map,
 sort the BAM file using `samtools sort` command.
@@ -191,7 +190,7 @@ samtools sort results/exercise1/alignment/varicella.bam -o \
 ~~~
 
 
-### Step 6: Optimize alignment (part 2)
+### Step 6: Optimize alignment (pt 2)
 
 To speed up reading the BAM file even more,
 index the sorted BAM file using `samtools` `index` command:
@@ -378,7 +377,7 @@ samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/vari
 ```
 ~~~
 
-### Step 3: Inspect mutations (part 1)
+### Step 3: Inspect mutations (pt 1)
 
 Use `bcftools call` command to convert the binary call format (BCF) to 
 (human-readable) variant call format ([VCF](https://en.wikipedia.org/wiki/Variant_Call_Format)).
@@ -395,7 +394,7 @@ If you wish to inspect it, run `less -S results/exercise2/varicella_variants.vcf
 The file contains quite a lot of information, which we'll use later on.
 See https://en.wikipedia.org/wiki/Variant_Call_Format for more info.
 
-### Step 4: Inspect mutations (part 2)
+### Step 4: Inspect mutations (pt 2)
 
 Visualize the mutation detected on site `77985` using the `samtools tview` command.
 For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information.

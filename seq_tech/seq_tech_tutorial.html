@@ -274,8 +274,8 @@ div.tocify {
 </div>
 
 
-<div id="prep" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Prep</h1>
+<div id="prep" class="section level1">
+<h1>Prep</h1>
 <p>We will be working in RStudio and writing the commands in a notebook. The notebook will serve as both a rudimentary pipeline and final (reproducible) report.</p>
 <p>Please create a directory for this tutorial and inside there copy the starter notebook from my directory. So:</p>
 <pre class="bash"><code>mkdir sequencing
@@ -296,8 +296,8 @@ cd sequencing</code></pre>
 <p>Then create results directory</p>
 <pre class="bash"><code>mkdir results</code></pre>
 </div>
-<div id="exercise-1-alignment" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Exercise 1: Alignment</h1>
+<div id="exercise-1-alignment" class="section level1">
+<h1>Exercise 1: Alignment</h1>
 <p>We’ll be aligning sequencing data against the reference genome of a Varicella virus.</p>
 <p>This mainly involves using <code>bowtie2</code> to align short-read sequencing data to the reference genome and <code>samtools</code> to post-process and visualize the result:</p>
 <p>Raw data files:</p>
@@ -306,18 +306,18 @@ cd sequencing</code></pre>
 <li>Sequencing files: <code>data/seq/varicella1.fastq</code>, <code>data/seq/varicella2.fastq</code></li>
 </ul>
 <p>You can run the commands in the terminal directly to test them out, but they should be included (in order) in the R notebook, so copy the code chunks (including the surrounding <code>{bash}</code> marker) and run the chunk from the notebook.</p>
-<div id="protocol" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> Protocol</h2>
-<div id="step-1-init" class="section level3" number="2.1.1">
-<h3 number="2.1.1"><span class="header-section-number">2.1.1</span> Step 1: Init</h3>
+<div id="protocol" class="section level2">
+<h2>Protocol</h2>
+<div id="step-1-init" class="section level3">
+<h3>Step 1: Init</h3>
 <p>Create a separate results dir</p>
 <pre><code>
 ```bash
 mkdir results/exercise1
 ```</code></pre>
 </div>
-<div id="step-2-preprocess" class="section level3" number="2.1.2">
-<h3 number="2.1.2"><span class="header-section-number">2.1.2</span> Step 2: Preprocess</h3>
+<div id="step-2-preprocess" class="section level3">
+<h3>Step 2: Preprocess</h3>
 <p><code>bowtie2</code> requires an index file for the reference sequence. This index can only be constructed from a FASTA file but it’s common practice to find reference genomes in GenBank (GFF3) format.</p>
 <p>Convert <code>varicella.gb</code> to FASTA using the <a href="http://emboss.sourceforge.net/apps/cvs/emboss/apps/seqret.html">seqret</a> converter from the EMBOSS package, then build the bowtie index accordingly.</p>
 <blockquote>
@@ -344,8 +344,8 @@ mkdir results/exercise1/bowtie_index
 bowtie2-build -f data/ref/varicella.fasta results/exercise1/bowtie_index/varicella
 ```</code></pre>
 </div>
-<div id="step-3-align-sequences-to-reference" class="section level3" number="2.1.3">
-<h3 number="2.1.3"><span class="header-section-number">2.1.3</span> Step 3: Align sequences to reference</h3>
+<div id="step-3-align-sequences-to-reference" class="section level3">
+<h3>Step 3: Align sequences to reference</h3>
 <p>Align the sequencing data to the reference genome using <code>bowtie2</code>. This will create the file <code>varicella.sam</code> The <code>\\</code> symbol simply breaks the command across multiple lines for readability.</p>
 <blockquote>
 <p>(Computation time: 1 min)</p>
@@ -359,8 +359,8 @@ bowtie2 -x results/exercise1/bowtie_index/varicella \
     -S results/exercise1/alignment/varicella.sam
 ```</code></pre>
 </div>
-<div id="step-4-convert-alignment-to-binary-format" class="section level3" number="2.1.4">
-<h3 number="2.1.4"><span class="header-section-number">2.1.4</span> Step 4: Convert alignment to binary format</h3>
+<div id="step-4-convert-alignment-to-binary-format" class="section level3">
+<h3>Step 4: Convert alignment to binary format</h3>
 <p>To make reading the alignment info easier for the computer, convert the sequence alignment map (SAM) file to binary alignment map (BAM) using the <code>samtools</code> <code>view</code> command:</p>
 <blockquote>
 <p>(Computation time: seconds)</p>
@@ -371,8 +371,9 @@ conda activate sequencing
 samtools view -b -S -o results/exercise1/alignment/varicella.bam \
     results/exercise1/alignment/varicella.sam
 ```</code></pre>
-<div id="step-5-optimize-alignment-part-1" class="section level4" number="2.1.4.1">
-<h4 number="2.1.4.1"><span class="header-section-number">2.1.4.1</span> Step 5: Optimize alignment (part 1)</h4>
+</div>
+<div id="step-5-optimize-alignment-pt-1" class="section level3">
+<h3>Step 5: Optimize alignment (pt 1)</h3>
 <p>To optimize the lookup in the alignment map, sort the BAM file using <code>samtools sort</code> command. This will create the file <code>varicella.sorted.bam</code></p>
 <blockquote>
 <p>(Computation time: seconds)</p>
@@ -384,9 +385,8 @@ samtools sort results/exercise1/alignment/varicella.bam -o \
     results/exercise1/alignment/varicella.sorted.bam
 ```</code></pre>
 </div>
-</div>
-<div id="step-6-optimize-alignment-part-2" class="section level3" number="2.1.5">
-<h3 number="2.1.5"><span class="header-section-number">2.1.5</span> Step 6: Optimize alignment (part 2)</h3>
+<div id="step-6-optimize-alignment-pt-2" class="section level3">
+<h3>Step 6: Optimize alignment (pt 2)</h3>
 <p>To speed up reading the BAM file even more, index the sorted BAM file using <code>samtools</code> <code>index</code> command:</p>
 <blockquote>
 <p>(Computation time: seconds)</p>
@@ -398,8 +398,8 @@ samtools index results/exercise1/alignment/varicella.sorted.bam
 ```</code></pre>
 <p>This will create a BAI file called <code>results/exercise1/alignment/varicella.sorted.bam.bai</code></p>
 </div>
-<div id="step-7-calculate-alignment-coverage" class="section level3" number="2.1.6">
-<h3 number="2.1.6"><span class="header-section-number">2.1.6</span> Step 7: Calculate alignment coverage</h3>
+<div id="step-7-calculate-alignment-coverage" class="section level3">
+<h3>Step 7: Calculate alignment coverage</h3>
 <p>Calculate the average coverage of the alignment using the <code>samtools depth</code> command and the Unix <code>awk</code> text processor to extract the values of interest:</p>
 <blockquote>
 <p>(Computation time: 1s)</p>
@@ -412,8 +412,8 @@ samtools depth results/exercise1/alignment/varicella.sorted.bam | awk &#39;{sum+
 <p>Output should be: <code>Answer: average =  199.775</code></p>
 </div>
 </div>
-<div id="question" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Question</h2>
+<div id="question" class="section level2">
+<h2>Question</h2>
 <p>Use the <code>samtools depth</code> command to extract coverage info and create a coverage map of the genome (position vs. coverage). Read the help for the tool with <code>samtools help depth</code>. The output format is described at the end of the help.</p>
 <p>Answer:</p>
 <pre><code>
@@ -435,8 +435,8 @@ alignment_coverage %&gt;%
 ```</code></pre>
 </div>
 </div>
-<div id="exercise-2-finding-mutations" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Exercise 2: Finding Mutations</h1>
+<div id="exercise-2-finding-mutations" class="section level1">
+<h1>Exercise 2: Finding Mutations</h1>
 <p>We now look at a second set of sequencing data, with mutations (<code>data/seq/varicella_mut1.fastq</code> and <code>data/seq/varicella_mut1.fastq</code>)</p>
 <p>We’ll still be using <code>bowtie2</code> and <code>samtools</code> to perform these tasks, however we’ll be doing this in R instead of running the commands directly.</p>
 <p>This approach has the great advantage that we stay within the same environment</p>
@@ -500,10 +500,10 @@ workflow_align_reads &lt;- function(reads_1, reads_2, reference_genome, results_
     indexBam(file = paste0(alignment_basename, &quot;.sorted.bam&quot;))
 }
 ```</code></pre>
-<div id="protocol-1" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Protocol</h2>
-<div id="step-1-align-sequences-to-reference" class="section level3" number="3.1.1">
-<h3 number="3.1.1"><span class="header-section-number">3.1.1</span> Step 1: Align sequences to reference</h3>
+<div id="protocol-1" class="section level2">
+<h2>Protocol</h2>
+<div id="step-1-align-sequences-to-reference" class="section level3">
+<h3>Step 1: Align sequences to reference</h3>
 <p>Create a sorted and indexed BAM file using the code below, which encapsulates steps 2-6 from Exercise 1 (except for the GFF &gt; FASTA conversion).</p>
 <p>Tip: Run <code>ls -l data/*</code> to <code>tree data</code> if you forget what files you’re working on.</p>
 <p>The workflow will also create <code>results/exercise2</code> for you.</p>
@@ -520,8 +520,8 @@ reads_2 &lt;- &quot;data/seq/varicella_mut2.fastq&quot;
 workflow_align_reads(reads_1, reads_2, reference_genome, results_dir)
 ```</code></pre>
 </div>
-<div id="step-2-identify-point-mutations" class="section level3" number="3.1.2">
-<h3 number="3.1.2"><span class="header-section-number">3.1.2</span> Step 2: Identify point mutations</h3>
+<div id="step-2-identify-point-mutations" class="section level3">
+<h3>Step 2: Identify point mutations</h3>
 <p>Use the <code>samtools mpileup</code> command to identify genomic variants (aka single nucleotide variants, <a href="https://en.wikipedia.org/wiki/SNV_calling_from_NGS_data">SNVs</a>) in the alignment. This will create the file <code>varicella_variants.bcf</code></p>
 <pre><code>
 ```bash
@@ -529,8 +529,8 @@ conda activate sequencing
 samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/varicella_mut.sorted.bam &gt; results/exercise2/varicella_variants.bcf
 ```</code></pre>
 </div>
-<div id="step-3-inspect-mutations-part-1" class="section level3" number="3.1.3">
-<h3 number="3.1.3"><span class="header-section-number">3.1.3</span> Step 3: Inspect mutations (part 1)</h3>
+<div id="step-3-inspect-mutations-pt-1" class="section level3">
+<h3>Step 3: Inspect mutations (pt 1)</h3>
 <p>Use <code>bcftools call</code> command to convert the binary call format (BCF) to (human-readable) variant call format (<a href="https://en.wikipedia.org/wiki/Variant_Call_Format">VCF</a>). This will create the file <code>varicella_variants.vcf</code></p>
 <pre><code>
 ```bash
@@ -539,8 +539,8 @@ bcftools call -c -v results/exercise2/varicella_variants.bcf &gt; results/exerci
 ```</code></pre>
 <p>If you wish to inspect it, run <code>less -S results/exercise2/varicella_variants.vcf</code> The file contains quite a lot of information, which we’ll use later on. See <a href="https://en.wikipedia.org/wiki/Variant_Call_Format" class="uri">https://en.wikipedia.org/wiki/Variant_Call_Format</a> for more info.</p>
 </div>
-<div id="step-4-inspect-mutations-part-2" class="section level3" number="3.1.4">
-<h3 number="3.1.4"><span class="header-section-number">3.1.4</span> Step 4: Inspect mutations (part 2)</h3>
+<div id="step-4-inspect-mutations-pt-2" class="section level3">
+<h3>Step 4: Inspect mutations (pt 2)</h3>
 <p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command. For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
 <p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
 <pre class="bash"><code>conda activate sequencing
@@ -548,44 +548,44 @@ samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
     data/ref/varicella.fasta -p NC_001348:77985 </code></pre>
 </div>
 </div>
-<div id="questions" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Questions</h2>
-<div id="q1" class="section level3" number="3.2.1">
-<h3 number="3.2.1"><span class="header-section-number">3.2.1</span> Q1</h3>
+<div id="questions" class="section level2">
+<h2>Questions</h2>
+<div id="q1" class="section level3">
+<h3>Q1</h3>
 <p>Inspect the VCF file columns using the Unix command chain:</p>
 <pre class="bash"><code>grep -v &quot;^#&quot;  results/exercise2/varicella_variants.vcf | column -t | less -S</code></pre>
 <p>(Chain: Filter out header | align columns | show on screen)</p>
 <p>How can you interpret the <a href="https://en.wikipedia.org/wiki/Phred_quality_score">PHRED</a> score values in the last column? See <a href="https://gatkforums.broadinstitute.org/gatk/discussion/1268/how-should-i-interpret-vcf-files-produced-by-the-gatk">What is a VCF and how should I interpret it?</a> (Section 5)</p>
 <p>Are all mutations homozygous? Should you expect any heterozygous mutations in this case?</p>
 </div>
-<div id="q2" class="section level3" number="3.2.2">
-<h3 number="3.2.2"><span class="header-section-number">3.2.2</span> Q2</h3>
+<div id="q2" class="section level3">
+<h3>Q2</h3>
 <p>What assumption does <code>samtools mpileup</code> make about the model of genetic mutations? (Try running <code>bcftools mpileup</code> for help and scroll down.) Is this model appropriate for a virus?</p>
 <p>Answer: <font color="white"> samtools mpileup assumes the data originates from a diploid organism and models mutations based on the existence of two similar copies of the same sequence. Since viruses only have one copy of the genome, this model is not correct and it is not possible for a single genomic position to have two different bases. </font></p>
 </div>
-<div id="q3" class="section level3" number="3.2.3">
-<h3 number="3.2.3"><span class="header-section-number">3.2.3</span> Q3</h3>
+<div id="q3" class="section level3">
+<h3>Q3</h3>
 <p>Use <code>samtools mpileup</code> to inspect the site 73233. What is the frequency of each base on this site? Rune the command below and see <a href="https://en.wikipedia.org/wiki/Pileup_format">Pileup format</a></p>
 <pre class="bash"><code>samtools mpileup -r NC_001348:73233-73233 -f data/varicella.fasta alignment/varicella_mut.sorted.bam</code></pre>
 <p>Answer: <font color="white"> 170 T, 1 A, 2 G </font></p>
 </div>
 </div>
 </div>
-<div id="exercise-3-overview-of-mutations" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Exercise 3: Overview of Mutations</h1>
+<div id="exercise-3-overview-of-mutations" class="section level1">
+<h1>Exercise 3: Overview of Mutations</h1>
 <p>Using the <code>breseq</code> pipeline to compute the mutations present in the mutant strain in comparison to the reference sequence provided for the varicella virus.</p>
-<div id="protocol-2" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Protocol</h2>
-<div id="step-1-init-1" class="section level3" number="4.1.1">
-<h3 number="4.1.1"><span class="header-section-number">4.1.1</span> Step 1: Init</h3>
+<div id="protocol-2" class="section level2">
+<h2>Protocol</h2>
+<div id="step-1-init-1" class="section level3">
+<h3>Step 1: Init</h3>
 <p>Create the results directory for this exercise:</p>
 <pre><code>
 ```bash
 mkdir results/exercise3
 ```</code></pre>
 </div>
-<div id="step-2-run" class="section level3" number="4.1.2">
-<h3 number="4.1.2"><span class="header-section-number">4.1.2</span> Step 2: Run</h3>
+<div id="step-2-run" class="section level3">
+<h3>Step 2: Run</h3>
 <blockquote>
 <p>(Computation time: 5 minutes)</p>
 </blockquote>
@@ -597,15 +597,15 @@ breseq -j 1 -o results/exercise3 \
 ```</code></pre>
 </div>
 </div>
-<div id="questions-1" class="section level2" number="4.2">
-<h2 number="4.2"><span class="header-section-number">4.2</span> Questions</h2>
-<div id="q1-1" class="section level3" number="4.2.1">
-<h3 number="4.2.1"><span class="header-section-number">4.2.1</span> Q1</h3>
+<div id="questions-1" class="section level2">
+<h2>Questions</h2>
+<div id="q1-1" class="section level3">
+<h3>Q1</h3>
 <p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder (Using the File tab in RStudio, navigate to the file, click on it, and choose “Opne in browser”) and compare the mutations detected, in comparison to exercise 2.</p>
 <p>Answer: One mutation is missing in breseq</p>
 </div>
-<div id="q2-1" class="section level3" number="4.2.2">
-<h3 number="4.2.2"><span class="header-section-number">4.2.2</span> Q2</h3>
+<div id="q2-1" class="section level3">
+<h3>Q2</h3>
 <p>Use the <code>breseq bam2aln</code> command to investigate the missing mutations</p>
 <p>Answer:</p>
 <pre><code>
@@ -619,27 +619,27 @@ breseq bam2aln \
 ```</code></pre>
 <p>Now open the output <code>results/exercise3/missing_mutations.html</code> with RStudio. Breseq missed this mutation in the output table.</p>
 </div>
-<div id="q3-1" class="section level3" number="4.2.3">
-<h3 number="4.2.3"><span class="header-section-number">4.2.3</span> Q3</h3>
+<div id="q3-1" class="section level3">
+<h3>Q3</h3>
 <p>Open the <code>results/exercise3/output/summary.html</code> file and find the mean coverage of the alignment. Find also the coverage plot.</p>
 </div>
 </div>
 </div>
-<div id="exercise-4-de-novo-genome-assembly" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Exercise 4: De novo genome assembly</h1>
+<div id="exercise-4-de-novo-genome-assembly" class="section level1">
+<h1>Exercise 4: De novo genome assembly</h1>
 <p>So far we’ve been using a reference genome to align reads to it. When one is not available, the genome has to be assmebled <em>de novo</em> from the reads. Here, we’ll be using the <code>abyss</code> assembler with reads from the <em>dumas</em> strain of the varicella virus.</p>
 <p>Sequencing files from <em>dumas</em> strain: <code>data/varicella_l1.fastq</code>, <code>data/varicella_l2.fastq</code></p>
-<div id="protocol-3" class="section level2" number="5.1">
-<h2 number="5.1"><span class="header-section-number">5.1</span> Protocol</h2>
-<div id="step-1-init-2" class="section level3" number="5.1.1">
-<h3 number="5.1.1"><span class="header-section-number">5.1.1</span> Step 1: Init</h3>
+<div id="protocol-3" class="section level2">
+<h2>Protocol</h2>
+<div id="step-1-init-2" class="section level3">
+<h3>Step 1: Init</h3>
 <pre><code>
 ```bash
 mkdir results/exercise4
 ```</code></pre>
 </div>
-<div id="step-1-assembly" class="section level3" number="5.1.2">
-<h3 number="5.1.2"><span class="header-section-number">5.1.2</span> Step 1: Assembly</h3>
+<div id="step-1-assembly" class="section level3">
+<h3>Step 1: Assembly</h3>
 <p>Assemble the reads provided into a genome using abyss-pe for k=128</p>
 <blockquote>
 <p>(Computation time: 5 minutes)</p>
@@ -653,21 +653,21 @@ abyss-pe name=varicella k=128 --directory=results/exercise4 \
 ```</code></pre>
 </div>
 </div>
-<div id="questions-2" class="section level2" number="5.2">
-<h2 number="5.2"><span class="header-section-number">5.2</span> Questions</h2>
-<div id="q1-2" class="section level3" number="5.2.1">
-<h3 number="5.2.1"><span class="header-section-number">5.2.1</span> Q1</h3>
+<div id="questions-2" class="section level2">
+<h2>Questions</h2>
+<div id="q1-2" class="section level3">
+<h3>Q1</h3>
 <p>How many unitigs, contigs and scaffolds were assembled?</p>
 <p>Hint: <code>less varicella-stats.md</code></p>
 <p>Answer: <font color="white">14, 12, 6</font></p>
 </div>
-<div id="q2-2" class="section level3" number="5.2.2">
-<h3 number="5.2.2"><span class="header-section-number">5.2.2</span> Q2</h3>
+<div id="q2-2" class="section level3">
+<h3>Q2</h3>
 <p>How big is the largest scaffold?</p>
 <p>Answer: <font color="white">107578</font></p>
 </div>
-<div id="q3-2" class="section level3" number="5.2.3">
-<h3 number="5.2.3"><span class="header-section-number">5.2.3</span> Q3</h3>
+<div id="q3-2" class="section level3">
+<h3>Q3</h3>
 <p>Use NCBI nucleotide blast (<a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi" class="uri">https://blast.ncbi.nlm.nih.gov/Blast.cgi</a>) to find similar sequences to the scaffolds obtained. What is the most similar sequence obtained?</p>
 </div>
 </div>
