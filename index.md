@@ -53,7 +53,7 @@
 
 ## Sequencing Technologies
 
-[Exercises](seq_tech/seq_tech_tutorial.md)
+[Exercises](seq_tech/seq_tech_tutorial.html)
 
 <hr />
 
