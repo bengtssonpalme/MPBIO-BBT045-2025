@@ -128,7 +128,8 @@ bowtie2-build -f data/ref/varicella.fasta results/exercise1/bowtie_index/varicel
 #### Step 3: Align sequences to reference
 
 Align the sequencing data to the reference genome using `bowtie2`.
-The `\` symbol simply breaks the command across multiple lines for readability.
+This will create the file `varicella.sam`
+The `\\` symbol simply breaks the command across multiple lines for readability.
 
 > (Computation time: 1 min)
 
@@ -165,6 +166,7 @@ samtools view -b -S -o results/exercise1/alignment/varicella.bam \
 
 To optimize the lookup in the alignment map,
 sort the BAM file using `samtools sort` command.
+This will create the file `varicella.sorted.bam`
 
 > (Computation time: seconds)
 
@@ -257,7 +259,7 @@ This approach has the great advantage that we stay within the same environment
 
 and we don't need to copy-paste all we did above just to change the name of the input files. That's cumbersome and *very* error-prone.
 
-To do this, we need to install some R packages from Bioconductor. Run the following lines of code in the R *console* (not the notebook, sine you only need to do this once):
+To do this, we need to install some R packages from Bioconductor (). Run the following lines of code in the R *console* (not the notebook, sine you only need to do this once):
 
 ```r
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -268,7 +270,7 @@ BiocManager::install("Rsamtools")
 install.packages("filesstrings")
 ```
 
-Consult the documentation of these packages for more details on how to use them:
+These packages install their own copies of `bowtie2` and `samtools`. Consult the documentation of these packages for more details on how to use them.
 
 - [Rbowtie2](https://bioconductor.org/packages/release/bioc/vignettes/Rbowtie2/inst/doc/Rbowtie2-Introduction.html)
 - [Rsamtools](https://bioconductor.org/packages/release/bioc/vignettes/Rsamtools/inst/doc/Rsamtools-Overview.pdf)
@@ -284,8 +286,10 @@ library(filesstrings)
 
 workflow_align_reads <- function(reads_1, reads_2, reference_genome, results_dir) {
     # Create output directories
-    dir.create(file.path(results_dir, "bowtie_index"))
+    dir.create(file.path(results_dir, "bowtie_index"), recursive = T)
     dir.create(file.path(results_dir, "alignment"))
+    print(paste0("INFO: Putting alignment results in", file.path(results_dir, "alignment")))
+
     
     # Set the name of the output files
     index_basename <- file.path(results_dir, "bowtie_index",
@@ -326,18 +330,14 @@ workflow_align_reads <- function(reads_1, reads_2, reference_genome, results_dir
 
 ### Protocol
 
-#### Step 1: Init
 
-~~~
-```{bash}
-mkdir results/exercise2
-mkdir results/exercise2
-```
-~~~
+#### Step 1: Align sequences to reference
 
 Create a sorted and indexed BAM file using the code below, which encapsulates steps 2-6 from Exercise 1 (except for the GFF > FASTA conversion).
 
 Tip: Run `ls -l data/*` to `tree data` if you forget what files you're working on.
+
+The workflow will also create `results/exercise2` for you.
 
 > (Computation time: 5 minutes)
 
@@ -353,46 +353,61 @@ workflow_align_reads(reads_1, reads_2, reference_genome, results_dir)
 ~~~
 
 
-#### Step 2
+#### Step 2: Identify point mutations
 
 Use the `samtools mpileup` command to identify genomic variants 
 (aka single nucleotide variants, [SNVs](https://en.wikipedia.org/wiki/SNV_calling_from_NGS_data))
-in the alignment:
+in the alignment. This will create the file `varicella_variants.bcf`
 
-```bash
-mkdir results
-samtools mpileup -g -f data/varicella.fasta alignment/varicella_mut.sorted.bam > results/varicella_variants.bcf
+~~~
+```{bash}
+conda activate sequencing
+samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/varicella_mut.sorted.bam > results/exercise2/varicella_variants.bcf
 ```
+~~~
 
-#### Step 3
+#### Step 3: Inspect mutations (part 1)
 
 Use `bcftools call` command to convert the binary call format (BCF) to 
-(human-readable) variant call format ([VCF](https://en.wikipedia.org/wiki/Variant_Call_Format))
+(human-readable) variant call format ([VCF](https://en.wikipedia.org/wiki/Variant_Call_Format)).
+ This will create the file `varicella_variants.vcf`
 
-```bash
-bcftools call -c -v results/varicella_variants.bcf > results/varicella_variants.vcf 
+~~~
+```{bash}
+conda activate sequencing
+bcftools call -c -v results/exercise2/varicella_variants.bcf > results/exercise2/varicella_variants.vcf
 ```
+~~~
 
-If you wish to inspect it, run `less -S results/varicella_variants.vcf`
+If you wish to inspect it, run `less -S results/exercise2/varicella_variants.vcf`
 The file contains quite a lot of information, which we'll use later on.
 See https://en.wikipedia.org/wiki/Variant_Call_Format for more info.
 
-#### Step 4
+#### Step 4: Inspect mutations (part 2)
 
 Visualize the mutation detected on site `77985` using the `samtools tview` command.
 For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information.
 VCF (and BCF) contain only the information needed for some downstream tasks.
 
+This is an interactive command so **run it in the terminal**:
+
 ```bash
-samtools tview alignment/varicella_mut.sorted.bam data/varicella.fasta -p NC_001348:77985 
+conda activate sequencing
+samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
+    data/ref/varicella.fasta -p NC_001348:77985 
 ```
 
 ### Questions
 
 #### Q1
 
-Inspect the VCF file columns using the (Unix) commands `grep -v "^#"  results/varicella_variants.vcf | column -t | less -S` 
-(skip header, align columns, less)
+Inspect the VCF file columns using the Unix command chain:
+
+```bash
+grep -v "^#"  results/exercise2/varicella_variants.vcf | column -t | less -S
+```
+
+(Chain: Filter out header | align columns | show on screen)
 
 How can you interpret the [PHRED](https://en.wikipedia.org/wiki/Phred_quality_score) 
 score values in the last column? 
@@ -427,68 +442,71 @@ Answer:  <font color="white"> 170 T, 1 A, 2 G </font>
 
 
 
-## Exercise 3
+## Exercise 3: Overview of Mutations
 
 Using the `breseq` pipeline to compute the mutations present in the mutant strain 
 in comparison to the reference sequence provided for the varicella virus.
 
-Material/Files needed
-
-- Varicella reference genome: `data/varicella.gb`
-- Sequencing files from dumas strain: `data/varicella_mut1.fastq`, `data/varicella_mut2.fastq`
 
 ### Protocol
 
-#### Step 1
+#### Step 1: Init
 
-`cd ~/NGS_algorithms/Exercise_3`
+Create the results directory for this exercise:
+
+~~~
+```{bash}
+mkdir results/exercise3
+```
+~~~
+
+#### Step 2: Run
+
+> (Computation time: 5 minutes)
 
 Run `breseq`
 
-```bash
-breseq -j 1 -o results -r data/varicella.gb data/*.fastq
+~~~
+```{bash}
+breseq -j 1 -o results/exercise3 \
+    -r data/ref/varicella.gb data/seq/varicella_mut*.fastq
 ```
+~~~
 
-(Computation time: 5 minutes)
 
 ### Questions
 
 #### Q1
 
-Open the `index.html` file in the `results/output` folder 
-and compare the mutations detected in comparison to exercise 2. 
+Open the `index.html` file in the `results/exercise3/output` folder 
+(Using the File tab in RStudio, navigate to the file, click on it, and choose "Opne in browser")
+and compare the mutations detected, in comparison to exercise 2. 
 
-Download that folder by running the following from your own computer:
-`rsync -avP studentX@<IP number>:~/NGS_algorithms/Exercise_3/results/output .`
-
-You can also try out `lynx results/output/index.html` to browse in the terminal.
-
-Answer: All mutation are present in the list from exercise 1, one mutation is missing in breseq
+Answer: One mutation is missing in breseq
 
 #### Q2
 
 Use the `breseq bam2aln` command to investigate the missing mutations
-(the `\` simply means "command continues on next line")
 
 Answer: 
 
-```bash
+~~~
+```{bash}
+conda activate sequencing
+
 breseq bam2aln \
-    -f ~/NGS_algorithms/Exercise_2/data/varicella.fasta \
-    -b ~/NGS_algorithms/Exercise_2/alignment/varicella_mut.sorted.bam \
-    -r NC_001348:117699-117699 -o results/output.html
+    -f data/ref/varicella.fasta \
+    -b results/exercise2/alignment/varicella_mut.sorted.bam \
+    -r NC_001348:117699-117699 -o results/exercise3/missing_mutations.html
 ```
+~~~
 
-Then from your computer:
-
-`rsync -avP studentX@<IP number>:~/NGS_algorithms/Exercise_3/results/output.html .`
-
-The alignment shows a consensus change from C to T (scroll a bit to the right if you don't see it).
+Now open the output `results/exercise3/missing_mutations.html` with RStudio.
 Breseq missed this mutation in the output table.
 
 #### Q3
 
-Open the `summary.html` file and find the mean coverage of the alignment.
+Open the `results/exercise3/output/summary.html` file and find the mean coverage of the alignment.
 Find also the coverage plot.
 
 
@@ -496,24 +514,38 @@ Find also the coverage plot.
 
 ## Exercise 4: De novo genome assembly
 
-De novo genome assembly of the varicella virus strain *dumas* using the `abyss` assembler
+So far we've been using a reference genome to align reads to it.
+When one is not available, the genome has to be assmebled *de novo* from the reads.
+Here, we'll be using the `abyss` assembler with reads from the *dumas* strain of the varicella virus.
 
-Material/Files needed
-
-- Sequencing files from *dumas* strain: `data/varicella_l1.fastq`, `data/varicella_l2.fastq`
+Sequencing files from *dumas* strain: `data/varicella_l1.fastq`, `data/varicella_l2.fastq`
 
 ### Protocol
 
-#### Step 1
+
+#### Step 1: Init
+
+~~~
+```{bash}
+mkdir results/exercise4
+```
+~~~
+
+#### Step 1: Assembly
 
 Assemble the reads provided into a genome using abyss-pe for k=128
 
-```bash
-cd ~/NGS_algorithms/Exercise_4
-abyss-pe name=varicella k=128 in='data/varicella_l1.fastq data/varicella_l2.fastq'
-```
+> (Computation time: 5 minutes)
 
-(Computation time: 5 minutes)
+~~~
+```{bash}
+conda activate sequencing
+
+abyss-pe name=varicella k=128 --directory=results/exercise4 \
+    in='../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq'
+```
+~~~
+
 
 ### Questions
 
@@ -536,33 +568,3 @@ Answer: <font color="white">107578</font>
 Use NCBI nucleotide blast (https://blast.ncbi.nlm.nih.gov/Blast.cgi) 
 to find similar sequences to the scaffolds obtained. 
 What is the most similar sequence obtained?
-
-## Extra exercise
-
-Finding mutation in a human sample and the disease associated with it
-
-Material/Files needed
-
-- Sequencing files from *dumas* strain: `chrX1.fq`, `chrX2.fq`
-
-### Protocol
-
-#### Step 1
-
-Align the datafiles and generate a VCF file with the mutations detected
-
-```bash
-cd ~/NGS_algorithms/Exercise_human
-bowtie2 -x chrX -1 chrX1.fq -2 chrX2.fq -S chrx.sam
-samtools view -b -S -o chrx.bam chrx.sam
-samtools sort chrx.bam -o chrx.sorted.bam
-samtools index chrx.sorted.bam
-samtools mpileup -g -f chrx.fasta chrx.sorted.bam > chrx.bcf
-bcftools call -c -v chrx.bcf > chrx.vcf
-```
-
-#### Step 2
-
-Use the Variant Effect Predictor tool to find out which mutation detected can cause disease, 
-which gene it affects and which disease it causes.
-https://www.ensembl.org/Tools/VEP
