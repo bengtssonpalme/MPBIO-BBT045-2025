@@ -17,8 +17,8 @@ knitr::opts_chunk$set(eval = FALSE)
 
 # Tutorial Overview
 
-- Working with R notebooks to construct reproducible procedure
-- Running sequence processing software from command line
+- Working with R notebooks to construct reproducible procedures
+- Running sequence processing software from the command line
 - Running sequence processing software from wrapper R libraries
 - Inspecting different output formats
 
