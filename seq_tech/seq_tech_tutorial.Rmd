@@ -15,10 +15,20 @@ output:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+# Tutorial Overview
+
+- Working with R notebooks to construct reproducible procedure
+- Running sequence processing software from command line
+- Running sequence processing software from wrapper R libraries
+- Inspecting different output formats
+
+
 # Prep
 
 We will be working in RStudio and writing the commands in a notebook.
 The notebook will serve as both a rudimentary pipeline and final (reproducible) report.
+
+![](img/notebooks.png)
 
 Please create a directory for this tutorial and inside there
 copy the starter notebook from my directory. So:
