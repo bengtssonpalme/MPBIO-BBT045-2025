@@ -33,7 +33,7 @@ The starter notebook contains instructions for setting up your conda
 environment. Please follow these instructions, then continue using
 the notebook to write the commands used here and take notes for the exercises.
 If you have not done so already, you need to first install conda.
-See instructions [here](../unix/conda_install.md)
+See instructions [here](../unix/conda_install.html)
 
 **Make sure you activated the `sequencing` environment!**
 
