@@ -77,6 +77,8 @@ mkdir results
 
 We'll be aligning sequencing data against the reference genome of a Varicella virus.
 
+![](img/align_to_ref.png)
+
 This mainly involves using `bowtie2` to align short-read sequencing data to the reference genome and 
 `samtools` to post-process and visualize the result:
 
@@ -262,6 +264,8 @@ alignment_coverage %>%
 # Exercise 2: Finding Mutations
 
 We now look at a second set of sequencing data, with mutations (`data/seq/varicella_mut1.fastq` and `data/seq/varicella_mut1.fastq`)
+
+![](img/align_mut_to_ref.png)
 
 We'll still be using `bowtie2` and `samtools` to perform these tasks,
 however we'll be doing this in R instead of running the commands directly.
@@ -528,6 +532,8 @@ Find also the coverage plot.
 So far we've been using a reference genome to align reads to it.
 When one is not available, the genome has to be assmebled *de novo* from the reads.
 Here, we'll be using the `abyss` assembler with reads from the *dumas* strain of the varicella virus.
+
+![](img/assembly.png)
 
 Sequencing files from *dumas* strain: `data/varicella_l1.fastq`, `data/varicella_l2.fastq`
 
