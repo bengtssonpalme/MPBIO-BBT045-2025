@@ -414,7 +414,7 @@ test_values <- c(-3, -2, -1, 0, 1, 2, 3)
 sapply(test_values, amplify_positive)
 ```
 
-The `lapply` version wraps each transformed value in the vector in a list.
+The `lapply` version wraps each transformed element in the vector in its own list.
 This looks weird but it's sometimes required depending on how downstream functions work.
 
 ```{r}
@@ -530,7 +530,7 @@ library(tidyverse)
 
 iris %>% 
     dplyr::mutate(Petal.Area = Petal.Length * Petal.Width) %>% 
-    dplyr::summarise(mean(Petal.Width))
+    dplyr::summarise(mean(Petal.Area))
 ```
 The `mutate` function maps the multiplication (of two columns) onto the data frame,
 then `summarize` performs a reduction to a single value, using the `mean` function.
@@ -598,9 +598,9 @@ So instead of something like this:
 ```r
 data1 <- read_csv("my_data_file_1.csv")
 avg1 <- mean(data1)
-data2 <- read("my_data_file_2.csv")
+data2 <- read_csv("my_data_file_2.csv")
 avg2 <- mean(data2)
-data2 <-read("my_data_file_3.csv")  # this copy-paste-change error is on purpose, but it happens
+data2 <-read_csv("my_data_file_3.csv")  # this copy-paste-change error is on purpose, but it happens
 avg3 <- mean(data2)
 ````
 
