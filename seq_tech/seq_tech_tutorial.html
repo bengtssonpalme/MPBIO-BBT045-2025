@@ -312,7 +312,7 @@ cd sequencing</code></pre>
 <div id="step-1-init" class="section level3">
 <h3>Step 1: Init</h3>
 <p>Create a separate results dir</p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 mkdir results/exercise1
 ```</code></pre>
@@ -324,7 +324,7 @@ mkdir results/exercise1
 <blockquote>
 <p>(Computation time: seconds)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 
@@ -351,7 +351,7 @@ bowtie2-build -f data/ref/varicella.fasta results/exercise1/bowtie_index/varicel
 <blockquote>
 <p>(Computation time: 1 min)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 mkdir results/exercise1/alignment
@@ -366,7 +366,7 @@ bowtie2 -x results/exercise1/bowtie_index/varicella \
 <blockquote>
 <p>(Computation time: seconds)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 samtools view -b -S -o results/exercise1/alignment/varicella.bam \
@@ -379,7 +379,7 @@ samtools view -b -S -o results/exercise1/alignment/varicella.bam \
 <blockquote>
 <p>(Computation time: seconds)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 samtools sort results/exercise1/alignment/varicella.bam -o \
@@ -392,7 +392,7 @@ samtools sort results/exercise1/alignment/varicella.bam -o \
 <blockquote>
 <p>(Computation time: seconds)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 samtools index results/exercise1/alignment/varicella.sorted.bam
@@ -405,7 +405,7 @@ samtools index results/exercise1/alignment/varicella.sorted.bam
 <blockquote>
 <p>(Computation time: 1s)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 samtools depth results/exercise1/alignment/varicella.sorted.bam | awk &#39;{sum+=$3} END {print &quot;Average = &quot;, sum/124884}&#39;
@@ -417,13 +417,13 @@ samtools depth results/exercise1/alignment/varicella.sorted.bam | awk &#39;{sum+
 <h2>Question</h2>
 <p>Use the <code>samtools depth</code> command to extract coverage info and create a coverage map of the genome (position vs. coverage). Read the help for the tool with <code>samtools help depth</code>. The output format is described at the end of the help.</p>
 <p>Answer:</p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 samtools depth results/exercise1/alignment/varicella.sorted.bam &gt; results/exercise1/alignment/coverage.tsv
 ```</code></pre>
 <p>Plot the result with R</p>
-<pre><code>
+<pre class="r"><code>
 ```r
 library(tidyverse)
 
@@ -456,7 +456,7 @@ install.packages(&quot;filesstrings&quot;)</code></pre>
 <li><a href="https://bioconductor.org/packages/release/bioc/vignettes/Rsamtools/inst/doc/Rsamtools-Overview.pdf">Rsamtools</a></li>
 </ul>
 <p>Next paste in and run this R code chunk which contains the workflow for the previous exercise:</p>
-<pre><code>
+<pre class="r"><code>
 ```r
 library(Rbowtie2)
 library(Rsamtools)
@@ -512,7 +512,7 @@ workflow_align_reads &lt;- function(reads_1, reads_2, reference_genome, results_
 <blockquote>
 <p>(Computation time: 5 minutes)</p>
 </blockquote>
-<pre><code>
+<pre class="r"><code>
 ```r
 results_dir &lt;- &quot;results/exercise2&quot;
 reference_genome &lt;- &quot;data/ref/varicella.fasta&quot;
@@ -525,7 +525,7 @@ workflow_align_reads(reads_1, reads_2, reference_genome, results_dir)
 <div id="step-2-identify-point-mutations" class="section level3">
 <h3>Step 2: Identify point mutations</h3>
 <p>Use the <code>samtools mpileup</code> command to identify genomic variants (aka single nucleotide variants, <a href="https://en.wikipedia.org/wiki/SNV_calling_from_NGS_data">SNVs</a>) in the alignment. This will create the file <code>varicella_variants.bcf</code></p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/varicella_mut.sorted.bam &gt; results/exercise2/varicella_variants.bcf
@@ -534,7 +534,7 @@ samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/vari
 <div id="step-3-inspect-mutations-pt-1" class="section level3">
 <h3>Step 3: Inspect mutations (pt 1)</h3>
 <p>Use <code>bcftools call</code> command to convert the binary call format (BCF) to (human-readable) variant call format (<a href="https://en.wikipedia.org/wiki/Variant_Call_Format">VCF</a>). This will create the file <code>varicella_variants.vcf</code></p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 bcftools call -c -v results/exercise2/varicella_variants.bcf &gt; results/exercise2/varicella_variants.vcf
@@ -581,7 +581,7 @@ samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
 <div id="step-1-init-1" class="section level3">
 <h3>Step 1: Init</h3>
 <p>Create the results directory for this exercise:</p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 mkdir results/exercise3
 ```</code></pre>
@@ -592,7 +592,7 @@ mkdir results/exercise3
 <p>(Computation time: 5 minutes)</p>
 </blockquote>
 <p>Run <code>breseq</code></p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 breseq -j 1 -o results/exercise3 \
     -r data/ref/varicella.gb data/seq/varicella_mut*.fastq
@@ -610,7 +610,7 @@ breseq -j 1 -o results/exercise3 \
 <h3>Q2</h3>
 <p>Use the <code>breseq bam2aln</code> command to investigate the missing mutations</p>
 <p>Answer:</p>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 
@@ -629,14 +629,14 @@ breseq bam2aln \
 </div>
 <div id="exercise-4-de-novo-genome-assembly" class="section level1">
 <h1>Exercise 4: De novo genome assembly</h1>
-<p>So far we’ve been using a reference genome to align reads to it. When one is not available, the genome has to be assmebled <em>de novo</em> from the reads. Here, we’ll be using the <code>abyss</code> assembler with reads from the <em>dumas</em> strain of the varicella virus.</p>
+<p>So far we’ve been using a reference genome to align reads to it. When one is not available, the genome has to be assembled <em>de novo</em> from the reads. Here, we’ll be using the <code>abyss</code> assembler with reads from the <em>dumas</em> strain of the varicella virus.</p>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAACgCAIAAABYAuR3AAAFXGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjI4MCIKICAgZXhpZjpQaXhlbFlEaW1lbnNpb249IjE2MCIKICAgZXhpZjpDb2xvclNwYWNlPSIxIgogICB0aWZmOkltYWdlV2lkdGg9IjI4MCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMTYwIgogICB0aWZmOlJlc29sdXRpb25Vbml0PSIyIgogICB0aWZmOlhSZXNvbHV0aW9uPSI3Mi4wIgogICB0aWZmOllSZXNvbHV0aW9uPSI3Mi4wIgogICBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIgogICBwaG90b3Nob3A6SUNDUHJv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" /></p>
 <p>Sequencing files from <em>dumas</em> strain: <code>data/varicella_l1.fastq</code>, <code>data/varicella_l2.fastq</code></p>
 <div id="protocol-3" class="section level2">
 <h2>Protocol</h2>
 <div id="step-1-init-2" class="section level3">
 <h3>Step 1: Init</h3>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 mkdir results/exercise4
 ```</code></pre>
@@ -647,7 +647,7 @@ mkdir results/exercise4
 <blockquote>
 <p>(Computation time: 5 minutes)</p>
 </blockquote>
-<pre><code>
+<pre class="bash"><code>
 ```bash
 conda activate sequencing
 

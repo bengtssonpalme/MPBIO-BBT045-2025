@@ -96,7 +96,7 @@ You can run the commands in the terminal directly to test them out, but they sho
 
 Create a separate results dir
 
-~~~
+~~~bash
 ```{bash}
 mkdir results/exercise1
 ```
@@ -114,7 +114,7 @@ then build the bowtie index accordingly.
 
 > (Computation time: seconds)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 
@@ -146,7 +146,7 @@ The `\ ` symbol simply breaks the command across multiple lines for readability.
 
 > (Computation time: 1 min)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 mkdir results/exercise1/alignment
@@ -166,7 +166,7 @@ using the `samtools` `view` command:
 
 > (Computation time: seconds)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 samtools view -b -S -o results/exercise1/alignment/varicella.bam \
@@ -183,7 +183,7 @@ This will create the file `varicella.sorted.bam`
 
 > (Computation time: seconds)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 samtools sort results/exercise1/alignment/varicella.bam -o \
@@ -199,7 +199,7 @@ index the sorted BAM file using `samtools` `index` command:
 
 > (Computation time: seconds)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 samtools index results/exercise1/alignment/varicella.sorted.bam
@@ -217,7 +217,7 @@ and the Unix `awk` text processor to extract the values of interest:
 
 > (Computation time: 1s)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 samtools depth results/exercise1/alignment/varicella.sorted.bam | awk '{sum+=$3} END {print "Average = ", sum/124884}'
@@ -236,7 +236,7 @@ The output format is described at the end of the help.
 
 Answer:  
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 samtools depth results/exercise1/alignment/varicella.sorted.bam > results/exercise1/alignment/coverage.tsv
@@ -245,7 +245,7 @@ samtools depth results/exercise1/alignment/varicella.sorted.bam > results/exerci
 
 Plot the result with R
 
-~~~
+~~~r
 ```{r, message=F}
 library(tidyverse)
 
@@ -293,7 +293,7 @@ These packages install their own copies of `bowtie2` and `samtools`. Consult the
 
 Next paste in and run this R code chunk which contains the workflow for the previous exercise:
 
-~~~
+~~~r
 ```{r, message=F}
 library(Rbowtie2)
 library(Rsamtools)
@@ -356,7 +356,7 @@ The workflow will also create `results/exercise2` for you.
 
 > (Computation time: 5 minutes)
 
-~~~
+~~~r
 ```{r}
 results_dir <- "results/exercise2"
 reference_genome <- "data/ref/varicella.fasta"
@@ -374,7 +374,7 @@ Use the `samtools mpileup` command to identify genomic variants
 (aka single nucleotide variants, [SNVs](https://en.wikipedia.org/wiki/SNV_calling_from_NGS_data))
 in the alignment. This will create the file `varicella_variants.bcf`
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/varicella_mut.sorted.bam > results/exercise2/varicella_variants.bcf
@@ -387,7 +387,7 @@ Use `bcftools call` command to convert the binary call format (BCF) to
 (human-readable) variant call format ([VCF](https://en.wikipedia.org/wiki/Variant_Call_Format)).
  This will create the file `varicella_variants.vcf`
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 bcftools call -c -v results/exercise2/varicella_variants.bcf > results/exercise2/varicella_variants.vcf
@@ -469,7 +469,7 @@ in comparison to the reference sequence provided for the varicella virus.
 
 Create the results directory for this exercise:
 
-~~~
+~~~bash
 ```{bash}
 mkdir results/exercise3
 ```
@@ -481,7 +481,7 @@ mkdir results/exercise3
 
 Run `breseq`
 
-~~~
+~~~bash
 ```{bash}
 breseq -j 1 -o results/exercise3 \
     -r data/ref/varicella.gb data/seq/varicella_mut*.fastq
@@ -505,7 +505,7 @@ Use the `breseq bam2aln` command to investigate the missing mutations
 
 Answer: 
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 
@@ -530,7 +530,7 @@ Find also the coverage plot.
 # Exercise 4: De novo genome assembly
 
 So far we've been using a reference genome to align reads to it.
-When one is not available, the genome has to be assmebled *de novo* from the reads.
+When one is not available, the genome has to be assembled *de novo* from the reads.
 Here, we'll be using the `abyss` assembler with reads from the *dumas* strain of the varicella virus.
 
 ![](img/assembly.png)
@@ -542,7 +542,7 @@ Sequencing files from *dumas* strain: `data/varicella_l1.fastq`, `data/varicella
 
 ### Step 1: Init
 
-~~~
+~~~bash
 ```{bash}
 mkdir results/exercise4
 ```
@@ -554,7 +554,7 @@ Assemble the reads provided into a genome using abyss-pe for k=128
 
 > (Computation time: 5 minutes)
 
-~~~
+~~~bash
 ```{bash}
 conda activate sequencing
 
