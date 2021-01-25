@@ -526,7 +526,7 @@ iris
 We compute the areas (very simplistically), then the average of all areas:
 
 ```{r, message=F, warning=F}
-library(tidyverse)
+library(dplyr)
 
 iris %>% 
     dplyr::mutate(Petal.Area = Petal.Length * Petal.Width) %>% 
