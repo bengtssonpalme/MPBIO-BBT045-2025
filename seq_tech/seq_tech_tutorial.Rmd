@@ -261,7 +261,7 @@ alignment_coverage %>%
 
 
 
-# Exercise 2: Finding Mutations
+# Exercise 2: Finding Mutations with SAMtools
 
 We now look at a second set of sequencing data, with mutations (`data/seq/varicella_mut1.fastq` and `data/seq/varicella_mut1.fastq`)
 
@@ -450,14 +450,15 @@ Use `samtools mpileup` to inspect the site 73233. What is the frequency of each 
 Rune the command below and see [Pileup format](https://en.wikipedia.org/wiki/Pileup_format)
 
 ```bash
-samtools mpileup -r NC_001348:73233-73233 -f data/varicella.fasta alignment/varicella_mut.sorted.bam
+samtools mpileup -r NC_001348:73233-73233 -f data/ref/varicella.fasta \
+    results/exercise2/alignment/varicella_mut.sorted.bam
 ```
 
 Answer:  <font color="white"> 170 T, 1 A, 2 G </font>
 
 
 
-# Exercise 3: Overview of Mutations
+# Exercise 3: Finding Mutations with breseq
 
 Using the `breseq` pipeline to compute the mutations present in the mutant strain 
 in comparison to the reference sequence provided for the varicella virus.
@@ -494,7 +495,7 @@ breseq -j 1 -o results/exercise3 \
 ### Q1
 
 Open the `index.html` file in the `results/exercise3/output` folder 
-(Using the File tab in RStudio, navigate to the file, click on it, and choose "Opne in browser")
+(Using the File tab in RStudio, navigate to the file, click on it, and choose "Open in browser")
 and compare the mutations detected, in comparison to exercise 2. 
 
 Answer: One mutation is missing in breseq
@@ -550,7 +551,7 @@ mkdir results/exercise4
 
 ### Step 1: Assembly
 
-Assemble the reads provided into a genome using abyss-pe for k=128
+Assemble the reads provided into a genome using `abyss-pe` for `k=128`
 
 > (Computation time: 5 minutes)
 
