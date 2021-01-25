@@ -140,7 +140,7 @@ bowtie2-build -f data/ref/varicella.fasta results/exercise1/bowtie_index/varicel
 
 Align the sequencing data to the reference genome using `bowtie2`.
 This will create the file `varicella.sam`
-The `\\` symbol simply breaks the command across multiple lines for readability.
+The `\ ` symbol simply breaks the command across multiple lines for readability.
 
 > (Computation time: 1 min)
 
