@@ -1,5 +1,5 @@
 ---
-title: "Sequencing Technologies Tutorial"
+title: "BBT045: Sequencing Technologies Tutorial"
 author: Filip Buric (adapted from Rui Pereira's exercise protocol)
 date: "`r Sys.Date()`"
 output:
