@@ -567,6 +567,16 @@ stringr::str_locate(fruit, &quot;a&quot;)</code></pre>
 <div id="application-reading-fasta-files" class="section level1" number="6">
 <h1 number="6"><span class="header-section-number">6</span> Application: Reading FASTA files</h1>
 <p>The feature-rich <a href="https://bioconductor.org/packages/release/bioc/manuals/Biostrings/man/Biostrings.pdf">Biostrings</a> package has convenient functions for processing sequence files and biological data files of different types. For a quick intro, read: <a href="https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html" class="uri">https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html</a></p>
+<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+
+BiocManager::install(&quot;Biostrings&quot;)</code></pre>
+<pre><code>## Bioconductor version 3.11 (BiocManager 1.30.10), R 4.0.3 (2020-10-10)</code></pre>
+<pre><code>## Installing package(s) &#39;Biostrings&#39;</code></pre>
+<pre><code>## 
+## The downloaded binary packages are in
+##  /var/folders/91/c5sshmws4xvfcfpnw5l7gb2545hq76/T//RtmpkhrJ4e/downloaded_packages</code></pre>
+<pre><code>## Old packages: &#39;fastmap&#39;, &#39;leiden&#39;, &#39;shiny&#39;, &#39;withr&#39;</code></pre>
 <p>Let’s load ORFs and protein sequences from a reference yeast genome.</p>
 <pre class="r"><code>ORFS_YEAST_FILE &lt;- &quot;/tmp/orf_trans.fasta.gz&quot;
 download.file(&quot;http://sgd-archive.yeastgenome.org/sequence/S288C_reference/orf_dna/orf_genomic_all.fasta.gz&quot;,
@@ -625,16 +635,6 @@ prot_sequence_yeast</code></pre>
 <div id="application-working-with-gff-files" class="section level1" number="7">
 <h1 number="7"><span class="header-section-number">7</span> Application: Working with GFF files</h1>
 <p>The <a href="https://en.wikipedia.org/wiki/General_feature_format">General feature format</a> contains information about genes and DNA, RNA, and protein sequences. It’s structured as a ([Tab] delimited) table, meaning we can read it directly into a data frame (or tibble).</p>
-<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-
-BiocManager::install(&quot;Biostrings&quot;)</code></pre>
-<pre><code>## Bioconductor version 3.11 (BiocManager 1.30.10), R 4.0.3 (2020-10-10)</code></pre>
-<pre><code>## Installing package(s) &#39;Biostrings&#39;</code></pre>
-<pre><code>## 
-## The downloaded binary packages are in
-##  /var/folders/91/c5sshmws4xvfcfpnw5l7gb2545hq76/T//Rtmp4tqEA9/downloaded_packages</code></pre>
-<pre><code>## Old packages: &#39;fastmap&#39;, &#39;leiden&#39;, &#39;shiny&#39;, &#39;withr&#39;</code></pre>
 <p>Read the genome info as GFF from the source website (the file is not copied, just read directly into the data.frame). We could parse the file to extract the column names, but it’s just simpler if we write them.</p>
 <pre class="r"><code>library(RCurl) 
 library(tidyverse)

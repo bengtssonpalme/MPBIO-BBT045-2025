@@ -405,6 +405,15 @@ sequence files and biological data files of different types.
 For a quick intro, read: 
 https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html
 
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("Biostrings")
+```
+
+
 Let's load ORFs and protein sequences from a reference yeast genome.
 
 ```{r}
@@ -438,15 +447,6 @@ The [General feature format](https://en.wikipedia.org/wiki/General_feature_forma
 contains information about genes and DNA, RNA, and protein sequences.
 It's structured as a ([Tab] delimited) table, 
 meaning we can read it directly into a data frame (or tibble).
-
-
-```{r}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("Biostrings")
-```
-
 
 Read the genome info as GFF from the source website (the file is not copied,
 just read directly into the data.frame).
