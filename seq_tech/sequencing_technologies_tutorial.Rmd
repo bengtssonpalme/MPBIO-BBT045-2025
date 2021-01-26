@@ -33,14 +33,20 @@ conda activate sequencing
 ```
 
 You should see `(sequencing)` to the left of your command prompt.
-If you don't, please ask for help so we make sure we all start from the same place.
+If you don't, try running 
+
+```
+source ~/.bashrc
+```
+
+If that still doesn't work, please ask for help so we make sure we all start from the same place.
 
 Now install the software needed for this exercise.
 This step will also ask for confirmation. 
 Later on / in real life, it's good to to examine what changes are made when installing new packages.
 
 ```
-conda install samtools bowtie2 breseq abyss bcftools wgsim emboss
+conda install samtools bowtie2 breseq abyss bcftools wgsim emboss tree
 ```
 
 Run the code chunk below to enable running conda commands from this notebook.

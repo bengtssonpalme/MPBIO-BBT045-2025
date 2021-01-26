@@ -42,6 +42,9 @@ cd sequencing
 The starter notebook contains instructions for setting up your conda
 environment. Please follow these instructions, then continue using
 the notebook to write the commands used here and take notes for the exercises.
+You can also download a copy from [here](sequencing_technologies_tutorial.Rmd) for your own computer.
+
+
 If you have not done so already, you need to first install conda.
 See instructions [here](../unix/conda_install.html)
 
@@ -99,6 +102,9 @@ Raw data files:
 
 You can run the commands in the terminal directly to test them out, but they should be included (in order) in the R notebook, so copy the code chunks 
 (including the surrounding `{bash}` marker) and run the chunk from the notebook.
+
+**! NOTE !** Make sure to put curly braces `{ }` around `bash` and `r`.
+These disappear when this webpage is created for some reason...
 
 ## Protocol
 
