@@ -1,0 +1,514 @@
+---
+title: "BBT045: Intro to R programming for data analysis"
+author: Filip Buric
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    df_print: paged
+  pdf_document: default
+---
+
+# Intro
+
+This module will be relying on the following material, which you are encouraged
+to read more extensively beyond the requirement for this course.
+Becoming comfortable (not only familiar) with a programming language is a like a
+superpower and you'll find it enables you to do many more things beyond the
+initial context (and enhances your employment outlook).
+
+- [*Advanced R*](https://adv-r.hadley.nz)  by Hadley Wickham.
+Don't let the name fool you, it's simply a more systematic and technical overview of the
+language.
+Even if you don't understand much of it now, it's a good book to come back to later.
+
+- [*R for Data Science*](https://r4ds.had.co.nz)  by Hadley Wickham
+As the title implies, it focuses more on workflows and good practices for data science.
+
+- Miscellaneous :) There are many good resource on the web. 
+We'll point out some when relevant.
+
+For this module, please read the sections we point out.
+
+If you're curious about some pros and cons of the R programming language, 
+**read sections 1.1 and 1.2** from *Advanced R*: https://adv-r.hadley.nz/introduction.html
+
+## Getting help
+
+Most R functions and libraries have good documentation.
+In RStduio, select a function and press `F1` to have the documentation appear in the
+*Help* tab (to the lower-right). In an R console, run `?function` to
+display the same documentation on screen. Googling is of course an alternative
+
+
+# Prep
+
+You can download a copy of this notebook [here](intro_r_data_analysis.Rmd).
+
+Install the tidyverse packages:
+
+```{r, message=F}
+if (!require("tidyverse")) 
+  install.packages("tidyverse")
+```
+
+
+# R Environments
+
+One usually needs a collection of different R libraries within a workflow.
+Many functions in these packages have the same name and only the functions
+from the last imported library are "remembered" by R. 
+
+But we can explicitly refer to a function in a package by using the syntax
+
+`package::function()`
+
+This can be cumbersome but advised when working with multiple packages.
+
+You can get a list of the loaded environment with the `search()` function
+
+```{r}
+base::search()
+```
+
+
+
+
+# Working with R data structures
+
+R uses a number of different data structures 
+(vector, matrices, lists, objects, data frames, etc.) and allows users
+to create their own. Which is why one should be aware of some general principles,
+as some package creators get overenthusiastic about they way they package
+output from their functions.
+
+## Attributes
+
+R data structures can be "decorated" by setting attributes.
+To set these, use the `attr()` function:
+
+```{r}
+my_vector <- 1:10
+attr(my_vector, "about") <- "this is just a simple sequence"
+
+my_vector
+```
+
+These attributes are printed along with the variable, but can also be
+fetched as a list with `attributes`:
+
+```{r}
+attributes(my_vector)
+```
+
+Some attributes are generally recognized by various functions so they
+have specialized ways to access / set them, like `names()`
+
+```{r}
+names(my_vector) <- c("one", "two", "three", "four", "five")
+
+my_vector
+```
+
+As you can see, the `print()` function expects to match each element of the vector
+with a name.
+
+
+Besides meta-information, attributes can have a functional role,
+as they inform various functions how to interpret and process these data structures.
+
+A typical example are matrices, which are simply vectors, 
+with the number of rows and columns set as attributes:
+
+```{r}
+dim(my_vector) <- c(2, 5)
+my_vector
+```
+
+This is equivalent to using the built-in `matrix()` creation function:
+
+```{r}
+my_matrix <- matrix(1:10, nrow = 2, ncol = 5)
+my_matrix
+```
+
+
+**Note** Attributes are meant to be transient. Many functions remove them.
+
+
+## S3 Objects
+
+These are basically data structures with permanent attributes 
+(meaning functions cannot remove them). 
+
+The way to create these is simply to set a `class` attribute. 
+(An object is a single instance of a generic class of data structures)
+
+```{r}
+attr(my_matrix, "class") <- "named_matrix"
+attr(my_matrix, "row_names") <- c("one", "two")
+attr(my_matrix, "column_names") <- c("one", "two", "three", "four", "five")
+
+my_matrix
+```
+
+
+Or, in one step:
+
+```{r}
+structure(matrix(1:10, nrow = 2, ncol = 5),
+          class = "named_matrix",
+          row_names = c("one", "two"),
+          column_names = c("one", "two", "three", "four", "five")
+          )
+```
+
+All of this is mostly relevant for certain functions and it's 
+the "magic" behind some fancy data types like data frames. 
+
+S3 objects are extremely common in the R landscape and many functions return
+output like this, so it's good to be aware of how they're structured.
+
+Besides S3, there are S4 and R6 object types (helpful names, huh?).
+If you're curious or need to understand some output in these formats,
+refer to [Objected-oriented programming](https://adv-r.hadley.nz/oo.html) in the *Advanced R* book.
+
+
+## Lists
+
+These are a more flexible structure, as they can contain multiple entries,
+of any data type:
+
+```{r}
+shopping_list <- list(
+    items = c("chocolate", "bread", "broccoli"),
+    prices = c(15, 45, 32),
+    date = "2021-02-01"
+)
+```
+
+
+## Strings
+
+Text aka "character" strings can be manipulated in different ways.
+R has built-in functions for this but take a look at the 
+[stringr](https://cran.r-project.org/web/packages/stringr/stringr.pdf) package
+that offers convenient functions
+
+
+```{r}
+message <- "hello world"
+
+nchar(message)
+```
+
+You can extract parts of a string using numerical positions
+
+```{r}
+substr(message, start = 1, stop = 5)
+```
+
+You can replace certain patterns:
+
+```{r}
+library(stringr)
+
+stringr::str_replace(message, pattern = "o", replacement = "-")
+```
+
+
+```{r}
+stringr::str_replace_all(message, pattern = "o", replacement = "-")
+```
+
+
+`str_replace()` and `str_replace_all()` can be applied on vectors and accepts more complicated (regex) patterns:
+
+```{r}
+fruits <- c("one apple", "two pears", "three bananas")
+
+stringr::str_replace_all(fruits, pattern = "[aeiou]", replacement = "-")
+```
+
+
+To search for a string inside another larger string or for a certain pattern of possible
+strings inside a larger string, you can use the `stringr::str_locate()` and `stringr::str_locate_all()`
+functions.
+
+```{r}
+fruit <- c("apple", "banana", "pear", "pineapple")
+stringr::str_locate(fruit, "a")
+```
+
+```{r}
+stringr::str_locate_all(fruit, "a")
+```
+
+
+
+## Inspecting data structures
+
+All variables will have a *type* which you can get using the `typeof()` function.
+
+```{r}
+typeof(shopping_list)
+```
+
+```{r}
+typeof(my_matrix)
+```
+
+As you can see, `typeof()` tells you the *underlying* type.
+For our toy matrix, this is number (integer, to be exact).
+
+
+To get elements out of various data structures there are a few access operators.
+
+```{r}
+my_vector[3]
+```
+
+```{r}
+shopping_list$items
+```
+
+```{r}
+shopping_list[["items"]]
+```
+
+
+```{r}
+shopping_list$items[1]
+```
+
+
+There many more useful ways you can fetch elements and you are strongly encouraged
+to at least browse through the [Subsetting](https://adv-r.hadley.nz/subsetting.html)
+chapter of the *Advanced R* book, at laest to be aware.
+
+
+# Working with Tabular Data
+
+Many datasets can naturally be organized in tables. 
+Base R already has the `data.frame` data structure but we'll be using its
+"upgraded" version (a so-called "tibble"), 
+along with associated functions from the `dplyr` library, part of the `tidyverse`
+collection of packages. 
+
+These functions allow for a programming style that combines functional 
+elements with query-like steps.
+
+Here's a quick reference for the operations we'll be using: 
+[Data Wrangling Cheat Sheet](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+Let's use the (R built-in) Iris dataset to illustrate some ways we can work with tables.
+
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+iris
+```
+
+## Filtering rows based on values
+
+```{r}
+iris %>% 
+    filter(Species == "setosa")
+```
+
+Note the pipe operator ` %>% ` above, introduced by the tidyverse library.
+It's very similar to the Unix pipe `|` in that it feeds the value / variable on its left
+as the first argument to the function on its right. For example,
+` "hello" %>% print`  is equivalent to `print("hello") `
+In RStudio, you can type it faster with `[Ctrl] + [Shift] + [M]` (Windows) 
+or `[Command] + [Shift] + [M] (macOS)`
+
+```{r}
+iris %>% 
+    filter(Species == "setosa", 
+           Petal.Length < 1.5)
+```
+
+## Selecting columns
+
+```{r}
+iris %>% select(Sepal.Length)
+```
+
+## Working on column level
+
+```{r}
+iris %>%
+    mutate(length_ratio = Sepal.Length / Petal.Length)
+```
+
+You can also apply any vectorized function directly to a column
+
+```{r}
+iris %>%
+    mutate(log_petal_length = log(Petal.Length))
+```
+
+Or you can apply ad-hoc functions that work on each row of the column
+
+```{r}
+iris %>% 
+    mutate(species_number = sapply(Species,
+                                   function (species_name) {
+                                       if (species_name == "setosa")
+                                           return(1)
+                                       else if (species_name == "versicolor")
+                                           return(2)
+                                       else
+                                           return(3)
+                                   }
+          
+        
+    ))
+```
+
+
+## Working on groups of values
+
+```{r}
+iris %>% 
+    group_by(Species) %>% 
+    summarize(mean(Petal.Length))
+```
+
+
+
+## Tidy Data
+
+A central concept of this way of working with data (found across multiple
+programming languages and packages, not only R) is to structure the data in the
+standard statistical way, with variables as columns and rows as observations.
+This organizational discipline (aka "normal form") has been popularized under
+the name [tidy data](https://r4ds.had.co.nz/tidy-data.html#tidy-data).
+
+It's highly recommended to read this section from the *R for Data Science* book.
+Having tables organized this way makes very many operations straightforward.
+
+
+
+# Application: Reading FASTA files
+
+The feature-rich [Biostrings](https://bioconductor.org/packages/release/bioc/manuals/Biostrings/man/Biostrings.pdf) package has convenient functions for processing
+sequence files and biological data files of different types.
+For a quick intro, read: 
+https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html
+
+Let's load ORFs and protein sequences from a reference yeast genome.
+
+```{r}
+ORFS_YEAST_FILE <- "/tmp/orf_trans.fasta.gz"
+download.file("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/orf_dna/orf_genomic_all.fasta.gz",
+              destfile = ORFS_YEAST_FILE)
+
+orfs_yeast <- Biostrings::readDNAStringSet(ORFS_YEAST_FILE)
+orfs_yeast
+```
+
+Some operations can be applied to the entire set of sequences:
+
+```{r}
+Biostrings::reverseComplement(orfs_yeast)
+```
+
+
+```{r}
+PROT_SEQ_YEAST_FILE <- "orf_trans.fasta.gz"
+download.file("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/orf_protein/orf_trans.fasta.gz",
+              destfile = PROT_SEQ_YEAST_FILE)
+
+prot_sequence_yeast <- Biostrings::readAAStringSet(PROT_SEQ_YEAST_FILE)
+prot_sequence_yeast
+```
+
+# Application: Working with GFF files
+
+The [General feature format](https://en.wikipedia.org/wiki/General_feature_format)
+contains information about genes and DNA, RNA, and protein sequences.
+It's structured as a ([Tab] delimited) table, 
+meaning we can read it directly into a data frame (or tibble).
+
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("Biostrings")
+```
+
+
+Read the genome info as GFF from the source website (the file is not copied,
+just read directly into the data.frame).
+We could parse the file to extract the column names, 
+but it's just simpler if we write them.
+
+```{r, message=F}
+library(RCurl) 
+library(tidyverse)
+
+GENOME_INFO_SOURCE <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.gff"
+
+genome_info <- readr::read_tsv(RCurl::getURL(GENOME_INFO_SOURCE),
+                              comment = "#",
+                              col_names = c("sequence_id", "source", "feature", 
+                                            "start", "end", "score", "strand",
+                                            "phase", "attributes"))
+
+genome_info
+```
+
+## Quick counts and visualizations.
+
+Plot the histogram of gene lengths:
+
+```{r}
+genome_info %>% 
+dplyr::filter(feature == "gene") %>% 
+dplyr::mutate(gene_length = end - start) %>%
+
+ggplot() + 
+    geom_histogram(aes(x = gene_length))
+```
+
+## Inspect attributes
+
+Let's see if the GFF file contains protein sequences.
+The command below chains several operations:
+
+- extracts only the `attributes` column
+- on each row of this column, applies an ad-hoc function that splits the attributes into individual 
+character strings (for easier visual inspection)
+- randomly samples 4 entries to see what they contain
+
+For **reproducibility**, every time one works with random numbers, 
+the initial value ("seed") of the random number generator has to be set to a known value.
+(Computers cannot really generate random numbers, just number sequences that *look* random.)
+
+```{r}
+library(stringr)
+
+set.seed(42)
+
+genome_info %>% 
+    dplyr::filter(feature == "gene") %>% 
+    dplyr::select(attributes) %>% 
+    dplyr::mutate(attributes = lapply(attributes, 
+                                      function(attr_string) {
+                                          stringr::str_split(attr_string, pattern = ";")
+                                      })
+                  ) %>% 
+    sample_n(4) %>% 
+    pull   # extract ("pull") the underlying list from the table so we can print contents
+```
+

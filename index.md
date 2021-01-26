@@ -7,7 +7,7 @@
 <hr />
 
 
-## Unix
+## Tutorial: Unix
 
 * Please read this **first**: [How to connect to remote accounts](remote-hosts.md)
 * [Conda installation instructions](unix/conda_install.md)
@@ -32,7 +32,7 @@
 <hr />
 
 
-## Git Tutorial
+## Tutorial: Git
 
 **Exercises**
 
@@ -51,9 +51,16 @@
 <hr />
 
 
-## Sequencing Technologies
+## Tutorial: Sequencing Technologies
 
 [Exercises](seq_tech/seq_tech_tutorial.html)
+
+<hr />
+
+
+## Tutorial: Intro to R programming for data analysis
+
+[Exercises](r_for_data_analysis/intro_r_data_analysis.html)
 
 <hr />
 
@@ -71,7 +78,7 @@
 <hr />
 
 
-## Practical info for projects
+## Practical info for projects (2020)
 
 * [How to install your own software on the server](installing_software_on_the_server.md)
 
