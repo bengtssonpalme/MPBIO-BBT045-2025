@@ -251,17 +251,20 @@ stringr::str_locate_all(fruit, "a")
 
 ## Inspecting data structures
 
-All variables will have a *type* which you can get using the `typeof()` function.
+You can see what type of data structure a variable is by using the `class()` function.
 
 ```{r}
-typeof(shopping_list)
+class(shopping_list)
 ```
+
+
+To see what the underlying data *type* (i.e. nunber, character) a variable has,
+you can use the `typeof()` function.
 
 ```{r}
 typeof(my_matrix)
 ```
 
-As you can see, `typeof()` tells you the *underlying* type.
 For our toy matrix, this is number (integer, to be exact).
 
 
