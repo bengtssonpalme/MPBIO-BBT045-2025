@@ -60,11 +60,17 @@
 
 ## Tutorial: Intro to R programming for data analysis
 
-[Exercises](r_for_data_analysis/intro_r_data_analysis.html)
+[Self-study notebook](r_for_data_analysis/intro_r_data_analysis.html)
+
+**Reading**
+
+Coming soon
 
 **Recommended Reading**
 
-* [Strategies for Reproducible R Environments](https://environments.rstudio.com/)
+- [Strategies for Reproducible R Environments](https://environments.rstudio.com/)
+- [*R for Data Science*](https://r4ds.had.co.nz)
+- [*Advanced R*](https://adv-r.hadley.nz) 
 
 <hr />
 
