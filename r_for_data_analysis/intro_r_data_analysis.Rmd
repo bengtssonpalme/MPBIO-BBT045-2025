@@ -287,7 +287,7 @@ shopping_list$items[1]
 
 There many more useful ways you can fetch elements and you are strongly encouraged
 to at least browse through the [Subsetting](https://adv-r.hadley.nz/subsetting.html)
-chapter of the *Advanced R* book, at laest to be aware.
+chapter of the *Advanced R* book, at least to be aware.
 
 
 # Working with Tabular Data
@@ -320,7 +320,7 @@ iris
 
 ```{r}
 iris %>% 
-    filter(Species == "setosa")
+    dplyr::filter(Species == "setosa")
 ```
 
 Note the pipe operator ` %>% ` above, introduced by the tidyverse library.
@@ -332,43 +332,43 @@ or `[Command] + [Shift] + [M] (macOS)`
 
 ```{r}
 iris %>% 
-    filter(Species == "setosa", 
-           Petal.Length < 1.5)
+    dplyr::filter(Species == "setosa", 
+                  Petal.Length < 1.5)
 ```
 
 ## Selecting columns
 
 ```{r}
-iris %>% select(Sepal.Length)
+iris %>% dplyr::select(Sepal.Length)
 ```
 
 ## Working on column level
 
 ```{r}
 iris %>%
-    mutate(length_ratio = Sepal.Length / Petal.Length)
+    dplyr::mutate(length_ratio = Sepal.Length / Petal.Length)
 ```
 
 You can also apply any vectorized function directly to a column
 
 ```{r}
 iris %>%
-    mutate(log_petal_length = log(Petal.Length))
+    dplyr::mutate(log_petal_length = log(Petal.Length))
 ```
 
 Or you can apply ad-hoc functions that work on each row of the column
 
 ```{r}
 iris %>% 
-    mutate(species_number = sapply(Species,
-                                   function (species_name) {
-                                       if (species_name == "setosa")
-                                           return(1)
-                                       else if (species_name == "versicolor")
-                                           return(2)
-                                       else
-                                           return(3)
-                                   }
+    dplyr::mutate(species_number = sapply(Species,
+                                          function (species_name) {
+                                          if (species_name == "setosa")
+                                               return(1)
+                                          else if (species_name == "versicolor")
+                                               return(2)
+                                          else
+                                               return(3)
+                                        }
           
         
     ))
@@ -379,8 +379,8 @@ iris %>%
 
 ```{r}
 iris %>% 
-    group_by(Species) %>% 
-    summarize(mean(Petal.Length))
+    dplyr::group_by(Species) %>% 
+    dplyr::summarize(mean(Petal.Length))
 ```
 
 
@@ -433,7 +433,7 @@ Biostrings::reverseComplement(orfs_yeast)
 
 
 ```{r}
-PROT_SEQ_YEAST_FILE <- "orf_trans.fasta.gz"
+PROT_SEQ_YEAST_FILE <- "/tmp/orf_trans.fasta.gz"
 download.file("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/orf_protein/orf_trans.fasta.gz",
               destfile = PROT_SEQ_YEAST_FILE)
 
@@ -457,13 +457,18 @@ but it's just simpler if we write them.
 library(RCurl) 
 library(tidyverse)
 
-GENOME_INFO_SOURCE <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.gff"
+GENOME_INFO_SOURCE <- 
+    "ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Bacteria/Halobacterium_sp_uid217/AE004437.gff"
 
-genome_info <- readr::read_tsv(RCurl::getURL(GENOME_INFO_SOURCE),
-                              comment = "#",
-                              col_names = c("sequence_id", "source", "feature", 
-                                            "start", "end", "score", "strand",
-                                            "phase", "attributes"))
+genome_info <- readr::read_tsv(RCurl::getURL(GENOME_INFO_SOURCE),  # stream in the file directly from the web
+                               
+                               # skip the (first) lines in the GFF that start with "#"
+                               # (these are comments)
+                               comment = "#",    
+                              
+                               col_names = c("sequence_id", "source", "feature", 
+                                             "start", "end", "score", "strand",
+                                             "phase", "attributes"))
 
 genome_info
 ```
