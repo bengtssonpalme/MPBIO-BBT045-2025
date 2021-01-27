@@ -62,6 +62,10 @@
 
 [Exercises](r_for_data_analysis/intro_r_data_analysis.html)
 
+**Recommended Reading**
+
+* [Strategies for Reproducible R Environments](https://environments.rstudio.com/)
+
 <hr />
 
 
