@@ -54,3 +54,9 @@ To save space, remove the kit :)
 ```
 rm Miniconda3-latest-Linux-x86_64.sh
 ```
+
+
+# Troubleshooting 
+
+If for some reason conda is not initalized (i.e. you don't see the `(base)` marker),
+run `source ~/.bashrc` in the terminal.
