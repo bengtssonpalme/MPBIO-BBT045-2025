@@ -1,4 +1,4 @@
-# Homework 1: Basic Unix operations for bioinformatic
+# Homework 1: Basic Unix operations for bioinformatics
 
 * Write your answers in the text file you've used to keep track of commands and output so far.
 * Create a repo on GitHub to keep track of this file and send us the link to this repo.
