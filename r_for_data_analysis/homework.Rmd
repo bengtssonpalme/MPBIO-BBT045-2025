@@ -1,0 +1,214 @@
+---
+title: "Homework: Intro to R programming for data analysis"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    df_print: paged
+  pdf_document: default
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Instructions
+
+Create an R notebook and write the R code that solves the tasks below.
+Then add this notebook to your **homework repo** 
+(make sure you actually **push to GitHub**). 
+Try to work on the server. That's where the data files are located.
+
+To **pass the homework** you need **5 points**. 
+The tasks are meant to be rather independent (and a few have subtasks).
+
+**To get full points**, please:
+
+1. **`[1 pt]`** Describe what the code is doing. Even if you find solutions online, 
+it's important that you understand what's going on.
+
+2. **`[1 pt]`** **Make sure your notebook can be run from top to bottom** (i.e. is reproducible). 
+To check, restart R (Session menu > Restart R) to get a fresh session,
+then click on the Run button (upper-right) > Run All. 
+This is **crucial** because as you work, various variables will accumulate in the session and this can "sabotage" your code.
+
+**Bonus point**
+Write code that is understandable :) I won't mind not choosing the best possible names 
+for variables but try to inform the reader what's going on by naming things in a clear way. 
+So `reference_genome` rather than `df` or `x`. This is also a service to future you! 
+
+
+## Advice
+
+- Remember to always inspect both the input data, as well as intermediate results
+- We try to point to relevant sources of information, but using the Internet and
+biological databases is a skill in itself, so if the contents of certain biological files
+are confusing, try to find information about the formats. 
+Most databases have these described somewhere.
+
+
+
+# Task 1: How many genes are on yeast S288C chromosome II? [1 pt]
+
+Let's redo task 1 in homework 1 using R and tidyverse.
+Read in `/home/fburic/data/S288C_reference_genome_R64-2-1_20150113/saccharomyces_cerevisiae_R64-2-1_20150113.gff`
+as a table (Hint: use the `read_tsv()` function). 
+Note that *the first column is the chromosome*, not the sequence ID as in other GFF files.
+
+Count the number of genes on chromosome II using table manipulation (tidyverse)
+functions like you've seen in the tutorial.
+Please have your code produce a numerical result.
+The interactive RStudio display of the number of rows doesn't count :)
+
+If you require other functions than what we've covered, take look at this
+[cheat sheet](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf).
+
+
+
+# Task 2: Compute average gene length by chromosome in the S288C yeast strain  [1 pts]
+
+Using the same table you used in the Task 1, calculate the average gene length
+**per chromosome**. Remember to inspect your data, to see what you're working with.
+Please use the table (tidyverse) manipulation functions we've covered in the tutorial.
+
+
+
+# Task 3: Extract gene IDs from the S288C yeast GFF file and look for some genes [2 pts]
+
+Using the S288C GFF file again, you may have noticed the attributes column contains
+a lot of information, some of which is quite important, like the gene ID.
+
+Here's a function that extracts the gene ID from that column:
+
+```{r}
+extract_gene_id_from_attributes_s288c <- function(attribute_string) {
+    # str_split heard we like data structs 
+    # so it put lists in our lists so we can index while we index
+    id_field <- stringr::str_split(attribute_string, pattern = ";")[[1]][[1]]
+    actual_id <- stringr::str_split(id_field, pattern = "=")[[1]][[2]]
+    return(actual_id)
+}
+```
+
+a. Using the table manipulation functions, create a new column `gene_id` in the
+GFF table. You'll find the pattern in the last exercise of the tutorial.
+Just use `sapply` instead. [1 pt]
+
+b. Write code (using the table manipulation functions) that 1) checks whether the following
+gene IDs are present in the table and 2) only prints the chromosomes on which these are found. [1 pt]
+Hint: For 1), check out the `%in%` function though it's not the only way.
+(Obs: only 0.5 points if you have a separate copy of the code for each gene ID :) )
+
+```
+YJR117W
+YKL156C-A
+YOL110W
+YJR104C
+YJL111W
+YXYZZY
+YNOPE
+```
+
+
+
+# Task 4: Find top 5 longest genes in the S288C yeast  [1 pt]
+
+Compute gene lengths as before, but this time simply get the highest 5 values.
+There are several ways to do this using the basic table manipulation functions you've seen
+in the tutorial. If you're having trouble with those, 
+maybe there's something else you could use from the  
+[cheat sheet](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf).
+
+
+
+
+# Task 5: Calculations per gene in the Y55 strain [2 pts]
+
+The yeast Y55 strain FASTA file is here: `/home/fburic/data/Y55_JRIF00000000_SGD_cds.fsa`
+
+As a demo of Biostrings, let's compute the GC content per gene.
+To do this you first need to load in the `.fsa` file with the Biostrings function 
+`readDNAStringSet()` just as shown during the tutorial 
+(in a variable called e.g. `genes_y55_as_stringset`).
+
+Write that small bit of code to load the `.fsa` file, 
+since you'll need it, plus the code below to solve this task.
+
+To compute the GC contents you can use a Biostrings function called `letterFrequency()`
+You can run the command directly on the loaded data like this:
+
+```{r}
+library(Biostrings)
+gc_content_y55 <- Biostrings::letterFrequency(genes_y55_as_stringset,
+                                              letters = c("GC"), 
+                                              as.prob = TRUE)
+
+head(gc_content_y55)   # only show the first few genes
+```
+Biostrings has a bunch of built-in functions for typical calculations like GC-content.
+See here for examples:
+
+- https://monashbioinformaticsplatform.github.io/r-more/topics/sequences_and_features.html
+- https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html
+
+But what happens if we want to compute something else not supported by Biostrings?
+Then the `DNAStringsSet` structure can be difficult to work with.
+
+So let's convert it to a data frame instead using the `data.frame()`
+function, setting the columns as `gene_info` and `sequence`:
+
+```{r}
+genes_y55 <- data.frame(gene_info = names(genes_y55_as_stringset), 
+                        sequence = paste(genes_y55_as_stringset))
+```
+
+Here's a function to extract the gene ID from the `gene_info` fields.
+
+
+```{r}
+extract_gene_id_from_names_y55 <- function(name) {
+    stringr::str_split(name, pattern = "_")[[1]][[1]]
+}
+```
+
+a. Use the function to add a `gene_id` column. 
+You'll find the pattern in the last exercise of the tutorial.
+Just use `sapply` instead. [1 pt]
+
+Hint for cleaning up: you can delete a column by "deselecting" it:
+`dataframe %>% select(-column_to_delete)`
+
+b. Rare codons are biologically significant
+(here's an [example](https://www.nature.com/articles/srep20608), if you're curious).
+In yeast, the rarest codon (besides stop codons) is `CGG` ([source](https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=4932)).
+So, using table manipulation functions on the resulting table from a.,
+create a column to count the occurrence of `GCC` per gene.
+Hint: take a look at what functions [stringr](https://stringr.tidyverse.org/) has to offer.
+
+
+
+
+# Task 6: Search for a motif in all genes [1 pt]
+
+Filter for those genes that contain the sequence motif "CCACACCACACCCAC".
+Read the Biostrings documentation or Google what function to use (hint: it's a single function)
+
+So your code should be something like:
+
+```r
+motif <- "CCACACCACACCCAC"
+motif_hits <- Biostrings:: < find the function > (motif, reference_genome_as_stringset)
+```
+
+Then convert the hits into a data frame as `as.data.frame(motif_hits)`.
+The column "group" means "chromosome" since, recall, the input FASTA file simply has
+full chromosomes as entries, not individual genes. ("group_name" is irrelevant here.)
+
+Which chromosome has the most hits? 
+Write the code solution using table manipulation functions.
+Your code should produce only the chromosome number with the highest motif count
+(i.e. not just printing the table of all chromosomes).
+
+
