@@ -71,19 +71,23 @@ title: MPBIO-BBT045 Course page
 
 A selection of small chapters and sections that explain concepts we cover in the course:
 
-* *R for Data Science*
-  - 1. [Intro](https://r4ds.had.co.nz/introduction.html) (if the tidyverse context or applications are not clear)
-  - 4. [Workflow: basics](https://r4ds.had.co.nz/workflow-basics.html) (good tips for working with code)
-  - 5. [Data Transformations](https://r4ds.had.co.nz/transform.html)
-  - 18. [Pipes](https://r4ds.had.co.nz/pipes.html)  (about the `%>%` operator)
-  - 19. [Functions](https://r4ds.had.co.nz/functions.html#functions)  (you can skip the last section about environments)
+* *R for Data Science*  (the whole book is great and even covers basic R)
+  - Section 1. [Intro](https://r4ds.had.co.nz/introduction.html) (if the tidyverse context or applications are not clear)
+  - Section 4. [Workflow: basics](https://r4ds.had.co.nz/workflow-basics.html) (good tips for working with code)
+  - Section 5. [Data Transformations](https://r4ds.had.co.nz/transform.html)
+  - Section 18. [Pipes](https://r4ds.had.co.nz/pipes.html)  (about the `%>%` operator)
+  - Section 19. [Functions](https://r4ds.had.co.nz/functions.html#functions)  (you can skip the last section about environments)
 
 * *Advanced R*
-  - 4. [Subsetting](https://adv-r.hadley.nz/subsetting.html)  (different ways to access elements in R data structures)
+  - Section 4. [Subsetting](https://adv-r.hadley.nz/subsetting.html)  (different ways to access elements in R data structures)
 
 * *Misc*
   - [Table manipulation (aka data wrangling) cheat sheet](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
-
+  - [Quick overview of Biostrings functionality](https://bioconductor.org/packages/release/bioc/vignettes/Biostrings/inst/doc/BiostringsQuickOverview.pdf)
+  - [Simple examples of working with Biostrings](https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html)
+  
+  
+  
 **Recommended Reading**
 
 * [Strategies for Reproducible R Environments](https://environments.rstudio.com/)
