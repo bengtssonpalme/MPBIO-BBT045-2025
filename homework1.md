@@ -32,8 +32,9 @@ etc.
    a) compare GC content in this file with the value in task 7.2. above
       (make sure you're not also counting letters in the headers)
 
-   b) compare number of ORFs in this strain (basically all the enties in the Y55 file you downloaded since that only contains ORFs) with the number in the reference genome (file `orf_coding_all_R64-2-1_20150113.fasta`)
+   b) compare number of ORFs in this Y55 strain (basically all the enties in the Y55 file you downloaded since it only contains ORFs) 
+      with the number in the S288C reference genome (file `orf_coding_all_R64-2-1_20150113.fasta` we worked with in the exercises)
 
-   c) count the common ORFs between this yeast strain and the reference we
-      worked previously in sections 1 and 2.
-      *Note*: remove strain suffixes from names in the non-reference strain.
+   c) count the common ORFs between this Y55 yeast strain and the S288C reference we
+      worked with in the exercises.
+      *Note*: Remove strain suffixes from names in the Y55 strain.
