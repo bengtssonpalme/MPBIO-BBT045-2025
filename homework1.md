@@ -1,7 +1,7 @@
 # Homework 1: Basic Unix operations for bioinformatics
 
 * Write your answers in the text file you've used to keep track of commands and output so far.
-* Create a repo on GitHub to keep track of this file and send us the link to this repo.
+* Use the repo you were assigned to and commit your file in there. Remember to also push.
 * For the homework tasks, make sure to explain shortly what each command and option in your solution does.
 
 **Note** Make sure to save your work often on the server and/or on your laptop. 
