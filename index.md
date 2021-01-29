@@ -1,12 +1,16 @@
-# Study Material and Exercises
+---
+title: MPBIO-BBT045 Course page
+---
 
-## Homework
+# Homework
 
 * [HW 1: Unix](homework1.md)
 * [HW 2: R for Data Analysis](r_for_data_analysis/homework.html)
 
 <hr />
 
+
+# Study Material and Exercises
 
 ## Tutorial: Unix
 
