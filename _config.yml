@@ -1,4 +1,6 @@
 theme: jekyll-theme-cayman
 title: "BBT045: Applied Bioinformatics"
+kramdown:
+  parse_block_html: true
 github:
   is_project_page: false
