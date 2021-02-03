@@ -2,9 +2,12 @@
 title: MPBIO-BBT045 Course page
 ---
 
-# Navigation
+**Navigation**
 1. TOC
 {:toc}
+
+<hr />
+
 
 # Homework
 
