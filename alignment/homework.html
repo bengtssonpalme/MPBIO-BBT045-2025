@@ -275,8 +275,8 @@ div.tocify {
 <div id="instructions" class="section level1">
 <h1>Instructions</h1>
 <ul>
-<li><p>Download <a href="homework.Rmd">this</a> notebook and write your solutions inside it</p></li>
-<li><p>Upload the notebook with your solutions to your allocated repo.</p></li>
+<li><p>Download <a href="homework.Rmd">this</a> notebook and write your solutions inside it.</p></li>
+<li><p>Add the notebook with your solutions to your allocated GitHub repo. (Remember to commit and push.)</p></li>
 <li><p>To solve the tasks, finish the code skeletons provided. <strong>The code must be runnable to get full points</strong>. If you’re having trouble, try to explain in your own words what you were trying to do. Proper understanding is half of the points.</p></li>
 <li><p>Each task is independent but subtasks are linked.</p></li>
 <li><p>To <strong>pass the homework</strong>, you need <strong>3 / 6</strong> points.</p></li>
@@ -286,7 +286,7 @@ div.tocify {
 <div id="advice" class="section level2">
 <h2>Advice</h2>
 <ul>
-<li><p>Always restart R (<em>Session</em> &gt; <em>Restart R</em>) and rerun the notebook from the top to double-check (i.e. reproduce) your solutions.</p></li>
+<li><p>Always restart R (<em>Session</em> &gt; <em>Restart R</em>) and rerun the notebook from the top to double-check (i.e. reproduce) your solutions. To make sure you get a clean session, prevent RStudio from loading the previous workspace: <em>Tools &gt; Global options</em>, then in the General tab disable “Restore .RData into workspace at startup”, and for “Save workspace to .RData on exit” select “Never”.</p></li>
 <li><p>Remember that R starts indexing vectors at position <code>1</code>. Many other languages in which these algorithms are implemented start at <code>0</code>.</p></li>
 <li><p>If the code doesn’t behave the way you want or you get errors, try checking out the chapter on <a href="https://adv-r.hadley.nz/debugging.html">debugging</a> from <em>Advanced R</em> for different approaches to deal with this.</p></li>
 </ul>
@@ -484,7 +484,7 @@ print(dist_local_example(&#39;A&#39;, &#39;C&#39;) + dist_local_example(&#39;G&#
 <h2>Part b: Computing the local alignment [1 pt]</h2>
 <p>Finish the provided code.</p>
 <p>Since it is a variation of the global alignment algorithm, the Smith-Waterman algorithm has a similar structure.</p>
-<p>A <em>big difference</em> is that one takes the <em>maximum</em> of different possibilities, since once keeps track of an optimum score.</p>
+<p>A <strong>big difference</strong> is that one takes the <strong>maximum</strong> of different possibilities, since once keeps track of an optimum score.</p>
 <pre class="r"><code>local_alignment_matrix &lt;- function(seq1, seq2) {
     #######################################################
     # Computes the local alignment matrix D between 
@@ -579,10 +579,11 @@ seq2:    123xyz
 
 len_overlap(&#39;abc123&#39;, &#39;123xyz&#39;) == 3</code></pre>
 <p>The skeleton for this function is given below. Finish the code and use the tests below to check yourself.</p>
-<p>Note that this time we’re not converting the strings <code>seq1</code> and <code>seq2</code> to character vectors, because R has some functions which we can use, but these work on strings (e.g. “hello” instead of c(“h”, “e”, “l”, “l”, “o”)). Read about these functions: <code>substr()</code>, <code>startsWith()</code>, <code>endsWith()</code> and think about how to use them to solve this tasks. Also, recall <code>nchar()</code> counts the number of characters in a string, while <code>length()</code> counts the elements in a vector. A string is a single element, so <code>length(&quot;hello&quot;) == 1</code> and <code>nchar(&quot;hello&quot;) == 5</code>.</p>
+<p>Note that this time we’re not converting the strings <code>seq1</code> and <code>seq2</code> to character vectors, because R has some functions which we can use, but these work on strings (e.g. we use <code>&quot;hello&quot;</code> instead of <code>c(&quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;)</code> as before).</p>
+<p><strong>Read about these functions</strong>: <code>substr()</code>, <code>startsWith()</code>, <code>endsWith()</code> and think about how to use them to solve this tasks. Also, recall <code>nchar()</code> counts the number of characters in a string, while <code>length()</code> counts the elements in a vector. A string is a single element, so <code>length(&quot;hello&quot;) == 1</code> and <code>nchar(&quot;hello&quot;) == 5</code>.</p>
 <p>You are of course free to expand the function if you feel constrained by the given “blanks”. You can even rewrite it entirely as you wish, just please explain what you’re doing.</p>
 <p><strong>! Careful !</strong></p>
-<p>The R <code>while(CONDITION)</code> loop command simply repeats until CONDITION is no longer true. If there is a mistake in the code and CONDITION never changes, the code will run forever. If you see your code running for very long (like when running the tests), press the red stop button in the corner of the code chunk. Sometimes RStudio doesn’t like this. If it starts misbehaving (like not running your code chunks), try restarting R (Session &gt; Restart R) or getting a new RStudio session (Session &gt; New Session).</p>
+<p>The R <code>while(CONDITION)</code> loop command simply repeats until CONDITION is no longer true. If there is a mistake in the code and the logical value of CONDITION never changes, the code will run forever. If you see your code running for very long (like when running the tests), press the red stop button in the corner of the code chunk. Sometimes RStudio doesn’t like this. If it starts misbehaving (like not running your code chunks), try restarting R (Session &gt; Restart R) or getting a new RStudio session (Session &gt; New Session).</p>
 <pre class="r"><code>len_overlap &lt;- function(seq1, seq2) {
     ##############################################    
     # Find the longest overlap between a suffix of seq1 and a prefix of seq2

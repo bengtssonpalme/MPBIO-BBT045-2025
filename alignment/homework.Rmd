@@ -17,9 +17,9 @@ knitr::opts_chunk$set(eval = FALSE)
 
 # Instructions
 
-- Download [this](homework.Rmd) notebook and write your solutions inside it
+- Download [this](homework.Rmd) notebook and write your solutions inside it.
 
-- Upload the notebook with your solutions to your allocated repo.
+- Add the notebook with your solutions to your allocated GitHub repo. (Remember to commit and push.)
 
 - To solve the tasks, finish the code skeletons provided.
   **The code must be runnable to get full points**.
@@ -42,7 +42,10 @@ It also helps illustrate that these algorithms are quite general and can be appl
 ## Advice
 
 * Always restart R (*Session* > *Restart R*) and rerun the notebook
-from the top to double-check (i.e. reproduce) your solutions.
+from the top to double-check (i.e. reproduce) your solutions. 
+To make sure you get a clean session, prevent RStudio from loading the previous workspace: 
+*Tools > Global options*, then in the General tab disable "Restore .RData into workspace at startup",
+and for "Save workspace to .RData on exit" select "Never".
 
 * Remember that R starts indexing vectors at position `1`. 
 Many other languages in which these algorithms are implemented start at `0`.
@@ -278,7 +281,7 @@ Finish the provided code.
 Since it is a variation of the global alignment algorithm, 
 the Smith-Waterman algorithm has a similar structure. 
 
-A *big difference* is that one takes the *maximum* of different possibilities, 
+A **big difference** is that one takes the **maximum** of different possibilities, 
 since once keeps track of an optimum score.
 
 ```{r}
@@ -393,8 +396,9 @@ below to check yourself.
 
 Note that this time we're not converting the strings `seq1` and `seq2` to character vectors, 
 because R has some functions which we can use, but these work on strings 
-(e.g. "hello" instead of c("h", "e", "l", "l", "o")).
-Read about these functions: `substr()`, `startsWith()`, `endsWith()` and think
+(e.g. we use `"hello"` instead of `c("h", "e", "l", "l", "o")` as before).
+
+**Read about these functions**: `substr()`, `startsWith()`, `endsWith()` and think
 about how to use them to solve this tasks. 
 Also, recall `nchar()` counts the number of characters in a string, while `length()`
 counts the elements in a vector. A string is a single element, so `length("hello") == 1`
@@ -406,7 +410,7 @@ You are of course free to expand the function if you feel constrained by the giv
 **! Careful !**
 
 The R `while(CONDITION)` loop command simply repeats until CONDITION is no longer true. 
-If there is a mistake in the code and CONDITION never changes,
+If there is a mistake in the code and the logical value of CONDITION never changes,
 the code will run forever. If you see your code running for very long 
 (like when running the tests), press the red stop button in the corner of the code chunk. 
 Sometimes RStudio doesn't like this.
