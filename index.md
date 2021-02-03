@@ -15,7 +15,7 @@ title: MPBIO-BBT045 Course page
 * [HW 2: R for Data Analysis](r_for_data_analysis/homework.html)
 * [HW 3: Alignment](alignment/homework.html)
 
-<hr />
+<hr style="border-color:black;" />
 
 
 # Study Material and Exercises
