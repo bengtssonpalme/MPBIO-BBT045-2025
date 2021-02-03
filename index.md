@@ -2,6 +2,9 @@
 title: MPBIO-BBT045 Course page
 ---
 
+1 Contents
+{:toc}
+
 # Homework
 
 * [HW 1: Unix](homework1.md)
