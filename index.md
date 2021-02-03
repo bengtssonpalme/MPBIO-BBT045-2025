@@ -119,11 +119,10 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 
 # Practical info for projects (2020)
-
 * [How to install your own software on the server](installing_software_on_the_server.md)
 
-<hr />
 
+<hr />
 
 Chalmers University of Technology
 
