@@ -2,7 +2,8 @@
 title: MPBIO-BBT045 Course page
 ---
 
-1 Contents
+**Contents**
+1. TOC
 {:toc}
 
 # Homework
