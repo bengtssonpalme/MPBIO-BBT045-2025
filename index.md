@@ -2,7 +2,7 @@
 title: MPBIO-BBT045 Course page
 ---
 
-**Contents**
+# Navigation
 1. TOC
 {:toc}
 
