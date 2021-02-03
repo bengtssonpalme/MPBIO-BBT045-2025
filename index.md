@@ -3,7 +3,7 @@ title: MPBIO-BBT045 Course page
 ---
 
 **Navigation**
-1. TOC
+* TOC
 {:toc}
 
 <hr />
@@ -15,7 +15,7 @@ title: MPBIO-BBT045 Course page
 * [HW 2: R for Data Analysis](r_for_data_analysis/homework.html)
 * [HW 3: Alignment](alignment/homework.html)
 
-<hr style="border-color:black;" />
+<hr />
 
 
 # Study Material and Exercises
