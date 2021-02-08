@@ -309,8 +309,8 @@ local_alignment_matrix <- function(seq1, seq2) {
     # Walk through all cells of the matrix,
     # updating the current cell by considering a step from 3 possible directions,
     # and taking the max of scores corresponding 3 directions.
-    for (i in seq(from = 2, to = length(seq1))) {
-        for (j in seq(from = 2, to = length(seq2))) {
+    for (i in seq(from = 2, to = length(seq1) + 1)) {
+        for (j in seq(from = 2, to = length(seq2) + 1)) {
             
             dist_from_upper_left <- ### WRITE CODE HERE ###
             dist_from_above      <- ### WRITE CODE HERE ###

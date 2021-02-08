@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2021-02-03" />
+<meta name="date" content="2021-02-08" />
 
 <title>Homework 3: Alignment</title>
 
@@ -267,7 +267,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Homework 3: Alignment</h1>
-<h4 class="date">2021-02-03</h4>
+<h4 class="date">2021-02-08</h4>
 
 </div>
 
@@ -509,8 +509,8 @@ print(dist_local_example(&#39;A&#39;, &#39;C&#39;) + dist_local_example(&#39;G&#
     # Walk through all cells of the matrix,
     # updating the current cell by considering a step from 3 possible directions,
     # and taking the max of scores corresponding 3 directions.
-    for (i in seq(from = 2, to = length(seq1))) {
-        for (j in seq(from = 2, to = length(seq2))) {
+    for (i in seq(from = 2, to = length(seq1) + 1)) {
+        for (j in seq(from = 2, to = length(seq2) + 1)) {
             
             dist_from_upper_left &lt;- ### WRITE CODE HERE ###
             dist_from_above      &lt;- ### WRITE CODE HERE ###
