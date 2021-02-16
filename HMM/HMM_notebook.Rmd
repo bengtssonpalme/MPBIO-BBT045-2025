@@ -1,5 +1,13 @@
 ---
-title: "HMM Notebook"
+title: "Homework 4: Hidden Markov Models"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    df_print: paged
+  pdf_document: default
 ---
 
 
@@ -41,10 +49,10 @@ You can work in this notebook and put in your own code. The answers you can type
 
 This homework together with the project is meant for you to feel a little of how it is like to work as a bioinformatition. Thus, for this homework feel free to experiment and change things if you think there is a better way to do things another way. Just specify what you changed and why. There is of course obvious ways to improve validation and also the annotation of the genes with different patterns. **Most importantly this is meant to be fun!**  
 
-## 0. Setting up your directory
+# 0. Setting up your directory
 Start by making a HW4 directory. In your HW4 directory you will create a results directory and you will create a data directory. In your data directory you'll place a copy of the file S288C_reference_sequence_R64-2-1_20150113.fsa that we used in the unix HW. This notebook should be placed in the HW4 directory. After that we should be god to go.  
 
-## 1. Baseline Results
+# 1. Baseline Results
 Note This step can take some time (~30 min if the server isn't under heavy load).
 For this part, you will need to run Augustus on the server, where it's already installed.
 Grab a copy of the S. cerevisiae reference genome as described in sction 0. Then run Augustus as below (adjust if you've named your directories differently)
@@ -77,7 +85,7 @@ And it uses the .gff file created by augustus and places the result in a seperat
 
 ```
 
-## 2. Literature
+# 2. Literature
 Read at least the 2 references below (a few pages), to recap the concepts and to maybe get a model as your starting point.
 Please very briefly describe your chosen model. Why did you or the authors chose the sates you did? Did the authors mention why they chose the probabilities they did? If you created your own model, how did you decide the probabilities?
 References:
@@ -86,7 +94,7 @@ Some lecture slides from the University of Waterloo (pages 1-14 cover models lik
 Yet another article describing a number of HMM classes for sequence analysis The model in 2.2. (Fig. 1) could also be a starting point https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/
 
 
-## 3. The basic (2-state) model 
+# 3. The basic (2-state) model 
 
 We'll be playing with simple HMMs using the HMM package, the documentation can be found here [HMM](https://cran.r-project.org/web/packages/HMM/HMM.pdf).
 
@@ -248,7 +256,7 @@ hist(width_trained_model)
 
 5: When translating our predicted genes you can see that some places is annotated with * rather then a charecter of an amino acid these resedues indicate instead that a stop codon was translated. 
 
-## 4. Assignment: Build a better HMM
+# 4. Assignment: Build a better HMM
 
 Your turn! Create a better HMM using the example and code provided and try your best to get better results.
 How well can you do against Augustus? :) (the important thing is to build + use the model so don't worry about matching it - just aim to improve results)
