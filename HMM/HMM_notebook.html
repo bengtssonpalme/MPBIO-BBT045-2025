@@ -315,7 +315,7 @@ div.tocify {
 <div id="baseline-results" class="section level1">
 <h1>1. Baseline Results</h1>
 <p>Note This step can take some time (~30 min if the server isn’t under heavy load). For this part, you will need to run Augustus on the server, where it’s already installed. Grab a copy of the S. cerevisiae reference genome as described in section 0. Then run Augustus as below (adjust if you’ve named your directories differently)</p>
-<pre class="bash"><code>/augustus data/S288C_reference_sequence_R64-2-1_20150113.fsa \
+<pre class="bash"><code>augustus data/S288C_reference_sequence_R64-2-1_20150113.fsa \
     --species=saccharomyces_cerevisiae_S288C \
     --progress=True &gt; results/ref_annot_augustus.gff
 </code></pre>
@@ -328,16 +328,20 @@ sed &#39;1,14d&#39; results/ref_annot_augustus.gff | head -n 12
 <li>seqID = chromosome ID</li>
 <li>type of feature</li>
 <li>start position of feature</li>
-<li>end pos. of feat.</li>
+<li>end position of feature</li>
 </ol>
-<p>Extract the protein sequences into a FASTA file. This will be used to compare your results against later in the evaluation step. Note: the script getAnnoFast.pl is located in directory /home/sandra/Documents/HMM/ And it uses the .gff file created by augustus and places the result in a seperate file called ref_annot_augustus.aa</p>
-<pre class="bash"><code>
-/home/sandra/Documents/HMM/getAnnoFast.pl results/ref_annot_augustus.gff
-</code></pre>
+<p>Extract the protein sequences into a FASTA file. This will be used to compare your results against later in the evaluation step. Note: the script getAnnoFast.pl is located in directory /home/sandra/Documents/HMM/ And it uses the .gff file created by augustus and places the result in a seperate file called <code>ref_annot_augustus.aa</code></p>
+<pre class="bash"><code>/home/sandra/Documents/HMM/getAnnoFast.pl results/ref_annot_augustus.gff</code></pre>
 </div>
 <div id="literature" class="section level1">
 <h1>2. Literature</h1>
-<p>Read at least the 2 references below (a few pages), to recap the concepts and to maybe get a model as your starting point. Please very briefly describe your chosen model. Why did you or the authors chose the sates you did? Did the authors mention why they chose the probabilities they did? If you created your own model, how did you decide the probabilities? References: Quick recap of gene annotation with HMMs, along with a simple example model What is a hidden Markov model? Some lecture slides from the University of Waterloo (pages 1-14 cover models like we’ve discussed). You could use the model on page 9 as a starting point <a href="https://www.math.uwaterloo.ca/~aghodsib/courses/w05stat440/w05stat440-notes/feb27.pdf" class="uri">https://www.math.uwaterloo.ca/~aghodsib/courses/w05stat440/w05stat440-notes/feb27.pdf</a> Yet another article describing a number of HMM classes for sequence analysis The model in 2.2. (Fig. 1) could also be a starting point <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/</a></p>
+<p>Read at least the 2 references below (a few pages), to recap the concepts and to maybe get a model as your starting point. Please very briefly describe your chosen model. Why did you or the authors chose the sates you did? Did the authors mention why they chose the probabilities they did? If you created your own model, how did you decide the probabilities?</p>
+<p>References:</p>
+<ul>
+<li><p>Quick recap of gene annotation with HMMs, along with a simple example model <a href="https://www.nature.com/articles/nbt1004-1315">What is a hidden Markov model?</a></p></li>
+<li><p>Some lecture slides from the University of Waterloo (pages 1-14 cover models like we’ve discussed). You could use the model on page 9 as a starting point <a href="https://www.math.uwaterloo.ca/~aghodsib/courses/w05stat440/w05stat440-notes/feb27.pdf" class="uri">https://www.math.uwaterloo.ca/~aghodsib/courses/w05stat440/w05stat440-notes/feb27.pdf</a></p></li>
+<li><p>Yet another article describing a number of HMM classes for sequence analysis The model in 2.2. (Fig. 1) could also be a starting point <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/</a></p></li>
+</ul>
 </div>
 <div id="the-basic-2-state-model" class="section level1">
 <h1>3. The basic (2-state) model</h1>
@@ -360,19 +364,19 @@ library(&quot;tidyverse&quot;)</code></pre>
 <h3>Defining some helper functions</h3>
 <p>You will use these functions when you set up your own experiments.</p>
 <ol style="list-style-type: decimal">
-<li>preparing_observations(set, indices) helps you prepare your data sets
+<li><code>preparing_observations(set, indices)</code> helps you prepare your data sets
 <ul>
 <li>set: expects a DNAStringSet (your loaded reference genome)</li>
 <li>indices: expect indices of which chromosomes to load (1-17)</li>
 <li>returns: list of observations</li>
 </ul></li>
-<li>get_gene_start_and_stop_from_annotation(annotation_list, pattern) helps you get the indices of annotated genes
+<li><code>get_gene_start_and_stop_from_annotation(annotation_list, pattern)</code> helps you get the indices of annotated genes
 <ul>
 <li>annotation_list: expects annotated observations as a list.</li>
 <li>pattern: expects regex string (use default ‘C+’ to get all starts and stops of stretches of C)</li>
 <li>returns: list of start and stop indices for annotated genes (as pattern describes)</li>
 </ul></li>
-<li>convert_to_proteins(indices, string) helps you to translate annotated genes to proteins
+<li><code>convert_to_proteins(indices, string)</code> helps you to translate annotated genes to proteins
 <ul>
 <li>indices: expect output from get_gene_start_stop (first half of list start indices second half stop indices)</li>
 <li>string: expects DNAString to be translated</li>
@@ -439,18 +443,24 @@ print(gene_annot_model)  # Nice description of the model to inspect what we did.
 </div>
 <div id="prepare-data" class="section level3">
 <h3>Prepare Data</h3>
-<p>To train our HMM model the HMM module expects the observations to be in a sequence form, we can do this by using the helper function preparing_observations(set, indices) and give it the arguments set and indices. Set is the DNAstring set (reference genome) and indices is a vector specifying which chromosomes to load. When training a model it is important to validate your improved model on data that the model have not yet seen. Thus we will prepare <strong>two</strong> data sets one for <strong>training</strong> and one for <strong>testing</strong>. We do this separation by choosing different chromosomes for the two different sets. in the code below we have chosen chromosome 1-2 for the training set and chromosome 3-4 for the test set.</p>
+<p>To train our HMM model the HMM module expects the observations to be in a sequence form, we can do this by using the helper function <code>preparing_observations(set, indices)</code> and give it the arguments set and indices. Set is the DNAstring set (reference genome) and indices is a vector specifying which chromosomes to load.</p>
+<p>When training a model it is <strong>important to validate your improved model on data that the model has not yet seen</strong>. Thus we will prepare <strong>two</strong> data sets one for <strong>training</strong> and one for <strong>testing</strong>. We do this separation by choosing different chromosomes for the two different sets. in the code below we have chosen chromosome 1-2 for the training set and chromosome 3-4 for the test set.</p>
 <pre class="r"><code># load reference genome
 reference_genome_set &lt;- readDNAStringSet(&quot;data/S288C_reference_sequence_R64-2-1_20150113.fsa&quot;)
 
-#prepareing training set using chromosome 1-2  
+#preparing training set using chromosome 1-2  
 training_observations = preparing_observations(reference_genome_set, c(1:2))
 #preparing test set using chromosomes 3-4
 test_observations = preparing_observations(reference_genome_set, c(3:4))</code></pre>
 </div>
 <div id="training-model" class="section level3">
 <h3>Training model</h3>
-<p>Now that we have initialized our model and created our training data we are ready to start training the model. We do that by either the <code>baumWelch(HMM_model, observations, maxIterations)</code> or <code>viterbiTraining(HMM_model, observations, maxIterations)</code> which is the two algorithms for training in the HMM module. The arguments <code>HMM_model</code> is your HMM model, <code>observations</code> is the training data and <code>maxIterations</code> is the maximum number of iterations that the algorithm will run for ( there is a second stopping condition that has to do with a convergence criteria). In the code example below we train our model for 10 iterations, which can take a few minutes. Note1: We train our model on training data. Note2: In this example we have wraped the training expression <code>(trained_model &lt;- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])</code> in <code>system.time()</code> to get the running time for the training.</p>
+<p>Now that we have initialized our model and created our training data we are ready to start training the model. We do that by either the <code>baumWelch(HMM_model, observations, maxIterations)</code> or <code>viterbiTraining(HMM_model, observations, maxIterations)</code> which is the two algorithms for training in the HMM module. The argument <code>HMM_model</code> is your HMM model, <code>observations</code> is the training data and <code>maxIterations</code> is the maximum number of iterations that the algorithm will run for (there is a second stopping condition that has to do with a convergence criteria). In the code example below we train our model for 10 iterations, which can take a few minutes.</p>
+<p>Notes:</p>
+<ol style="list-style-type: decimal">
+<li>We train our model on training data.</li>
+<li>In this example we have wraped the training expression <code>(trained_model &lt;- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])</code> in <code>system.time()</code> to get the running time for the training.</li>
+</ol>
 <pre class="r"><code>system.time(trained_model &lt;- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])</code></pre>
 </div>
 <div id="saving-model-and-loading-model" class="section level3">
@@ -459,8 +469,9 @@ test_observations = preparing_observations(reference_genome_set, c(3:4))</code><
 </div>
 <div id="annotate-chromosome" class="section level3">
 <h3>Annotate chromosome</h3>
-<p>Once the model is trained we can use Use the trained model to annotate our test chromosome with C or N (coding or non-coding nucleobase). We do this with the function <code>viterbi(HMM_model, observations)</code>, below we annotate the test set both using the initial model and the model that we trained. After annotating we can gather the indices for the predicted coding regions of the test data. With the indices of the coding region and the DNA sequence we can translate the regions in to their respective proteins with the helper function convert_to_proteins(indices, observations).</p>
-<pre class="r"><code>PATTERN &lt;- &quot;C+&quot; # Simpel pattern getting the 
+<p>Once the model is trained we can use the trained model to annotate our test chromosome with <code>C</code> or <code>N</code> (coding or non-coding nucleobase). We do this with the function <code>viterbi(HMM_model, observations)</code>, below we annotate the test set both using the initial model and the model that we trained.</p>
+<p>After annotating we can gather the indices for the predicted coding regions of the test data. With the indices of the coding region and the DNA sequence we can translate the regions in to their respective proteins with the helper function <code>convert_to_proteins(indices, observations)</code>.</p>
+<pre class="r"><code>PATTERN &lt;- &quot;C+&quot; # Simple pattern getting the 
 annotation_initial_model &lt;- viterbi(gene_annot_model, test_observations)
 annotation_trained_model &lt;- viterbi(trained_model, test_observations)
 annotation_indices_initial_model &lt;- get_gene_start_and_stop_from_annotation(annotation_initial_model, PATTERN)
@@ -485,11 +496,13 @@ hist(width_trained_model)</code></pre>
 <p>3: Here we used a simple model with only two states coding and non-coding however DNA, as you know, have many more distinct regions with different roles. most often in machine learning picking the right model architecture that best describes the data is an art and well worth spending some time on.</p>
 <p>4: When we initiated our models parameters we already knew roughly what they should be based on our knowledge of biology. However, it is not always the case that we have such prior knowledge, in those cases we usually start from a uniform distribution of the parameters.</p>
 <p>5: When translating our predicted genes you can see that some places is annotated with * rather then a character of an amino acid these residues indicate instead that a stop codon was translated.</p>
+<p>6: The function provided for you to extract gene positions requires a regular expression (pattern) that describes what a gene looks like given the hidden states you chose (“C+” here). If you have trouble adjusting it for your model, get in touch with us since regexes were not covered in the course. If you want to experiment, <a href="https://regex101.com/" class="uri">https://regex101.com/</a> is a great size that tests and analyzes regexes</p>
 </div>
 </div>
 <div id="assignment-build-a-better-hmm" class="section level1">
 <h1>4. Assignment: Build a better HMM</h1>
-<p>Your turn! Create a better HMM using the example and code provided and try your best to get better results. How well can you do against Augustus? :) (the important thing is to build + use the model so don’t worry about matching it - just aim to improve results) Remember to Have fun!</p>
+<p>Your turn! Create a better HMM using the example and code provided and try your best to get better results. How well can you do against Augustus? :) (the important thing is to build + use the model so don’t worry about matching it - just aim to improve results)</p>
+<p>Remember to Have fun!</p>
 </div>
 
 

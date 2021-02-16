@@ -56,7 +56,7 @@ For this part, you will need to run Augustus on the server, where it's already i
 Grab a copy of the S. cerevisiae reference genome as described in section 0. Then run Augustus as below (adjust if you've named your directories differently)
 
 ```{bash, eval=F}
-/augustus data/S288C_reference_sequence_R64-2-1_20150113.fsa \
+augustus data/S288C_reference_sequence_R64-2-1_20150113.fsa \
     --species=saccharomyces_cerevisiae_S288C \
     --progress=True > results/ref_annot_augustus.gff
 
@@ -73,24 +73,27 @@ Augustus basically lists all found genes one after the other, with the various s
 1. seqID = chromosome ID
 2. type of feature
 3. start position of feature
-4. end pos. of feat.
+4. end position of feature
   
 Extract the protein sequences into a FASTA file. This will be used to compare your results against later in the evaluation step. Note: the script getAnnoFast.pl is located in directory /home/sandra/Documents/HMM/
-And it uses the .gff file created by augustus and places the result in a seperate file called ref_annot_augustus.aa 
+And it uses the .gff file created by augustus and places the result in a seperate file called `ref_annot_augustus.aa`
+
 ```{bash, eval=F}
-
 /home/sandra/Documents/HMM/getAnnoFast.pl results/ref_annot_augustus.gff
-
 ```
 
 # 2. Literature
 
 Read at least the 2 references below (a few pages), to recap the concepts and to maybe get a model as your starting point.
 Please very briefly describe your chosen model. Why did you or the authors chose the sates you did? Did the authors mention why they chose the probabilities they did? If you created your own model, how did you decide the probabilities?
+
 References:
-Quick recap of gene annotation with HMMs, along with a simple example model What is a hidden Markov model?
-Some lecture slides from the University of Waterloo (pages 1-14 cover models like we've discussed). You could use the model on page 9 as a starting point https://www.math.uwaterloo.ca/~aghodsib/courses/w05stat440/w05stat440-notes/feb27.pdf
-Yet another article describing a number of HMM classes for sequence analysis The model in 2.2. (Fig. 1) could also be a starting point https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/
+
+- Quick recap of gene annotation with HMMs, along with a simple example model [What is a hidden Markov model?](https://www.nature.com/articles/nbt1004-1315)
+
+- Some lecture slides from the University of Waterloo (pages 1-14 cover models like we've discussed). You could use the model on page 9 as a starting point https://www.math.uwaterloo.ca/~aghodsib/courses/w05stat440/w05stat440-notes/feb27.pdf
+
+- Yet another article describing a number of HMM classes for sequence analysis The model in 2.2. (Fig. 1) could also be a starting point https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2766791/
 
 
 # 3. The basic (2-state) model 
@@ -121,21 +124,20 @@ library("tidyverse")
 ### Defining some helper functions
 You will use these functions when you set up your own experiments. 
 
-1. preparing_observations(set, indices) helps you prepare your data sets 
+1. `preparing_observations(set, indices)` helps you prepare your data sets 
     * set: expects a DNAStringSet (your loaded reference genome)
     * indices: expect indices of which chromosomes to load (1-17)
     * returns: list of observations
-2. get_gene_start_and_stop_from_annotation(annotation_list, pattern) helps you get the indices of annotated genes
+2. `get_gene_start_and_stop_from_annotation(annotation_list, pattern)` helps you get the indices of annotated genes
     * annotation_list: expects annotated observations as a list.
     * pattern: expects regex string (use default 'C+' to get all starts and stops of stretches of C)
     * returns: list of start and stop indices for annotated genes (as pattern describes)
-3. convert_to_proteins(indices, string) helps you to translate annotated genes to proteins
+3. `convert_to_proteins(indices, string)` helps you to translate annotated genes to proteins
     * indices: expect output from get_gene_start_stop (first half of list start indices second half stop indices)
     * string: expects DNAString to be translated
     * returns: list of proteins 
     
 ```{r, eval=F}
-
 get_gene_start_and_stop_from_annotation <- function(annotation_list, pattern){
   # Function that returns indices of all matches to the pattern
   annotation_string <- convert_list_to_string(annotation_list)
@@ -203,13 +205,15 @@ print(gene_annot_model)  # Nice description of the model to inspect what we did.
 
 ### Prepare Data
 
-To train our HMM model the HMM module expects the observations to be in a sequence form, we can do this by using the helper function preparing_observations(set, indices) and give it the arguments set and indices. Set is the DNAstring set (reference genome) and indices is a vector specifying which chromosomes to load. When training a model it is important to validate your improved model on data that the model have not yet seen. Thus we will prepare **two** data sets one for **training** and one for **testing**. We do this separation by choosing different chromosomes for the two different sets. in the code below we have chosen chromosome 1-2 for the training set and chromosome 3-4 for the test set.
+To train our HMM model the HMM module expects the observations to be in a sequence form, we can do this by using the helper function `preparing_observations(set, indices)` and give it the arguments set and indices. Set is the DNAstring set (reference genome) and indices is a vector specifying which chromosomes to load.
+
+When training a model it is **important to validate your improved model on data that the model has not yet seen**. Thus we will prepare **two** data sets one for **training** and one for **testing**. We do this separation by choosing different chromosomes for the two different sets. in the code below we have chosen chromosome 1-2 for the training set and chromosome 3-4 for the test set.
 
 ```{r, eval=F}
 # load reference genome
 reference_genome_set <- readDNAStringSet("data/S288C_reference_sequence_R64-2-1_20150113.fsa")
 
-#prepareing training set using chromosome 1-2  
+#preparing training set using chromosome 1-2  
 training_observations = preparing_observations(reference_genome_set, c(1:2))
 #preparing test set using chromosomes 3-4
 test_observations = preparing_observations(reference_genome_set, c(3:4))
@@ -217,9 +221,12 @@ test_observations = preparing_observations(reference_genome_set, c(3:4))
 
 ### Training model
 
-Now that we have initialized our model and created our training data we are ready to start training the model. We do that by either the `baumWelch(HMM_model, observations, maxIterations)` or `viterbiTraining(HMM_model, observations, maxIterations)` which is the two algorithms for training in the HMM module. The arguments `HMM_model` is your HMM model, `observations` is the training data and `maxIterations` is the maximum number of iterations that the algorithm will run for ( there is a second stopping condition that has to do with a convergence criteria). In the code example below we train our model for 10 iterations, which can take a few minutes.
-Note1: We train our model on training data.
-Note2: In this example we have wraped the training expression `(trained_model <- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])` in `system.time()` to get the running time for the training. 
+Now that we have initialized our model and created our training data we are ready to start training the model. We do that by either the `baumWelch(HMM_model, observations, maxIterations)` or `viterbiTraining(HMM_model, observations, maxIterations)` which is the two algorithms for training in the HMM module. The argument `HMM_model` is your HMM model, `observations` is the training data and `maxIterations` is the maximum number of iterations that the algorithm will run for (there is a second stopping condition that has to do with a convergence criteria). In the code example below we train our model for 10 iterations, which can take a few minutes.
+
+Notes: 
+
+1. We train our model on training data.
+2. In this example we have wraped the training expression `(trained_model <- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])` in `system.time()` to get the running time for the training. 
 
 ```{r, eval=F}
 system.time(trained_model <- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])
@@ -232,10 +239,12 @@ We dont have this as part of this homework but it could be convinent for you to 
 
 ### Annotate chromosome
 
-Once the model is trained we can use Use the trained model to annotate our test chromosome with C or N (coding or non-coding nucleobase). We do this with the function `viterbi(HMM_model, observations)`, below we annotate the test set both using the initial model and the model that we trained. After annotating we can gather the indices for the predicted coding regions of the test data. With the indices of the coding region and the DNA sequence we can translate the regions in to their respective proteins with the helper function convert_to_proteins(indices, observations).  
+Once the model is trained we can use the trained model to annotate our test chromosome with `C` or `N` (coding or non-coding nucleobase). We do this with the function `viterbi(HMM_model, observations)`, below we annotate the test set both using the initial model and the model that we trained. 
+
+After annotating we can gather the indices for the predicted coding regions of the test data. With the indices of the coding region and the DNA sequence we can translate the regions in to their respective proteins with the helper function `convert_to_proteins(indices, observations)`.  
 
 ```{r, eval=F}
-PATTERN <- "C+" # Simpel pattern getting the 
+PATTERN <- "C+" # Simple pattern getting the 
 annotation_initial_model <- viterbi(gene_annot_model, test_observations)
 annotation_trained_model <- viterbi(trained_model, test_observations)
 annotation_indices_initial_model <- get_gene_start_and_stop_from_annotation(annotation_initial_model, PATTERN)
@@ -270,8 +279,12 @@ hist(width_trained_model)
 
 5: When translating our predicted genes you can see that some places is annotated with * rather then a character of an amino acid these residues indicate instead that a stop codon was translated. 
 
+6: The function provided for you to extract gene positions requires a regular expression (pattern) that describes what a gene looks like given the hidden states you chose ("C+" here). If you have trouble adjusting it for your model, get in touch with us since regexes were not covered in the course. If you want to experiment, https://regex101.com/ is a great size that tests and analyzes regexes
+
 # 4. Assignment: Build a better HMM
 
 Your turn! Create a better HMM using the example and code provided and try your best to get better results.
 How well can you do against Augustus? :) (the important thing is to build + use the model so don't worry about matching it - just aim to improve results)
+
+
 Remember to Have fun!
