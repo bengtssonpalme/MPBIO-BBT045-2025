@@ -10,8 +10,6 @@ output:
   pdf_document: default
 ---
 
-
-
 # Instructions
 
 For this homework, your task is to build an HMM model for annotating S. cerevisiae. Please read through the instructions before you start, to best plan your work.
@@ -47,15 +45,15 @@ The work is split up in four sections:
     
 You can work in this notebook and put in your own code. The answers you can type in at the very bottom or in a separate .txt file named Answers-HW4 The histograms can still be in the notebook just specify what line they are generated at. 
 
-This homework together with the project is meant for you to feel a little of how it is like to work as a bioinformatition. Thus, for this homework feel free to experiment and change things if you think there is a better way to do things another way. Just specify what you changed and why. There is of course obvious ways to improve validation and also the annotation of the genes with different patterns. **Most importantly this is meant to be fun!**  
+This homework together with the project is meant for you to feel a little of how it is like to work as a bioinformatician. Thus, for this homework feel free to experiment and change things if you think there is a better way to do things another way. Just specify what you changed and why. There is of course obvious ways to improve validation and also the annotation of the genes with different patterns. **Most importantly this is meant to be fun!**  
 
 # 0. Setting up your directory
-Start by making a HW4 directory. In your HW4 directory you will create a results directory and you will create a data directory. In your data directory you'll place a copy of the file S288C_reference_sequence_R64-2-1_20150113.fsa that we used in the unix HW. This notebook should be placed in the HW4 directory. After that we should be god to go.  
+Start by making a HW4 directory. In your HW4 directory you will create a results directory and you will create a data directory. In your data directory you'll place a copy of the file S288C_reference_sequence_R64-2-1_20150113.fsa that we used in the Unix HW. This notebook should be placed in the HW4 directory. After that we should be god to go.  
 
 # 1. Baseline Results
 Note This step can take some time (~30 min if the server isn't under heavy load).
 For this part, you will need to run Augustus on the server, where it's already installed.
-Grab a copy of the S. cerevisiae reference genome as described in sction 0. Then run Augustus as below (adjust if you've named your directories differently)
+Grab a copy of the S. cerevisiae reference genome as described in section 0. Then run Augustus as below (adjust if you've named your directories differently)
 
 ```{bash, eval=F}
 /augustus data/S288C_reference_sequence_R64-2-1_20150113.fsa \
@@ -86,6 +84,7 @@ And it uses the .gff file created by augustus and places the result in a seperat
 ```
 
 # 2. Literature
+
 Read at least the 2 references below (a few pages), to recap the concepts and to maybe get a model as your starting point.
 Please very briefly describe your chosen model. Why did you or the authors chose the sates you did? Did the authors mention why they chose the probabilities they did? If you created your own model, how did you decide the probabilities?
 References:
@@ -108,7 +107,9 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 if(!require("Biostrings"))
     BiocManager::install("Biostrings")
 ```
+
 Import the packages.
+
 ```{r, eval=F}
 # Importing the stuff we need. The message and warning flags above are to get RStudio to shut up
 # when importing these libraries (not print all the messages dumped by them).
@@ -125,13 +126,14 @@ You will use these functions when you set up your own experiments.
     * indices: expect indices of which chromosomes to load (1-17)
     * returns: list of observations
 2. get_gene_start_and_stop_from_annotation(annotation_list, pattern) helps you get the indices of annotated genes
-    * annotation_list: expects anotated observations as a list.
+    * annotation_list: expects annotated observations as a list.
     * pattern: expects regex string (use default 'C+' to get all starts and stops of stretches of C)
-    * returns: list of start and stop indices for annotated gense (as pattern discribes)
+    * returns: list of start and stop indices for annotated genes (as pattern describes)
 3. convert_to_proteins(indices, string) helps you to translate annotated genes to proteins
     * indices: expect output from get_gene_start_stop (first half of list start indices second half stop indices)
     * string: expects DNAString to be translated
     * returns: list of proteins 
+    
 ```{r, eval=F}
 
 get_gene_start_and_stop_from_annotation <- function(annotation_list, pattern){
@@ -177,10 +179,12 @@ preparing_observations <- function(set, indices){
 ```
 
 ### Initiate HMM model
-Now it's time to initiate our model, we can do that with the function initHMM() which is part of the HMM module.
+
+Now it's time to initiate our model, we can do that with the function `initHMM()` which is part of the HMM module.
 We need to specify starting values for the start/transition/emission probabilities as well as the state/emission symbols. 
 Below is the same basic model we've seen in the lecture and exercise, provided to show how to use the package.
 Skim through the short hmm tutorial to fix some concepts if the code/comments below are confusing.
+
 ```{r, eval=F}
 # initiates simple HMM model
 gene_annot_model = initHMM(
@@ -188,7 +192,7 @@ gene_annot_model = initHMM(
     Symbols = c("A", "T", "C", "G"),       # Symbols: set of outputs Y  (the order here determines the order of values below!)
     startProbs = c(0.3, 0.7),              # startProbs: initial transition probabilities $\pi$ into each state
     transProbs = rbind(c(0.995, 0.005),    # transProbs: the matrix A: each row c(...) holds the outgoing transition probabs for a given state (order),
-                       c(0.01,  0.99)),    #             rbind() = "row bind": creats a matrix, which is the strucure this functions expects
+                       c(0.01,  0.99)),    #             rbind() = "row bind": creates a matrix, which is the strucure this functions expects
     emissionProbs = t(rbind(c(0.3, 0.1),   # emissionProbs: the matrix B: each column represents the $b_state(symbol)$ for a given state.
                             c(0.3, 0.1),   #                t() is matrix transpose (because the function wants $b_state(symbol)$ to be rows
                             c(0.2, 0.4),   #                but the notes use columns...)
@@ -196,7 +200,9 @@ gene_annot_model = initHMM(
 )
 print(gene_annot_model)  # Nice description of the model to inspect what we did.
 ```
+
 ### Prepare Data
+
 To train our HMM model the HMM module expects the observations to be in a sequence form, we can do this by using the helper function preparing_observations(set, indices) and give it the arguments set and indices. Set is the DNAstring set (reference genome) and indices is a vector specifying which chromosomes to load. When training a model it is important to validate your improved model on data that the model have not yet seen. Thus we will prepare **two** data sets one for **training** and one for **testing**. We do this separation by choosing different chromosomes for the two different sets. in the code below we have chosen chromosome 1-2 for the training set and chromosome 3-4 for the test set.
 
 ```{r, eval=F}
@@ -210,18 +216,23 @@ test_observations = preparing_observations(reference_genome_set, c(3:4))
 ```
 
 ### Training model
-Now that we have initialised our model and created our training data we are ready to start training the model. We do that by either the baumWelch(HMM_model, observations, maxIterations) or viterbiTraining(HMM_model, observations, maxIterations) which is the two algorithems for training in the HMM module. The Arguments HMM_model is your HMM model, observations is the training data and maxIterations is the maximum number of iterations that the algorithm will run for ( there is a second stopping condition that has to do with a convergence criteria). In the code example below we train our model for 10 iterations, which can take a few minuts.
+
+Now that we have initialized our model and created our training data we are ready to start training the model. We do that by either the `baumWelch(HMM_model, observations, maxIterations)` or `viterbiTraining(HMM_model, observations, maxIterations)` which is the two algorithms for training in the HMM module. The arguments `HMM_model` is your HMM model, `observations` is the training data and `maxIterations` is the maximum number of iterations that the algorithm will run for ( there is a second stopping condition that has to do with a convergence criteria). In the code example below we train our model for 10 iterations, which can take a few minutes.
 Note1: We train our model on training data.
-Note2: In this example we have wraped the training expression (trained_model <- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]]) in system.time() to get the running time for the training. 
+Note2: In this example we have wraped the training expression `(trained_model <- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])` in `system.time()` to get the running time for the training. 
+
 ```{r, eval=F}
 system.time(trained_model <- viterbiTraining(gene_annot_model, training_observations, maxIterations=10)[[1]])
 
 ```
+
 ### Saving model and loading model
+
 We dont have this as part of this homework but it could be convinent for you to save parameter values once models are trained (it can take a long time to train models). Maybe you would like to return to a model for further testing or you are supper happy with it and wants to save it to use it later. You can read up on saving and loading basic data object in R on [saving data](https://rstudio-education.github.io/hopr/dataio.html)
 
 ### Annotate chromosome
-Once the model is trained we can use Use the trained model to annotate our test chromosome with C or N (coding or non-coding nucleobase). We do this with the function viterbi(HMM_model, observations), below we annotate the test set both using the initial model and the model that we trained. After annotating we can gather the indices for the predicted coding regions of the test data. With the indices of the coding region and the DNA sequence we can translate the regions in to their respective proteins with the helper function convert_to_proteins(indices, observations).  
+
+Once the model is trained we can use Use the trained model to annotate our test chromosome with C or N (coding or non-coding nucleobase). We do this with the function `viterbi(HMM_model, observations)`, below we annotate the test set both using the initial model and the model that we trained. After annotating we can gather the indices for the predicted coding regions of the test data. With the indices of the coding region and the DNA sequence we can translate the regions in to their respective proteins with the helper function convert_to_proteins(indices, observations).  
 
 ```{r, eval=F}
 PATTERN <- "C+" # Simpel pattern getting the 
@@ -235,7 +246,9 @@ proteins_trained_model <- convert_to_proteins(annotation_indices_trained_model, 
 
 
 ### Comparing gene length distributions  to reference
+
 Now that we have translated our coding regions we can compare the length distributions of our proteins from the initial and trained models with the proteins that Augustus found. This way we can see if we are improving with training. 
+
 ```{r, eval=F}
 width_augustus <- width(readAAStringSet("results/ref_annot_augustus.aa"))
 width_initial_model <- width(proteins_initial_model)
@@ -244,17 +257,18 @@ hist(width_augustus)
 hist(width_initial_model)
 hist(width_trained_model)
 ```
+
 ### Some caveats
 
-1: The Augustus distribution is from the whole genome not just the training set, if you want to you can save the specific chromosomes that you have in your test set in a seperate .fasta file and re run agustus on that to only extract the proteins corrisponding to chromosomes in your test set. In a real world scenario that would be the way to do it. However we don't expect to much differences in the length distribution between chromosomes.  
+1: The Augustus distribution is from the whole genome not just the training set, if you want to you can save the specific chromosomes that you have in your test set in a separate .fasta file and re run augustus on that to only extract the proteins corresponding to chromosomes in your test set. In a real world scenario that would be the way to do it. However we don't expect to much differences in the length distribution between chromosomes.  
 
 2: There are other methods for measuring the performance of your model, you could for example download the proteome from a data base like NCBI instead of using Augustus. You could also compare the proteins predicted by your model and the reference proteome using MSA to see the differences, for our purposes that is over kill. 
 
-3: Here we used a simpel model with only two states coding and non-coding however DNA, as you know, have many more distinct regions with different roles. most often in machine learning picking the right model architecture that best describes the data is an art and well worth spending some time on.
+3: Here we used a simple model with only two states coding and non-coding however DNA, as you know, have many more distinct regions with different roles. most often in machine learning picking the right model architecture that best describes the data is an art and well worth spending some time on.
 
-4: When we initiated our models parameters we already knew roughly what they should be based on our knowledge of biology. However, it is not always the case that we have such prior knowledge, in those cases we usualy start from a uniform distribution of the parameters.
+4: When we initiated our models parameters we already knew roughly what they should be based on our knowledge of biology. However, it is not always the case that we have such prior knowledge, in those cases we usually start from a uniform distribution of the parameters.
 
-5: When translating our predicted genes you can see that some places is annotated with * rather then a charecter of an amino acid these resedues indicate instead that a stop codon was translated. 
+5: When translating our predicted genes you can see that some places is annotated with * rather then a character of an amino acid these residues indicate instead that a stop codon was translated. 
 
 # 4. Assignment: Build a better HMM
 
