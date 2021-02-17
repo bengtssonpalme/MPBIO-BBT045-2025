@@ -1,0 +1,404 @@
+---
+title: "BBT045: Single Cell Analysis Tutorial"
+author: Filip Buric
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    df_print: paged
+  pdf_document: default
+---
+
+```{r, setup, include=F}
+knitr::opts_chunk$set(eval = FALSE)  # You don't need to run this
+```
+
+
+# Introduction
+
+In this exercise, we will analyze single cell data from human cancer cells.
+Download this notebook and the data file:
+
+```bash
+mkdir single_cell
+cd single_cell
+wget https://zelezniak-lab.github.io/MPBIO-BBT045/single_cell/sc_analysis.Rmd
+wget https://zelezniak-lab.github.io/MPBIO-BBT045/single_cell/sc_human_brain.RData
+```
+
+The **overall workflow** is:
+
+1. Read and preprocess data sets: healthy + cancer
+2. Normalize data
+3. Visualize data
+
+Go through the notebook yourselves and answer the questions (mostly reflections).
+If time permits, we will address these in class.
+
+A good part of the work involves changing the way data is *represented*
+to best match the analysis tasks we're interested in. 
+
+
+# Single cell data sources
+
+We have data from multiple sources.
+
+For **cancer** data, we'll use the `GSE84465` dataset,
+which consists of `3589` GBM (glioblastoma multiform) cells.
+
+For more **control** data, we will use the the `GSE67835` dataset,
+which consists of RNA sequencing on `466` healthy brain cells.
+
+We have also **tissue-specific data** from GTE (gene expression counts in a tissue-specific manner),
+as well as cancer data from TCGA (The Cancer Genome Atlas).
+
+These data were **already downloaded for you** and stored in the file `sc_human_brain.RData`
+
+For reference, the datasets can be viewed here:
+
+- https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84465
+- https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE67835
+
+
+
+
+
+
+# Install the required packages
+
+Make sure to check the console below for any answers R might ask from you.
+Say "Yes" when it asks for confirmation and "a" when asking whether to update packages.
+
+You only need to do this **once** for your RStudio.
+
+```{r, message=F}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+if (!require("SingleCellExperiment"))   # checks if the package exists and only install if not
+  BiocManager::install("SingleCellExperiment")
+
+if (!require("scater")) 
+  BiocManager::install("scater")
+
+if (!require("scran")) 
+  BiocManager::install("scran")
+
+if (!require("Rtsne")) 
+  install.packages("Rtsne")
+
+if (!require("umap")) 
+  install.packages("umap")
+```
+
+Load some libraries:
+
+```{r, message=F}
+library("tidyverse")
+```
+
+
+
+# Load and Preprocess Data
+
+Run the chunk below to load from the RData file 
+This will create new variables in the environment, which you can view to the right ->
+
+```{r}
+load("sc_human_brain.RData")
+```
+
+
+`sc.counts` holds GBM single cell counts as `transcripts per million` (TPM),
+from data set `GSE84465`. It's a matrix with:
+
+- columns = single-cell sample IDs from the [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/)
+- rows = gene names
+
+```{r}
+rownames(sc.counts) %>% head
+colnames(sc.counts) %>% head
+```
+
+
+Form the various databases, we have information about what cell types these samples have. 
+We'll extract these as a data frame, for downstream use.
+
+```{r}
+cell_types <-
+    tibble::enframe(
+        x = sc.sample.info["cell type:ch1",],
+        name = "GEO_sc_sample_id",
+        value = "cell_type"
+    )
+
+cell_types
+```
+
+To process single cell data, we will use the library `SingleCellExperiment`.
+It expects a matrix structured as (rows = genes,  columns = samples), 
+the same as our `sc.counts` matrix. 
+Here we also feed in the previously constructed `cell_types` data frame.
+
+```{r, warning=F, message=F}
+library("SingleCellExperiment")
+gbm_sc_experiment <- SingleCellExperiment(assays = list(counts = sc.counts),
+                                          colData = cell_types)
+```
+
+
+## Normalization
+
+We have 2 things to take care of:
+
+- gene counts from multiple single cells must be adjusted to a single scale (often a percent)
+- gene counts spanning multiple orders of magnitude
+
+### Question
+
+Why are these 2 things problematic?
+
+
+To make our lives easier, we'll use two helper libraries for `SingleCellExperiment` to:
+
+- compute the size factor (weight) of each sample
+- log-transform the counts
+
+For simplicity and to save memory, we'll be overwriting the original with the
+normalized version, since it's all we care about.
+
+```{r, warning=F, message=F}
+library("scater")  # Single-Cell Analysis Toolkit for Gene Expression Data
+library("scran")   # Methods for Single-Cell RNA-Seq Data Analysis
+
+# Compute the size factor of each single cell sample using
+# the deconvolution strategy by (Lun et al., 2016) for scaling normalization of sparse count data
+gbm_sc_experiment <- scran::computeSumFactors(gbm_sc_experiment)
+
+# Compute log-transformed normalized expression values
+gbm_sc_experiment <- scater::logNormCounts(gbm_sc_experiment)
+```
+
+
+
+
+
+
+# Visualization
+
+We're going to inspect gene distributions by reducing the number of dimensions (cell samples)
+using a linear and a non-linear method, then try to distinguish clusters of genes as basis for
+potential biological interpretation.
+
+
+## PCA
+
+While R has a built-in PCA function, we can skip more data wrestling and use specialized functions
+in the `SingleCellExperiment` helper libraries. 
+It's also kind and colors the points according to the `cell_types` we prepared earlier.
+
+Run the chunk below and answer these questions.
+
+### Questions
+
+- How many clusters do you see? 
+- Do you see a clear separation between the cell types?
+
+```{r}
+# By default, runPCA() uses the top 500 genes with the highest variances to compute the first PCs. 
+gbm_sc_experiment <- scater::runPCA(gbm_sc_experiment)
+
+scater::plotReducedDim(gbm_sc_experiment, 
+                       dimred = "PCA", 
+                       colour_by = "cell_type")   # Obs: Notice the UK spelling "coloUr"
+```
+
+
+
+## UMAP
+
+Let's see how the data is distributed under a UMAP transformation.
+
+UMAP's major parameter is the "number of neighbors" to consider around each point in the multidimensional space.
+It's rather robust to this value, but one ought to try different values.
+
+Please keep in mind that UMAP initialization might be randomized, so to reproduce the same results,
+R's random number generator has to be fixed, making it give out the same sequence of random numbers
+every time.
+
+```{r}
+set.seed(123)           # Fix random number generation
+UMAP_N_NEIGHBORS = 30
+
+gbm_sc_experiment <- scater::runUMAP(gbm_sc_experiment,
+                                     n_neighbors = UMAP_N_NEIGHBORS)
+scater::plotUMAP(gbm_sc_experiment, 
+                 colour_by = "cell_type")
+```
+
+## t-SNE
+
+The major parameter to adjust for t-SNE is the "perplexity" (statistical concept),
+basically the area around each point to consider.
+It can be quite sensitive to it (depending on the data), so you should try out different values.
+
+```{r}
+set.seed(123) 
+TSNE_PERPLEXITY = 10
+
+gbm_sc_experiment <- scater::runTSNE(gbm_sc_experiment,
+                                     perplexity = TSNE_PERPLEXITY)
+scater::plotUMAP(gbm_sc_experiment, 
+                 colour_by = "cell_type")
+```
+
+## Questions
+
+* Was this helpful?
+* Which method was most informative?
+* Do the various methods agree on clusters?
+
+
+
+# Find cancer cell clusters
+
+Now let's focus on only the cancerous cells and look for gene clusters.
+
+Recall: the columns are the single cell sample IDs.
+We have the `cell_type` data frame we can use to pick those columns (samples)
+that are from cancer cell.
+
+```{r}
+cancer_samples <- sapply(cell_types$cell_type, 
+                         function(ctype) {ctype == "Neoplastic"}
+                         )
+
+gbm_sc_cancer_experiment <- gbm_sc_experiment[, cancer_samples]
+```
+
+
+## Visualize with different methods
+
+Since we're looking at a single type of cells, it's not obvious how to color the genes.
+The point is rather to find gene clusters within this category of cancer cells.
+
+```{r}
+gbm_sc_cancer_experiment <- scater::runPCA(gbm_sc_cancer_experiment)
+scater::plotReducedDim(gbm_sc_cancer_experiment, dimred = "PCA")
+
+set.seed(123)
+TSNE_PERPLEXITY <- 10
+gbm_sc_cancer_experiment <- scater::runTSNE(gbm_sc_cancer_experiment, 
+                                            perplexity = TSNE_PERPLEXITY)
+scater::plotTSNE(gbm_sc_cancer_experiment)
+
+set.seed(123)       
+UMAP_N_NEIGHBORS <- 30
+
+gbm_sc_cancer_experiment <- scater::runUMAP(gbm_sc_cancer_experiment,
+                                            n_neighbors = UMAP_N_NEIGHBORS)
+scater::plotUMAP(gbm_sc_cancer_experiment)
+```
+
+
+## K-means clustering
+
+Since we don't know how to "color" (group) the points, let's use K-means clustering
+
+```{r}
+umap_variables <- reducedDims(gbm_sc_cancer_experiment)[["UMAP"]]
+tsne_variables <- reducedDims(gbm_sc_cancer_experiment)[["TSNE"]]
+pca_results <- reducedDims(gbm_sc_cancer_experiment)[["PCA"]]
+```
+
+Let's look at the scree plot:
+
+```{r}
+component_variance_explained <- attr(pca_results, "percentVar")
+
+tibble::as_tibble_col(component_variance_explained, column_name = "variance") %>% 
+dplyr::mutate(pc = dplyr::row_number()) %>% 
+
+ggplot() +
+    geom_point(aes(x = pc, y = variance)) +
+    geom_line(aes(x = pc, y = variance))
+```
+
+
+Though there are more rigorous ways to choose, let's say the first 3 principal components
+are most informative, accounting for the following percentages of variation in the data:
+
+```{r}
+head(component_variance_explained, n = 3)
+```
+
+Now for the k-means clustering using the built-in R function.
+We need to transpose the matrix since `kmeans()` expects variables as rows and observations as columns.
+
+```{r}
+cancer_clusters <- kmeans(t(sc.counts[, cancer_samples]), centers = k)
+
+gene_clusters <- 
+    tibble::as_tibble_col(cancer_clusters$cluster, column_name = "cluster") %>% 
+    dplyr::mutate(gene = names(cancer_clusters$cluster))
+```
+
+
+Now that the cluster labels to our cancer `SingleCellExperiment` object and plot
+the dimensionality reductions, now coloring by the k-cluster number.
+
+```{r}
+# Add the k-cluster numbering to the gene information
+colData(gbm_sc_cancer_experiment)[, "k_cluster"] <- as.factor(cancer_clusters$cluster)
+
+scater::plotUMAP(gbm_sc_cancer_experiment, colour_by = "k_cluster")
+scater::plotTSNE(gbm_sc_cancer_experiment, colour_by = "k_cluster")
+scater::plotReducedDim(gbm_sc_cancer_experiment, dimred = "PCA", colour_by = "k_cluster") 
+```
+
+## Questions
+
+- Does the number of clusters make sense? Does this vary by dimensionality reduction method?
+- How is the clustering different if we change the number of clusters k?
+
+
+
+
+# Extra: K-means clustering on the *reduced* data
+
+The previous application of k-means clustering was performed in 1091-dimensional space.
+An alternative way is to first reduce the dimensionality of the data, 
+hoping to "cheat" by letting these methods recover "close" points,
+then perform clustering on this 2-dimensional space.
+
+This approach can give insight in some trickier cases but it must be used with care,
+as the clusters one obtains may simply be artifacts of the t-SNE or UMAP, with no
+biological significance.
+
+Further reading: https://umap-learn.readthedocs.io/en/latest/clustering.html
+
+Here's how this looks for us:
+
+```{r}
+k = 3
+
+cancer_tsne_kclusters <- kmeans(tsne_variables, centers = k)
+
+as_tibble(tsne_variables) %>%
+ggplot() +
+    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_kclusters$cluster)))
+```
+
+```{r}
+k = 3
+
+cancer_umap_kclusters <- kmeans(umap_variables, centers = k)
+
+as_tibble(umap_variables) %>%
+ggplot() +
+    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_kclusters$cluster)))
+```
+

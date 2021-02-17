@@ -95,13 +95,17 @@ A selection of small chapters and sections that explain concepts we cover in the
   - [Quick overview of Biostrings functionality](https://bioconductor.org/packages/release/bioc/vignettes/Biostrings/inst/doc/BiostringsQuickOverview.pdf)
   - [Simple examples of working with Biostrings](https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html)
   
-  
-  
 **Recommended Reading**
 
 * [Strategies for Reproducible R Environments](https://environments.rstudio.com/)
 * [R for Data Science](https://r4ds.had.co.nz)
 * [Advanced R](https://adv-r.hadley.nz) 
+
+<hr />
+
+## Tutorial: Single Cell Analysis
+
+[Exercise](sc_analysis.html)
 
 <hr />
 
