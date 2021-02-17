@@ -303,29 +303,18 @@ wget https://zelezniak-lab.github.io/MPBIO-BBT045/single_cell/sc_human_brain.RDa
 <li><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE67835" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE67835</a></li>
 </ul>
 </div>
-<div id="install-the-required-packages" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Install the required packages</h1>
-<p>Make sure to check the console below for any answers R might ask from you. Say “Yes” when it asks for confirmation and “a” when asking whether to update packages.</p>
+<div id="install-the-required-packages-10-15-minutes" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Install the required packages (10-15 minutes)</h1>
+<p>Run the following installation commands <strong>in the R console</strong> (huge output). Make sure to check for any answers R might ask from you. Say “Yes” when it asks for confirmation and “n” when asking whether to update packages.</p>
 <p>You only need to do this <strong>once</strong> for your RStudio.</p>
-<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
+<pre class="r"><code>BiocManager::install(&quot;SingleCellExperiment&quot;)
 
-if (!require(&quot;SingleCellExperiment&quot;))   # checks if the package exists and only install if not
-  BiocManager::install(&quot;SingleCellExperiment&quot;)
+# We need the latest RcppAnnoy otherwise BiocNeighors fails to compile
+install.packages(&quot;https://cran.r-project.org/src/contrib/Archive/RcppAnnoy/RcppAnnoy_0.0.16.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)
 
-if (!require(&quot;scater&quot;)) 
-  BiocManager::install(&quot;scater&quot;)
-
-if (!require(&quot;scran&quot;)) 
-  BiocManager::install(&quot;scran&quot;)
-
-if (!require(&quot;Rtsne&quot;)) 
-  install.packages(&quot;Rtsne&quot;)
-
-if (!require(&quot;umap&quot;)) 
-  install.packages(&quot;umap&quot;)</code></pre>
-<p>Load some libraries:</p>
-<pre class="r"><code>library(&quot;tidyverse&quot;)</code></pre>
+BiocManager::install(&quot;BiocNeighbors&quot;)
+BiocManager::install(&quot;scater&quot;)
+BiocManager::install(&quot;scran&quot;)</code></pre>
 </div>
 <div id="load-and-preprocess-data" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> Load and Preprocess Data</h1>
@@ -336,7 +325,9 @@ if (!require(&quot;umap&quot;))
 <li>columns = single-cell sample IDs from the <a href="https://www.ncbi.nlm.nih.gov/geo/">Gene Expression Omnibus</a></li>
 <li>rows = gene names</li>
 </ul>
-<pre class="r"><code>rownames(sc.counts) %&gt;% head
+<pre class="r"><code>library(&quot;tidyverse&quot;)
+
+rownames(sc.counts) %&gt;% head
 colnames(sc.counts) %&gt;% head</code></pre>
 <p>Form the various databases, we have information about what cell types these samples have. We’ll extract these as a data frame, for downstream use.</p>
 <pre class="r"><code>cell_types &lt;-

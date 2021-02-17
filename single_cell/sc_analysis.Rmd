@@ -65,39 +65,23 @@ For reference, the datasets can be viewed here:
 
 
 
+# Install the required packages  (10-15 minutes)
 
-
-# Install the required packages
-
-Make sure to check the console below for any answers R might ask from you.
-Say "Yes" when it asks for confirmation and "a" when asking whether to update packages.
+Run the following installation commands **in the R console** (huge output).
+Make sure to check for any answers R might ask from you.
+Say "Yes" when it asks for confirmation and "n" when asking whether to update packages.
 
 You only need to do this **once** for your RStudio.
 
-```{r, message=F}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+```r
+BiocManager::install("SingleCellExperiment")
 
-if (!require("SingleCellExperiment"))   # checks if the package exists and only install if not
-  BiocManager::install("SingleCellExperiment")
+# We need the latest RcppAnnoy otherwise BiocNeighors fails to compile
+install.packages("https://cran.r-project.org/src/contrib/Archive/RcppAnnoy/RcppAnnoy_0.0.16.tar.gz", repos=NULL, type="source")
 
-if (!require("scater")) 
-  BiocManager::install("scater")
-
-if (!require("scran")) 
-  BiocManager::install("scran")
-
-if (!require("Rtsne")) 
-  install.packages("Rtsne")
-
-if (!require("umap")) 
-  install.packages("umap")
-```
-
-Load some libraries:
-
-```{r, message=F}
-library("tidyverse")
+BiocManager::install("BiocNeighbors")
+BiocManager::install("scater")
+BiocManager::install("scran")
 ```
 
 
@@ -119,6 +103,8 @@ from data set `GSE84465`. It's a matrix with:
 - rows = gene names
 
 ```{r}
+library("tidyverse")
+
 rownames(sc.counts) %>% head
 colnames(sc.counts) %>% head
 ```
