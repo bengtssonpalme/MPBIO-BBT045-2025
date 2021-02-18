@@ -105,7 +105,7 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 ## Tutorial: Single Cell Analysis
 
-[Exercise](sc_analysis.html)
+[Exercise](single_cell/sc_analysis.html)
 
 <hr />
 
