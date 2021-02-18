@@ -42,7 +42,7 @@ A good part of the work involves changing the way data is *represented*
 to best match the analysis tasks we're interested in. 
 
 
-# Single cell data sources
+## Single cell data sources
 
 We have data from multiple sources.
 

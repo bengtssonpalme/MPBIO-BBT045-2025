@@ -11,7 +11,7 @@
 
 <meta name="author" content="Filip Buric" />
 
-<meta name="date" content="2021-02-17" />
+<meta name="date" content="2021-02-18" />
 
 <title>BBT045: Single Cell Analysis Tutorial</title>
 
@@ -269,7 +269,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">BBT045: Single Cell Analysis Tutorial</h1>
 <h4 class="author">Filip Buric</h4>
-<h4 class="date">2021-02-17</h4>
+<h4 class="date">2021-02-18</h4>
 
 </div>
 
@@ -289,9 +289,8 @@ wget https://zelezniak-lab.github.io/MPBIO-BBT045/single_cell/sc_human_brain.RDa
 </ol>
 <p>Go through the notebook yourselves and answer the questions (mostly reflections). If time permits, we will address these in class.</p>
 <p>A good part of the work involves changing the way data is <em>represented</em> to best match the analysis tasks we’re interested in.</p>
-</div>
-<div id="single-cell-data-sources" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Single cell data sources</h1>
+<div id="single-cell-data-sources" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Single cell data sources</h2>
 <p>We have data from multiple sources.</p>
 <p>For <strong>cancer</strong> data, we’ll use the <code>GSE84465</code> dataset, which consists of <code>3589</code> GBM (glioblastoma multiform) cells.</p>
 <p>For more <strong>control</strong> data, we will use the the <code>GSE67835</code> dataset, which consists of RNA sequencing on <code>466</code> healthy brain cells.</p>
@@ -303,8 +302,9 @@ wget https://zelezniak-lab.github.io/MPBIO-BBT045/single_cell/sc_human_brain.RDa
 <li><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE67835" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE67835</a></li>
 </ul>
 </div>
-<div id="install-the-required-packages-10-15-minutes" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Install the required packages (10-15 minutes)</h1>
+</div>
+<div id="install-the-required-packages-10-15-minutes" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Install the required packages (10-15 minutes)</h1>
 <p>Run the following installation commands <strong>in the R console</strong> (huge output). Make sure to check for any answers R might ask from you. Say “Yes” when it asks for confirmation and “n” when asking whether to update packages.</p>
 <p>You only need to do this <strong>once</strong> for your RStudio.</p>
 <pre class="r"><code>BiocManager::install(&quot;SingleCellExperiment&quot;)
@@ -316,8 +316,8 @@ BiocManager::install(&quot;BiocNeighbors&quot;)
 BiocManager::install(&quot;scater&quot;)
 BiocManager::install(&quot;scran&quot;)</code></pre>
 </div>
-<div id="load-and-preprocess-data" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Load and Preprocess Data</h1>
+<div id="load-and-preprocess-data" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Load and Preprocess Data</h1>
 <p>Run the chunk below to load from the RData file This will create new variables in the environment, which you can view to the right -&gt;</p>
 <pre class="r"><code>load(&quot;sc_human_brain.RData&quot;)</code></pre>
 <p><code>sc.counts</code> holds GBM single cell counts as <code>transcripts per million</code> (TPM), from data set <code>GSE84465</code>. It’s a matrix with:</p>
@@ -342,15 +342,15 @@ cell_types</code></pre>
 <pre class="r"><code>library(&quot;SingleCellExperiment&quot;)
 gbm_sc_experiment &lt;- SingleCellExperiment(assays = list(counts = sc.counts),
                                           colData = cell_types)</code></pre>
-<div id="normalization" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Normalization</h2>
+<div id="normalization" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Normalization</h2>
 <p>We have 2 things to take care of:</p>
 <ul>
 <li>gene counts from multiple single cells must be adjusted to a single scale (often a percent)</li>
 <li>gene counts spanning multiple orders of magnitude</li>
 </ul>
-<div id="question" class="section level3" number="4.1.1">
-<h3 number="4.1.1"><span class="header-section-number">4.1.1</span> Question</h3>
+<div id="question" class="section level3" number="3.1.1">
+<h3 number="3.1.1"><span class="header-section-number">3.1.1</span> Question</h3>
 <p>Why are these 2 things problematic?</p>
 <p>To make our lives easier, we’ll use two helper libraries for <code>SingleCellExperiment</code> to:</p>
 <ul>
@@ -370,15 +370,15 @@ gbm_sc_experiment &lt;- scater::logNormCounts(gbm_sc_experiment)</code></pre>
 </div>
 </div>
 </div>
-<div id="visualization" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Visualization</h1>
+<div id="visualization" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Visualization</h1>
 <p>We’re going to inspect gene distributions by reducing the number of dimensions (cell samples) using a linear and a non-linear method, then try to distinguish clusters of genes as basis for potential biological interpretation.</p>
-<div id="pca" class="section level2" number="5.1">
-<h2 number="5.1"><span class="header-section-number">5.1</span> PCA</h2>
+<div id="pca" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> PCA</h2>
 <p>While R has a built-in PCA function, we can skip more data wrestling and use specialized functions in the <code>SingleCellExperiment</code> helper libraries. It’s also kind and colors the points according to the <code>cell_types</code> we prepared earlier.</p>
 <p>Run the chunk below and answer these questions.</p>
-<div id="questions" class="section level3" number="5.1.1">
-<h3 number="5.1.1"><span class="header-section-number">5.1.1</span> Questions</h3>
+<div id="questions" class="section level3" number="4.1.1">
+<h3 number="4.1.1"><span class="header-section-number">4.1.1</span> Questions</h3>
 <ul>
 <li>How many clusters do you see?</li>
 <li>Do you see a clear separation between the cell types?</li>
@@ -391,8 +391,8 @@ scater::plotReducedDim(gbm_sc_experiment,
                        colour_by = &quot;cell_type&quot;)   # Obs: Notice the UK spelling &quot;coloUr&quot;</code></pre>
 </div>
 </div>
-<div id="umap" class="section level2" number="5.2">
-<h2 number="5.2"><span class="header-section-number">5.2</span> UMAP</h2>
+<div id="umap" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> UMAP</h2>
 <p>Let’s see how the data is distributed under a UMAP transformation.</p>
 <p>UMAP’s major parameter is the “number of neighbors” to consider around each point in the multidimensional space. It’s rather robust to this value, but one ought to try different values.</p>
 <p>Please keep in mind that UMAP initialization might be randomized, so to reproduce the same results, R’s random number generator has to be fixed, making it give out the same sequence of random numbers every time.</p>
@@ -404,8 +404,8 @@ gbm_sc_experiment &lt;- scater::runUMAP(gbm_sc_experiment,
 scater::plotUMAP(gbm_sc_experiment, 
                  colour_by = &quot;cell_type&quot;)</code></pre>
 </div>
-<div id="t-sne" class="section level2" number="5.3">
-<h2 number="5.3"><span class="header-section-number">5.3</span> t-SNE</h2>
+<div id="t-sne" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> t-SNE</h2>
 <p>The major parameter to adjust for t-SNE is the “perplexity” (statistical concept), basically the area around each point to consider. It can be quite sensitive to it (depending on the data), so you should try out different values.</p>
 <pre class="r"><code>set.seed(123) 
 TSNE_PERPLEXITY = 10
@@ -415,8 +415,8 @@ gbm_sc_experiment &lt;- scater::runTSNE(gbm_sc_experiment,
 scater::plotUMAP(gbm_sc_experiment, 
                  colour_by = &quot;cell_type&quot;)</code></pre>
 </div>
-<div id="questions-1" class="section level2" number="5.4">
-<h2 number="5.4"><span class="header-section-number">5.4</span> Questions</h2>
+<div id="questions-1" class="section level2" number="4.4">
+<h2 number="4.4"><span class="header-section-number">4.4</span> Questions</h2>
 <ul>
 <li>Was this helpful?</li>
 <li>Which method was most informative?</li>
@@ -424,8 +424,8 @@ scater::plotUMAP(gbm_sc_experiment,
 </ul>
 </div>
 </div>
-<div id="find-cancer-cell-clusters" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Find cancer cell clusters</h1>
+<div id="find-cancer-cell-clusters" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Find cancer cell clusters</h1>
 <p>Now let’s focus on only the cancerous cells and look for gene clusters.</p>
 <p>Recall: the columns are the single cell sample IDs. We have the <code>cell_type</code> data frame we can use to pick those columns (samples) that are from cancer cell.</p>
 <pre class="r"><code>cancer_samples &lt;- sapply(cell_types$cell_type, 
@@ -433,8 +433,8 @@ scater::plotUMAP(gbm_sc_experiment,
                          )
 
 gbm_sc_cancer_experiment &lt;- gbm_sc_experiment[, cancer_samples]</code></pre>
-<div id="visualize-with-different-methods" class="section level2" number="6.1">
-<h2 number="6.1"><span class="header-section-number">6.1</span> Visualize with different methods</h2>
+<div id="visualize-with-different-methods" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> Visualize with different methods</h2>
 <p>Since we’re looking at a single type of cells, it’s not obvious how to color the genes. The point is rather to find gene clusters within this category of cancer cells.</p>
 <pre class="r"><code>gbm_sc_cancer_experiment &lt;- scater::runPCA(gbm_sc_cancer_experiment)
 scater::plotReducedDim(gbm_sc_cancer_experiment, dimred = &quot;PCA&quot;)
@@ -452,8 +452,8 @@ gbm_sc_cancer_experiment &lt;- scater::runUMAP(gbm_sc_cancer_experiment,
                                             n_neighbors = UMAP_N_NEIGHBORS)
 scater::plotUMAP(gbm_sc_cancer_experiment)</code></pre>
 </div>
-<div id="k-means-clustering" class="section level2" number="6.2">
-<h2 number="6.2"><span class="header-section-number">6.2</span> K-means clustering</h2>
+<div id="k-means-clustering" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> K-means clustering</h2>
 <p>Since we don’t know how to “color” (group) the points, let’s use K-means clustering</p>
 <pre class="r"><code>umap_variables &lt;- reducedDims(gbm_sc_cancer_experiment)[[&quot;UMAP&quot;]]
 tsne_variables &lt;- reducedDims(gbm_sc_cancer_experiment)[[&quot;TSNE&quot;]]
@@ -483,16 +483,16 @@ scater::plotUMAP(gbm_sc_cancer_experiment, colour_by = &quot;k_cluster&quot;)
 scater::plotTSNE(gbm_sc_cancer_experiment, colour_by = &quot;k_cluster&quot;)
 scater::plotReducedDim(gbm_sc_cancer_experiment, dimred = &quot;PCA&quot;, colour_by = &quot;k_cluster&quot;) </code></pre>
 </div>
-<div id="questions-2" class="section level2" number="6.3">
-<h2 number="6.3"><span class="header-section-number">6.3</span> Questions</h2>
+<div id="questions-2" class="section level2" number="5.3">
+<h2 number="5.3"><span class="header-section-number">5.3</span> Questions</h2>
 <ul>
 <li>Does the number of clusters make sense? Does this vary by dimensionality reduction method?</li>
 <li>How is the clustering different if we change the number of clusters k?</li>
 </ul>
 </div>
 </div>
-<div id="extra-k-means-clustering-on-the-reduced-data" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> Extra: K-means clustering on the <em>reduced</em> data</h1>
+<div id="extra-k-means-clustering-on-the-reduced-data" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Extra: K-means clustering on the <em>reduced</em> data</h1>
 <p>The previous application of k-means clustering was performed in 1091-dimensional space. An alternative way is to first reduce the dimensionality of the data, hoping to “cheat” by letting these methods recover “close” points, then perform clustering on this 2-dimensional space.</p>
 <p>This approach can give insight in some trickier cases but it must be used with care, as the clusters one obtains may simply be artifacts of the t-SNE or UMAP, with no biological significance.</p>
 <p>Further reading: <a href="https://umap-learn.readthedocs.io/en/latest/clustering.html" class="uri">https://umap-learn.readthedocs.io/en/latest/clustering.html</a></p>
