@@ -412,7 +412,7 @@ TSNE_PERPLEXITY = 10
 
 gbm_sc_experiment &lt;- scater::runTSNE(gbm_sc_experiment,
                                      perplexity = TSNE_PERPLEXITY)
-scater::plotUMAP(gbm_sc_experiment, 
+scater::plotTSNE(gbm_sc_experiment, 
                  colour_by = &quot;cell_type&quot;)</code></pre>
 </div>
 <div id="questions-1" class="section level2" number="4.4">
@@ -470,7 +470,9 @@ ggplot() +
 <p>Though there are more rigorous ways to choose, let’s say the first 3 principal components are most informative, accounting for the following percentages of variation in the data:</p>
 <pre class="r"><code>head(component_variance_explained, n = 3)</code></pre>
 <p>Now for the k-means clustering using the built-in R function. We need to transpose the matrix since <code>kmeans()</code> expects variables as rows and observations as columns.</p>
-<pre class="r"><code>cancer_clusters &lt;- kmeans(t(sc.counts[, cancer_samples]), centers = k)
+<pre class="r"><code>k = 3 
+
+cancer_clusters &lt;- kmeans(t(sc.counts[, cancer_samples]), centers = k)
 
 gene_clusters &lt;- 
     tibble::as_tibble_col(cancer_clusters$cluster, column_name = &quot;cluster&quot;) %&gt;% 
@@ -503,14 +505,14 @@ cancer_tsne_kclusters &lt;- kmeans(tsne_variables, centers = k)
 
 as_tibble(tsne_variables) %&gt;%
 ggplot() +
-    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_kclusters$cluster)))</code></pre>
+    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_tsne_kclusters$cluster)))</code></pre>
 <pre class="r"><code>k = 3
 
 cancer_umap_kclusters &lt;- kmeans(umap_variables, centers = k)
 
 as_tibble(umap_variables) %&gt;%
 ggplot() +
-    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_kclusters$cluster)))</code></pre>
+    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_umap_kclusters$cluster)))</code></pre>
 </div>
 
 

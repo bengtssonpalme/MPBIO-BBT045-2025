@@ -147,7 +147,6 @@ We have 2 things to take care of:
 
 Why are these 2 things problematic?
 
-
 To make our lives easier, we'll use two helper libraries for `SingleCellExperiment` to:
 
 - compute the size factor (weight) of each sample
@@ -167,6 +166,10 @@ gbm_sc_experiment <- scran::computeSumFactors(gbm_sc_experiment)
 # Compute log-transformed normalized expression values
 gbm_sc_experiment <- scater::logNormCounts(gbm_sc_experiment)
 ```
+
+
+
+
 
 
 
@@ -237,7 +240,7 @@ TSNE_PERPLEXITY = 10
 
 gbm_sc_experiment <- scater::runTSNE(gbm_sc_experiment,
                                      perplexity = TSNE_PERPLEXITY)
-scater::plotUMAP(gbm_sc_experiment, 
+scater::plotTSNE(gbm_sc_experiment, 
                  colour_by = "cell_type")
 ```
 
@@ -325,6 +328,8 @@ Now for the k-means clustering using the built-in R function.
 We need to transpose the matrix since `kmeans()` expects variables as rows and observations as columns.
 
 ```{r}
+k = 3 
+
 cancer_clusters <- kmeans(t(sc.counts[, cancer_samples]), centers = k)
 
 gene_clusters <- 
@@ -375,7 +380,7 @@ cancer_tsne_kclusters <- kmeans(tsne_variables, centers = k)
 
 as_tibble(tsne_variables) %>%
 ggplot() +
-    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_kclusters$cluster)))
+    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_tsne_kclusters$cluster)))
 ```
 
 ```{r}
@@ -385,6 +390,6 @@ cancer_umap_kclusters <- kmeans(umap_variables, centers = k)
 
 as_tibble(umap_variables) %>%
 ggplot() +
-    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_kclusters$cluster)))
+    geom_point(mapping = aes(x = V1, y = V2, color = as.factor(cancer_umap_kclusters$cluster)))
 ```
 
