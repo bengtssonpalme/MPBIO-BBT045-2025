@@ -113,14 +113,14 @@ A selection of small chapters and sections that explain concepts we cover in the
 <hr />
 
 
-## Introduction to Algorithmic Thinking
+## Tutorial: Introduction to Algorithmic Thinking
 
 [Self-study notebook](intro_to_algos/intro_to_algos.html)
 
 <hr />
 
 
-## Gene annotation
+## Tutorial: Gene annotation
 * [Exercise 1](gene-prediction-exercise)
 
 <hr />
