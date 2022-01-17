@@ -51,6 +51,12 @@ output:
 
 ## Tutorial: Git
 
+**Preliminaries**
+
+* [Set up a github account](github_account.md)
+* [Set up a ssh key on the server]()
+* [Set up a ssh key on pc/mac]()
+
 **Exercises**
 
 * [Exercise 1](git-exercise-1)
