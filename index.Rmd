@@ -53,8 +53,8 @@ output:
 
 **Preliminaries**
 
-* [Set up a github account](github_account.md)
-* [Set up a ssh key on the server]()
+* [Set up a github account](Git/github_account)
+* [Set up a ssh key on the server](Git/github_SSH_key)
 * [Set up a ssh key on pc/mac]()
 
 **Exercises**
