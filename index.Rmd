@@ -26,6 +26,9 @@ output:
 
 ## Tutorial: Unix
 
+**Preliminaries**
+
+* If you are a Windows user download and install [Git-Bash](https://gitforwindows.org)
 * Please read this **first**: [How to connect to remote accounts](remote-hosts)
 * [Conda installation instructions](unix/conda_install)
 
@@ -55,7 +58,6 @@ output:
 
 * [Set up a github account](Git/github_account)
 * [Set up a ssh key on the server](Git/github_SSH_key)
-* [Set up a ssh key on pc/mac]()
 
 **Exercises**
 
