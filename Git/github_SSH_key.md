@@ -15,10 +15,7 @@ $ ssh-keygen -t ed25519
 ```
 
 This will create two new files in the directory .ssh. The file id_ed25519 contains your private key while id_ed25519.pub contains the public key.
-```markdown
-$ ls .ssh
-> id_ed25519  id_ed25519.pub 
-```
+
 
 You will then be prompted to enter a location to store the ssh key. Just press enter to store it in the default location.
 ```markdown
@@ -30,7 +27,10 @@ Then you will be prompted to add a passphrase, you can either skip this by press
 > Enter passphrase (empty for no passphrase): [Type a passphrase]
 > Enter same passphrase again: [Type passphrase again] 
 ```
-
+```markdown
+$ ls .ssh
+> id_ed25519  id_ed25519.pub 
+```
 Next, we need to start an ssh-agent that will manage our keys.
 
 ```makdown
@@ -42,7 +42,7 @@ $ ssh-add ~/.ssh/id_ed25519
 Finally, we need to add the public key (.ssh/id_ed25519.pub) that we generated to our GitHub account. When logged in to GitHub navigate to settings then to SSH and GPG keys. Press the new SSH key button, give this ssh key a descriptive title so that you know where this key is linked to. You can view your key with the command cat and copy it to your clip-board and then paste it in.
 
 ```markedown
-$ cat ~/.ssh/id_ed25519.out
+$ cat ~/.ssh/id_ed25519.pub
 > ssh-ed25519 AAAAC3NzaC1lZDI..........XMWGxSdGmMfZzjz sandra@ip-172-31-41-241
 ```
 
