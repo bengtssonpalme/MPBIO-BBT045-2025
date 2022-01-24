@@ -35,8 +35,8 @@ copy the starter notebook from my directory. So:
 
 ```bash
 mkdir sequencing
-cp /home/fburic/sequencing/sequencing_technologies_tutorial.Rmd sequencing/
-cd sequencing
+cp /home/sandra/NGS_Tutorial/sequencing_technologies_tutorial.Rmd sequencing/
+cd NGS_Tutorial
 ```
 
 The starter notebook contains instructions for setting up your conda
@@ -59,7 +59,7 @@ See instructions [here](../unix/conda_install.html)
 Now fetch a copy of the data we will be using:
 
 ```bash
-cp -r /home/fburic/sequencing/data .
+cp -r /home/sandra/NGS_Tutorial/data .
 ```
 
 To nicely see the contents of (small) directories, you can use
@@ -76,7 +76,7 @@ remove the write permission (`-w`) for anyone on the server (`ugo`)
 on it by running:
 
 ```bash
-chmod -R ugo-w data  # -R means "recursive" (exhaustively apply to all files)
+find data -type f -print0 | xargs -0 chmod ugo-w
 ```
 
 Then create results directory
