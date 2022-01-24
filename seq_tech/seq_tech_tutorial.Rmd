@@ -132,7 +132,9 @@ then build the bowtie index accordingly.
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
 
 # Convert GFF3 > FASTA
 seqret -sequence data/ref/varicella.gb -feature -fformat gff3 -osformat fasta data/ref/varicella.fasta
@@ -164,7 +166,9 @@ The `\ ` symbol simply breaks the command across multiple lines for readability.
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 mkdir results/exercise1/alignment
 bowtie2 -x results/exercise1/bowtie_index/varicella \
 	-1 data/seq/varicella1.fastq -2 data/seq/varicella2.fastq \
@@ -184,7 +188,9 @@ using the `samtools` `view` command:
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 samtools view -b -S -o results/exercise1/alignment/varicella.bam \
     results/exercise1/alignment/varicella.sam
 ```
@@ -201,7 +207,9 @@ This will create the file `varicella.sorted.bam`
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 samtools sort results/exercise1/alignment/varicella.bam -o \
     results/exercise1/alignment/varicella.sorted.bam
 ```
@@ -217,7 +225,9 @@ index the sorted BAM file using `samtools` `index` command:
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 samtools index results/exercise1/alignment/varicella.sorted.bam
 ```
 ~~~
@@ -235,7 +245,8 @@ and the Unix `awk` text processor to extract the values of interest:
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
 samtools depth results/exercise1/alignment/varicella.sorted.bam | awk '{sum+=$3} END {print "Average = ", sum/124884}'
 ```
 ~~~
@@ -254,7 +265,8 @@ Answer:
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
 samtools depth results/exercise1/alignment/varicella.sorted.bam > results/exercise1/alignment/coverage.tsv
 ```
 ~~~
@@ -284,80 +296,9 @@ We now look at a second set of sequencing data, with mutations (`data/seq/varice
 ![](img/align_mut_to_ref.png)
 
 We'll still be using `bowtie2` and `samtools` to perform these tasks,
-however we'll be doing this in R instead of running the commands directly.
+however we'll be doing structuring all the steps in to one script.
 
-This approach has the great advantage that we stay within the same environment
-
-and we don't need to copy-paste all we did above just to change the name of the input files. That's cumbersome and *very* error-prone.
-
-To do this, we need to install some R packages from Bioconductor (). Run the following lines of code in the R *console* (not the notebook, sine you only need to do this once):
-
-```r
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-    
-BiocManager::install("Rbowtie2")
-BiocManager::install("Rsamtools")
-install.packages("filesstrings")
-```
-
-These packages install their own copies of `bowtie2` and `samtools`. Consult the documentation of these packages for more details on how to use them.
-
-- [Rbowtie2](https://bioconductor.org/packages/release/bioc/vignettes/Rbowtie2/inst/doc/Rbowtie2-Introduction.html)
-- [Rsamtools](https://bioconductor.org/packages/release/bioc/vignettes/Rsamtools/inst/doc/Rsamtools-Overview.pdf)
-
-
-Next paste in and run this R code chunk which contains the workflow for the previous exercise:
-
-~~~r
-```{r, message=F}
-library(Rbowtie2)
-library(Rsamtools)
-library(filesstrings)
-
-workflow_align_reads <- function(reads_1, reads_2, reference_genome, results_dir) {
-    # Create output directories
-    dir.create(file.path(results_dir, "bowtie_index"), recursive = T)
-    dir.create(file.path(results_dir, "alignment"))
-    print(paste0("INFO: Putting alignment results in", file.path(results_dir, "alignment")))
-
-    
-    # Set the name of the output files
-    index_basename <- file.path(results_dir, "bowtie_index",
-                                before_last_dot(basename(reference_genome)))
-    alignment_filename <- file.path(results_dir, "alignment", 
-                                    before_last_dot(basename(reads_1)))
-    alignment_filename <- 
-        give_ext(substr(alignment_filename, 1, nchar(alignment_filename) - 1), "sam")
-    
-    
-    # Build index
-    # Runs: bowtie2-build -f REFERENCE_FASTA OUTPUT_INDEX
-    bowtie2_build(references = c(reference_genome),
-                  bt2Index = index_basename,
-                  overwrite = TRUE)
-    
-    # Align seq to ref
-    # Runs: bowtie2 -x INDEX -1 READS_1 -2 READS_2 -S OUTPUT_SAM
-    bowtie2(bt2Index = index_basename,
-            samOutput = alignment_filename,
-            seq1 = reads_1, seq2 = reads_2, 
-            overwrite = TRUE)
-    
-    # Convert and optimize alignment file
-    alignment_basename <- before_last_dot(alignment_filename)
-    asBam(file = alignment_filename, 
-          destination = alignment_basename)
-    
-    sortBam(file = give_ext(before_last_dot(alignment_filename), "bam"),
-            destination = paste0(alignment_basename, ".sorted"))
-    
-    indexBam(file = paste0(alignment_basename, ".sorted.bam"))
-}
-```
-~~~
-
-
+This approach has the great advantage that we don't need to copy-paste all we did above just to change the name of the input files. That's cumbersome and *very* error-prone. Instead we just need to change the file name at one location.
 
 ## Protocol
 
@@ -366,22 +307,49 @@ workflow_align_reads <- function(reads_1, reads_2, reference_genome, results_dir
 
 Create a sorted and indexed BAM file using the code below, which encapsulates steps 2-6 from Exercise 1 (except for the GFF > FASTA conversion).
 
+```{bash}
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
+DATA_DIR=data/seq
+RESULT_DIR=results/exercise2
+
+REFERENCE_GENOME=data/ref/varicella.fasta
+READS_1=$DATA_DIR/varicella_mut1.fastq
+READS_2=$DATA_DIR/varicella_mut2.fastq
+
+
+BOWTIE_INDEX_DIR=$RESULT_DIR/bowtie_index
+ALIGNMENT_DIR=$RESULT_DIR/alignment
+
+# Make all directories
+mkdir $RESULT_DIR
+mkdir $BOWTIE_INDEX_DIR
+mkdir $ALIGNMENT_DIR
+
+# Build the bowtie2 index
+bowtie2-build -f $REFERENCE_GENOME $BOWTIE_INDEX_DIR/varicella
+
+
+bowtie2 -x $BOWTIE_INDEX_DIR/varicella \
+	-1 $READS_1 -2 $READS_2 \
+	-S $ALIGNMENT_DIR/varicella_mut.sam
+	
+samtools view -b -S -o $ALIGNMENT_DIR/varicella_mut.bam \
+    $ALIGNMENT_DIR/varicella_mut.sam
+    
+samtools sort $ALIGNMENT_DIR/varicella_mut.bam -o \
+    $ALIGNMENT_DIR/varicella_mut.sorted.bam
+    
+samtools index $ALIGNMENT_DIR/varicella_mut.sorted.bam
+
+```
+
 Tip: Run `ls -l data/*` to `tree data` if you forget what files you're working on.
 
 The workflow will also create `results/exercise2` for you.
 
 > (Computation time: 5 minutes)
-
-~~~r
-```{r}
-results_dir <- "results/exercise2"
-reference_genome <- "data/ref/varicella.fasta"
-reads_1 <- "data/seq/varicella_mut1.fastq"
-reads_2 <- "data/seq/varicella_mut2.fastq"
-
-workflow_align_reads(reads_1, reads_2, reference_genome, results_dir)
-```
-~~~
 
 
 ### Step 2: Identify point mutations
@@ -392,7 +360,9 @@ in the alignment. This will create the file `varicella_variants.bcf`
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 samtools mpileup -g -f data/ref/varicella.fasta results/exercise2/alignment/varicella_mut.sorted.bam > results/exercise2/varicella_variants.bcf
 ```
 ~~~
@@ -405,7 +375,9 @@ Use `bcftools call` command to convert the binary call format (BCF) to
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 bcftools call -c -v results/exercise2/varicella_variants.bcf > results/exercise2/varicella_variants.vcf
 ```
 ~~~
@@ -422,8 +394,10 @@ VCF (and BCF) contain only the information needed for some downstream tasks.
 
 This is an interactive command so **run it in the terminal**:
 
-```bash
-conda activate sequencing
+```{bash}
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
     data/ref/varicella.fasta -p NC_001348:77985 
 ```
@@ -434,7 +408,7 @@ samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
 
 Inspect the VCF file columns using the Unix command chain:
 
-```bash
+```{bash}
 grep -v "^#"  results/exercise2/varicella_variants.vcf | column -t | less -S
 ```
 
@@ -465,7 +439,10 @@ it is not possible for a single genomic position to have two different bases.
 Use `samtools mpileup` to inspect the site 73233. What is the frequency of each base on this site?
 Rune the command below and see [Pileup format](https://en.wikipedia.org/wiki/Pileup_format)
 
-```bash
+```{bash}
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
+
 samtools mpileup -r NC_001348:73233-73233 -f data/ref/varicella.fasta \
     results/exercise2/alignment/varicella_mut.sorted.bam
 ```
@@ -524,7 +501,8 @@ Answer:
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
 
 breseq bam2aln \
     -f data/ref/varicella.fasta \
@@ -573,7 +551,8 @@ Assemble the reads provided into a genome using `abyss-pe` for `k=128`
 
 ~~~bash
 ```{bash}
-conda activate sequencing
+export PATH=~/miniconda3/bin:$PATH
+source activate sequencing
 
 abyss-pe name=varicella k=128 --directory=results/exercise4 \
     in='../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq'
