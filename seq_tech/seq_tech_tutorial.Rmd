@@ -34,8 +34,8 @@ Please create a directory for this tutorial and inside there
 copy the starter notebook from my directory. So:
 
 ```bash
-mkdir sequencing
-cp /home/sandra/NGS_Tutorial/sequencing_technologies_tutorial.Rmd sequencing/
+mkdir NGS_Tutorial
+cp /home/sandra/NGS_Tutorial/sequencing_technologies_tutorial.Rmd NGS_Tutorial/
 cd NGS_Tutorial
 ```
 
