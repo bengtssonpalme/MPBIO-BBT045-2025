@@ -432,8 +432,7 @@ VCF (and BCF) contain only the information needed for some downstream tasks.
 This is an interactive command so **run it in the terminal**:
 
 ```{bash, eval=FALSE}
-export PATH=~/miniconda3/bin:$PATH
-source activate sequencing
+conda activate sequencing
 
 samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
     data/ref/varicella.fasta -p NC_001348:77985 
@@ -540,8 +539,7 @@ Answer:
 
 ~~~bash
 ```{bash, eval=FALSE}
-export PATH=~/miniconda3/bin:$PATH
-source activate sequencing
+conda activate sequencing
 
 breseq bam2aln \
     -f data/ref/varicella.fasta \
@@ -590,8 +588,7 @@ Assemble the reads provided into a genome using `abyss-pe` for `k=128`
 
 ~~~bash
 ```{bash, eval=FALSE}
-export PATH=~/miniconda3/bin:$PATH
-source activate sequencing
+conda activate sequencing
 
 abyss-pe name=varicella k=128 --directory=results/exercise4 \
     in='../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq'

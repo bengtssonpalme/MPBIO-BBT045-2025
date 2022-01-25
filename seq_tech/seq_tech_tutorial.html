@@ -530,8 +530,7 @@ bcftools call -c -v results/exercise2/varicella_variants.bcf &gt; results/exerci
 <h3>Step 4: Inspect mutations (pt 2)</h3>
 <p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command. For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
 <p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
-<pre class="bash"><code>export PATH=~/miniconda3/bin:$PATH
-source activate sequencing
+<pre class="bash"><code>conda activate sequencing
 
 samtools tview results/exercise2/alignment/varicella_mut.sorted.bam \
     data/ref/varicella.fasta -p NC_001348:77985 </code></pre>
@@ -605,8 +604,7 @@ breseq -j 1 -o results/exercise3 \
 <p>Answer:</p>
 <pre class="bash"><code>
 ```bash
-export PATH=~/miniconda3/bin:$PATH
-source activate sequencing
+conda activate sequencing
 
 breseq bam2aln \
     -f data/ref/varicella.fasta \
@@ -643,8 +641,7 @@ mkdir results/exercise4
 </blockquote>
 <pre class="bash"><code>
 ```bash
-export PATH=~/miniconda3/bin:$PATH
-source activate sequencing
+conda activate sequencing
 
 abyss-pe name=varicella k=128 --directory=results/exercise4 \
     in=&#39;../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq&#39;
