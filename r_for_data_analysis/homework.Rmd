@@ -53,7 +53,7 @@ Most databases have these described somewhere.
 # Task 1: How many genes are on yeast S288C chromosome II? [1 pt]
 
 Let's redo task 1 in homework 1 using R and tidyverse.
-Read in `/home/fburic/data/S288C_reference_genome_R64-2-1_20150113/saccharomyces_cerevisiae_R64-2-1_20150113.gff`
+Read in your version of the file `saccharomyces_cerevisiae_R64-2-1_20150113.gff` that you downloaded for the first homework.
 as a table (Hint: use the `read_tsv()` function). 
 Note that *the first column is the chromosome*, not the sequence ID as in other GFF files.
 
@@ -126,7 +126,7 @@ maybe there's something else you could use from the
 
 # Task 5: Calculations per gene in the Y55 strain [2 pts]
 
-The yeast Y55 strain FASTA file is here: `/home/fburic/data/Y55_JRIF00000000_SGD_cds.fsa`
+The yeast Y55 strain FASTA: `Y55_JRIF00000000_SGD_cds.fsa` should also already be downloaded in HW1 so you can just copy it to the directory for HW2.
 
 As a demo of Biostrings, let's compute the GC content per gene.
 To do this you first need to load in the `.fsa` file with the Biostrings function 
