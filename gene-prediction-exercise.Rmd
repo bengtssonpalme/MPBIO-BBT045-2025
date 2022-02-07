@@ -1,0 +1,115 @@
+# Very basic gene finding/annotation tutorial
+
+We will analyze two genomes, one from prokaryote and one from eukaryote - 
+Escherichia coli ATCC 25922 and Candida albicans A123 respectively. 
+We will use two standard tools for finding genes, i.e. Prodigal (https://github.com/hyattpd/Prodigal) and Augustus (https://github.com/Gaius-Augustus/Augustus).
+
+## Prokaryotic gene prediction
+
+### Step 1: Obtain data files
+Try and navigate the links and obtain the data yourselves (raw sequence (contigs/scaffolds) without annotation). 
+In this particular example we will work with NCBI database, alternative databases are European Nucleotide Archive (https://www.ebi.ac.uk/ena) that you might be using in you project. Try to download both to the server and your computer as well.
+
+The link to the genome assembly:  
+https://www.ncbi.nlm.nih.gov/assembly/GCA_000401755.1/
+
+
+Login to machine using ssh and create and enter the directory for the exercise, e.g. gene_prediction
+
+`mkdir gene_prediction; cd gene_prediction`
+
+Use wget or curl to download data to a remote machine:
+
+`wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/401/755/GCA_000401755.1_Escherichia_coli_ATCC_25922/GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fna.gz`
+
+Alternatively, you can copy file from your computer. In gitbash/linux/mac use command:
+
+`scp yourfilename studentX@ip_adress:/home/studentX/gene_prediction`
+
+Unarchive file:
+
+`gunzip GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fna.gz`
+
+### Step 2: Install required software
+Before proceeding, we will install several tools to predict protein coding genes and tRNAs in our E.coli genomee. We will use prodigal and tRNAscan-SE to predict all open reading frames of protein coding genes and tRNA genes respectively.
+
+Before using it, we will create a new environment `gene_prediction` install prodigal in our environment
+`conda create --name gene_prediction`
+
+Activate the environment:
+`conda activate gene_prediction`
+
+Install prodigal:
+`conda install -c bioconda prodigal`
+`conda install -c bioconda trnascan-se`
+
+
+### Step 3: Run prodigal to predict all open reading frames of protein coding genes
+Get yourself familiar with different Prodigal options, more information: https://github.com/hyattpd/Prodigal
+Find protein-coding sequences (CDS), familirase yourself with the output files:
+
+`prodigal -i GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fna -o GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.gff -a GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fasta -f gff`
+
+
+### Step 4: Predict tRNA genes
+Get yourself familiar with tRNAscan-SE options (e.g. save output in GFF format). To predict genes in prokaryote run the following command:
+
+`tRNAscan-SE -B GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.fna -o GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.rna -a GCA_000401755.1_Escherichia_coli_ATCC_25922_genomic.rna.fasta`
+
+
+## Eukaryotic gene finding
+### Step 1: Obtain data files
+
+Try to find navigate yourself NCBI FTP site yourself and find GCA_000447455.1_Cand_albi_A123_V1 genome, 
+Alternatively, download genome to remote computer by running the following command:
+
+`wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/fungi/Candida_albicans/all_assembly_versions/GCA_000447455.1_Cand_albi_A123_V1/GCA_000447455.1_Cand_albi_A123_V1_genomic.fna.gz`
+
+Unarchive file:
+`gunzip GCA_000447455.1_Cand_albi_A123_V1_genomic.fna.gz`
+
+### Step 2: Use Augustus to predict all open reading frames of protein coding genes
+
+For eukaryotes it might take considerable time to run, instead copy the file from the existing precomputed directory (uncomment if you want to try running (takes ~10 min):
+`### augustus GCA_000447455.1_Cand_albi_A123_V1_genomic.fna --species=candida_albicans > GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
+
+`wget https://github.com/zelezniak-lab/MPBIO-BBT045/blob/master/GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
+
+
+Extract proteins from the generated gff file using the following command:
+
+`getAnnoFasta.pl GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
+
+Analogously like with prokaryotes you can use `tRNAscan-SE` to find tRNAs in the Candida yeast genome. Please see command help to specify correct arguments.
+
+
+### Step 3: Use Uniprot/(Swiss-Prot) manually curated sequences to annotate identified proteins
+
+First dowload database of sequences from https://www.uniprot.org/downloads. The sequences were already downloaded for you, just simply use the following command to copy them to your working directory:
+
+`wget https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz`
+
+`gunzip uniprot_sprot.fasta.gz`
+
+We will use `blastp` to blast your identified sequences to the database of Uniprot sequences, but before this we need to create a blast database (takes several hours to run).
+
+```bash
+makeblastdb -in uniprot_sprot.fasta -dbtype prot -out uniprot_database
+
+###blastp -query GCA_000447455.1_Cand_albi_A123_V1_genomic.aa -db uniprot_database -outfmt 7 -out blast_results
+
+wget https://github.com/zelezniak-lab/MPBIO-BBT045/blob/master/blast_results # a snapshot of BLAST results file
+```
+ 
+ 
+<hr />
+
+Chalmers University of Technology 2021
+
+<footer style="font-size:0.6em">
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+</a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+</footer>
