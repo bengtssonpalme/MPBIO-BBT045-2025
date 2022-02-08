@@ -73,7 +73,7 @@ Unarchive file:
 For eukaryotes it might take considerable time to run, instead copy the file from the existing precomputed directory (uncomment if you want to try running (takes ~10 min):
 `### augustus GCA_000447455.1_Cand_albi_A123_V1_genomic.fna --species=candida_albicans > GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
 
-`wget https://github.com/zelezniak-lab/MPBIO-BBT045/blob/master/GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
+`wget https://raw.githubusercontent.com/zelezniak-lab/MPBIO-BBT045/master/GCA_000447455.1_Cand_albi_A123_V1_genomic.gff`
 
 
 Extract proteins from the generated gff file using the following command:

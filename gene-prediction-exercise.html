@@ -423,7 +423,7 @@ summary {
 <div id="step-2-use-augustus-to-predict-all-open-reading-frames-of-protein-coding-genes" class="section level3">
 <h3>Step 2: Use Augustus to predict all open reading frames of protein coding genes</h3>
 <p>For eukaryotes it might take considerable time to run, instead copy the file from the existing precomputed directory (uncomment if you want to try running (takes ~10 min): <code>### augustus GCA_000447455.1_Cand_albi_A123_V1_genomic.fna --species=candida_albicans &gt; GCA_000447455.1_Cand_albi_A123_V1_genomic.gff</code></p>
-<p><code>wget https://github.com/zelezniak-lab/MPBIO-BBT045/blob/master/GCA_000447455.1_Cand_albi_A123_V1_genomic.gff</code></p>
+<p><code>wget https://raw.githubusercontent.com/zelezniak-lab/MPBIO-BBT045/master/GCA_000447455.1_Cand_albi_A123_V1_genomic.gff</code></p>
 <p>Extract proteins from the generated gff file using the following command:</p>
 <p><code>getAnnoFasta.pl GCA_000447455.1_Cand_albi_A123_V1_genomic.gff</code></p>
 <p>Analogously like with prokaryotes you can use <code>tRNAscan-SE</code> to find tRNAs in the Candida yeast genome. Please see command help to specify correct arguments.</p>
