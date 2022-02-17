@@ -82,6 +82,7 @@ install.packages("https://cran.r-project.org/src/contrib/Archive/RcppAnnoy/RcppA
 BiocManager::install("BiocNeighbors")
 BiocManager::install("scater")
 BiocManager::install("scran")
+install.packages("uwot")
 ```
 
 
