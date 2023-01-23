@@ -15,6 +15,10 @@ What type of unique identifiers or numerical codes does the data use?
 Is the formatting consistent?
 etc.
 
+**Testing your answers before hand-in** You should test your answers before handing in your solutions. You do this by writing your answers down in a separate file and running the command:
+`/storage/Test/unix_test.py <your_results_file.txt>`
+Configure your results file so that you have the answers on separate lines. Only put the numerical answers on the lines and when answers are fractions round to 2 significant digits. Solutions for Task 3 a, b and c go on separate lines.  
+
 ## Tasks:
 
 1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
@@ -33,7 +37,7 @@ etc.
       (make sure you're not also counting letters in the headers)
 
    b) compare number of ORFs in this Y55 strain (basically all the enties in the Y55 file you downloaded since it only contains ORFs) 
-      with the number in the S288C reference genome (file `orf_coding_all_R64-2-1_20150113.fasta` we worked with in the exercises)
+      with the number in the S288C reference genome (file `orf_coding_all_R64-2-1_20150113.fasta` we worked with in the exercises, When testing with the automated script return S288C-Y55)
 
    c) count the common ORFs between this Y55 yeast strain and the S288C reference we
       worked with in the exercises.
