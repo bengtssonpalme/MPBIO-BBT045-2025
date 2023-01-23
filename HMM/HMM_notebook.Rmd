@@ -52,7 +52,7 @@ Start by making a HW4 directory. In your HW4 directory you will create a results
 
 # 1. Baseline Results
 Note This step can take some time (~30 min if the server isn't under heavy load).
-For this part, you will need to run Augustus on the server, where it's already installed.
+For this part, you will need to run Augustus on the server, where it's already installed (you used it in one of the previuos tutorials, just activate the corresponding environment or install freshly if missing).
 Grab a copy of the S. cerevisiae reference genome as described in section 0. Then run Augustus as below (adjust if you've named your directories differently)
 
 ```{bash, eval=F}
