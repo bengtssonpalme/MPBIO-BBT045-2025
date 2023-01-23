@@ -16,7 +16,7 @@ Is the formatting consistent?
 etc.
 
 **Testing your answers before hand-in** You should test your answers before handing in your solutions. You do this by writing your answers down in a separate file and running the command:
-`/storage/Test/unix_test.py <your_results_file.txt>`
+`/storage/test/test_unix.py <your_results_file.txt>`
 Configure your results file so that you have the answers on separate lines. Only put the numerical answers on the lines and when answers are fractions round to 2 significant digits. Solutions for Task 3 a, b and c go on separate lines.  
 
 ## Tasks:
