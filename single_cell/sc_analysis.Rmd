@@ -138,7 +138,7 @@ design <- model.matrix(~Time+Treat)
 rownames(design) <- colnames(y)
 ```
 
-## Estimate dipersion
+## Estimate dispersion
 
 >Since the dispersions control the variances of the gene counts, underestimation may lead to false discovery, while overestimation may lower the rate of true detection.
 
@@ -153,7 +153,7 @@ plotBCV(y)
 ```
 ## Differential expression
 
-To see which genes have both statisticaly significant and biologicaly meaningfull change in expression level we can performe diferential expression analysis.
+To see which genes have both statisticaly significant and biologicaly meaningful change in expression level we can perform differential expression analysis.
 
 ### Test for differences between replicates 
 
@@ -169,7 +169,7 @@ qlf <- glmQLFTest(fit, coef=2:3)
 topTags(qlf)
 ```
 
-How many genes were signifficantly differentially expressed between the sampling times alone.
+How many genes were significantly differentially expressed between the sampling times alone.
 ```{r}
 # Get nr significant genes FDR corrected
 FDR <- p.adjust(qlf$table$PValue, method="fdr")
@@ -331,14 +331,14 @@ gbm_sc_experiment <- SingleCellExperiment(assays = list(counts = sc.counts),
 
 ## Normalization
 
-We have 2 things to take care of:
+We have two things to take care of:
 
 - gene counts from multiple single cells must be adjusted to a single scale (often a percent)
 - gene counts spanning multiple orders of magnitude
 
 ### Question
 
-Why are these 2 things problematic?
+Why are these two things problematic?
 
 To make our lives easier, we'll use two helper libraries for `SingleCellExperiment` to:
 

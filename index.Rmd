@@ -116,7 +116,7 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 <hr />
 
-## Tutorial: Single Cell Analysis
+## Tutorial: Metagenomics and Single-Cell workflows
 
 [Exercise](single_cell/sc_analysis.html)
 

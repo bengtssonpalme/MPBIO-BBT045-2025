@@ -340,8 +340,8 @@ cor(logFC[,4:6])</code></pre>
 <pre class="r"><code>design &lt;- model.matrix(~Time+Treat)
 rownames(design) &lt;- colnames(y)</code></pre>
 </div>
-<div id="estimate-dipersion" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> Estimate dipersion</h2>
+<div id="estimate-dispersion" class="section level2" number="1.6">
+<h2><span class="header-section-number">1.6</span> Estimate dispersion</h2>
 <blockquote>
 <p>Since the dispersions control the variances of the gene counts, underestimation may lead to false discovery, while overestimation may lower the rate of true detection.</p>
 </blockquote>
@@ -353,7 +353,7 @@ plotBCV(y)</code></pre>
 </div>
 <div id="differential-expression" class="section level2" number="1.7">
 <h2><span class="header-section-number">1.7</span> Differential expression</h2>
-<p>To see which genes have both statisticaly significant and biologicaly meaningfull change in expression level we can performe diferential expression analysis.</p>
+<p>To see which genes have both statisticaly significant and biologicaly meaningful change in expression level we can perform differential expression analysis.</p>
 <div id="test-for-differences-between-replicates" class="section level3" number="1.7.1">
 <h3><span class="header-section-number">1.7.1</span> Test for differences between replicates</h3>
 <p>First we check whether there is a genuine need to adjust for the experimental times. We do this by testing for differential expression between the three sampleing times.</p>
@@ -364,7 +364,7 @@ qlf &lt;- glmQLFTest(fit, coef=2:3)
 
 # Find top genes
 topTags(qlf)</code></pre>
-<p>How many genes were signifficantly differentially expressed between the sampling times alone.</p>
+<p>How many genes were significantly differentially expressed between the sampling times alone.</p>
 <pre class="r"><code># Get nr significant genes FDR corrected
 FDR &lt;- p.adjust(qlf$table$PValue, method=&quot;fdr&quot;)
 
@@ -461,14 +461,14 @@ gbm_sc_experiment &lt;- SingleCellExperiment(assays = list(counts = sc.counts),
 </div>
 <div id="normalization" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Normalization</h2>
-<p>We have 2 things to take care of:</p>
+<p>We have two things to take care of:</p>
 <ul>
 <li>gene counts from multiple single cells must be adjusted to a single scale (often a percent)</li>
 <li>gene counts spanning multiple orders of magnitude</li>
 </ul>
 <div id="question" class="section level3" number="2.4.1">
 <h3><span class="header-section-number">2.4.1</span> Question</h3>
-<p>Why are these 2 things problematic?</p>
+<p>Why are these two things problematic?</p>
 <p>To make our lives easier, we’ll use two helper libraries for <code>SingleCellExperiment</code> to:</p>
 <ul>
 <li>compute the size factor (weight) of each sample</li>
