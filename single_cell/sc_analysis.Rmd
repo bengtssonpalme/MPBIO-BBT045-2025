@@ -1,6 +1,6 @@
 ---
-title: "BBT045: Single Cell Analysis Tutorial"
-author: Filip Buric
+title: "BBT045: Introduction to Statistical normalization and clustering analysis for Metagenomics and Single-Cell workflows. "
+author: "Filip Buric, Sandra Viknander, Marcus Wenne"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -17,7 +17,199 @@ knitr::opts_chunk$set(eval = FALSE)  # You don't need to run this
 ```
 
 
-# Introduction
+
+# Metagenomics 
+
+This tutorial is taken from the edgeR [documentation](https://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf): 4.2 RNA-Seq of pathogen inoculated arabidopsis with batch effects. 
+
+## Experimental setup 
+
+Pseudomonas syringae is a bacterium often used to study plant reactions to pathogens. In this experiment, six-week old Arabidopsis plants were inoculated with the ∆hrcC mutant of P. syringae, after which total RNA was extracted from leaves. Control plants were inoculated with a mock pathogen.
+Three biological replicates of the experiment were conducted at separate times and using independently grown plants and bacteria.
+The six RNA samples were sequenced one per lane on an Illumina Genome Analyzer. Reads were aligned and summarized per gene using GENE-counter. The reference genome was derived from the TAIR9 genome release (www.arabidopsis.org).
+
+### Where is the data?
+
+The file containing the read counts (`arabidopsis.csv`) will be in your `/storage/student{nr}/`folder at the start of the tutorial. Move it in to your working directory before starting the analysis. 
+
+### Learning aims 
+During this tutorial you will learn the basics of an RNA-Seq analysis. What concepts are important to take into consideration? 
+
+* Compositional data
+* Batch effects
+* Correcting for multiple testing
+* Interpreting dimensional reduction plots plots
+
+Since the statistical assumptions for RNA-Seq and metagenomics are very similar, the concepts and tools you learn about today can also be used for that purpose.
+
+### Install dependencies
+```{r}
+BiocManager::install("edgeR")
+BiocManager::install("statmod")
+```
+
+### Importing libraries
+```{r echo=FALSE}
+library(edgeR)
+library(tidyverse)
+```
+
+### Read and pre preocess data
+
+```{r}
+df <- read_csv('arabidopsis.csv')
+
+# This will set the gene column as index
+df <- df %>% column_to_rownames(., var = 'gene')
+```
+
+Lets take a look at what the data frame looks like!
+```{r}
+ head(df)
+```
+
+## Create group varibles
+We need to tell edgeR what experimental groups each column belongs to. First we want to divide the samples by experimental condition  `Treat` (treated vs control). Secondly, we would like to assign sampling time to each sample `Time` (1, 2 or 3). 
+```{r}
+# Identifies the different treatments
+Treat <- factor(substring(colnames(df),1,4))
+
+# Print the Treat variable before and after this command. What did it do?
+Treat <- relevel(Treat, ref="mock")
+
+# Identifies the sampling time point
+Time <- factor(substring(colnames(df),5,5))
+```
+
+### Create DGEList
+edgeR stores data in a simple list-based data object called a `DGEList`. This type of object is easy to use because it can be manipulated like any list in R. Lets create one and see what type of information it contains!
+```{r}
+y <- DGEList(counts=df, group=Treat)
+```
+
+### Filter lowly expressed genes
+Genes with very low counts across all libraries provide little evidence for differential expression. In the biological point of view, a gene must be expressed at some minimal level before it is likely to be translated into a protein or to be biologically important. In addition, the pronounced discreteness of these counts interferes with some of the statistical approximations that are used later in the pipeline. These genes should be filtered out prior to further analysis.
+
+```{r}
+# Identify genes to keep
+keep <- filterByExpr(y)
+table(keep)
+
+# Filter lowly expressed genes
+y <- y[keep, , keep.lib.sizes=FALSE]
+```
+
+## Calculate normalisation factors
+ If a small proportion of highly expressed genes consume a substantial proportion of the total library size for a particular sample, this will cause the remaining genes to be under-sampled for that sample. Unless this effect is adjusted for, the remaining genes may falsely appear to be down-regulated in that sample.
+ 
+`calcNormFactors`creates a "scaling factor" whihc compensates for this.
+
+```{r}
+y <- calcNormFactors(y)
+y$samples
+```
+
+## Data exploration
+
+Distances on an MDS plot of a DGEList object correspond to leading log-fold-change between each pair of samples. Leading log-fold-change is the root-mean-square average of the largest log2-fold-changes between each pair of samples.
+
+```{r}
+plotMDS(y, col=rep(1:2, each=3))
+```
+
+To examine further consistency of the three replicates, we compute predictive log2-fold- changes (logFC) for the treatment separately for the three times.
+
+```{r}
+# Create model matrix 
+design <- model.matrix(~Time+Time:Treat)
+
+# Predict logFC between samples
+logFC <- predFC(y,design,prior.count=1,dispersion=0.05)
+
+# Calculate how well samples taken at different times correlate
+cor(logFC[,4:6])
+```
+
+## Model matrix
+
+This model matrix till tell edgeR what samples belong to which groups. 
+```{r}
+design <- model.matrix(~Time+Treat)
+rownames(design) <- colnames(y)
+```
+
+## Estimate dipersion
+
+>Since the dispersions control the variances of the gene counts, underestimation may lead to false discovery, while overestimation may lower the rate of true detection.
+
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0081415
+
+Larger dispersion = higher variance between replicates, which reduce power to detect differently expressed genes.
+
+```{r}
+y <- estimateDisp(y, design, robust=TRUE)
+y$common.dispersion
+plotBCV(y)
+```
+## Differential expression
+
+To see which genes have both statisticaly significant and biologicaly meaningfull change in expression level we can performe diferential expression analysis.
+
+### Test for differences between replicates 
+
+First we check whether there is a genuine need to adjust for the experimental times. We do this by testing for differential expression between the three sampleing times.
+
+```{r}
+# Fit the model
+fit <- glmQLFit(y, design, robust=TRUE)
+# Test for differences between sampling times
+qlf <- glmQLFTest(fit, coef=2:3)
+
+# Find top genes
+topTags(qlf)
+```
+
+How many genes were signifficantly differentially expressed between the sampling times alone.
+```{r}
+# Get nr significant genes FDR corrected
+FDR <- p.adjust(qlf$table$PValue, method="fdr")
+
+# Total nr of genes 
+length(FDR)
+
+# nr significant genes
+sum(FDR < 0.05)
+```
+
+### Identify differences between treatments
+```{r}
+# Perform test: mock vs hrcc
+qlf <- glmQLFTest(fit)
+topTags(qlf)
+```
+
+Here’s a closer look at the individual counts-per-million for the top genes.
+```{r}
+top <- rownames(topTags(qlf))
+cpm(y)[top,]
+
+```
+
+The total number of genes significantly up-regulated or down-regulated at 5% FDR is sum- marized as follows:
+```{r}
+summary(decideTests(qlf))
+```
+
+We can plot all the logFCs against average count size, highlighting the DE genes:
+```{r}
+plotMD(qlf)
+abline(h=c(-1,1), col="blue")
+```
+
+
+
+
+# Single-Cell
 
 In this exercise, we will analyze single cell data from human cancer cells.
 Download this notebook and the data file:
@@ -65,7 +257,7 @@ For reference, the datasets can be viewed here:
 
 
 
-# Install the required packages  (10-15 minutes)
+## Install the required packages  (10-15 minutes)
 
 Run the following installation commands **in the R console** (huge output).
 Make sure to check for any answers R might ask from you.
@@ -87,7 +279,7 @@ install.packages("uwot")
 
 
 
-# Load and Preprocess Data
+## Load and Preprocess Data
 
 Run the chunk below to load from the RData file 
 This will create new variables in the environment, which you can view to the right ->
@@ -169,14 +361,6 @@ gbm_sc_experiment <- scater::logNormCounts(gbm_sc_experiment)
 ```
 
 
-
-
-
-
-
-
-
-
 # Visualization
 
 We're going to inspect gene distributions by reducing the number of dimensions (cell samples)
@@ -245,7 +429,7 @@ scater::plotTSNE(gbm_sc_experiment,
                  colour_by = "cell_type")
 ```
 
-## Questions
+### Questions
 
 * Was this helpful?
 * Which method was most informative?
@@ -351,7 +535,7 @@ scater::plotTSNE(gbm_sc_cancer_experiment, colour_by = "k_cluster")
 scater::plotReducedDim(gbm_sc_cancer_experiment, dimred = "PCA", colour_by = "k_cluster") 
 ```
 
-## Questions
+### Questions
 
 - Does the number of clusters make sense? Does this vary by dimensionality reduction method?
 - How is the clustering different if we change the number of clusters k?
