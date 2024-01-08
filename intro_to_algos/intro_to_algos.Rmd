@@ -632,15 +632,16 @@ This helps thinking a bit deeper about the problem being solved and potential go
 
 This can be as simple as writing something like:
 
-```{r}
-my_procedure <- function(x) { x^2 * 10 }
+```{python}
+def my_procedure(x):
+    return x^2 * 10 
 
 # Tests
-test_inputs <- c(1, 2, 3, -1, -2)
-expected_outputs <- c(10, 40, 90, 10, 40)
+test_inputs = [1, 2, 3, -1, -2]
+expected_outputs = [10, 40, 90, 10, 40]
 
-actual_outputs <- sapply(test_inputs, my_procedure)
-all(expected_outputs == actual_outputs)
+actual_outputs = map( my_procedure, test_inputs)
+print(expected_outputs == list(actual_outputs))
 ```
 
 There is also a package called [testthat](https://testthat.r-lib.org/) which
@@ -651,33 +652,47 @@ to write large batteries of tests to assess whehter you have the solution you th
 # Exercise: ID Frequency
 
 1. Write a **function** that counts the number of times an ID appears in a vector.
-E.g. in `c("abc", "xyz", "abc", "def")`, "abc" appears 2 times, the rest 1 time.
+E.g. in `["abc", "xyz", "abc", "def"]`, "abc" appears 2 times, the rest 1 time.
 
 2. Describe its time cost using a formula. Aim for a low time cost when building your solution.
 
-A solution written in every-day R is given below, for you to test against.
-Please write the function using only base R ("from scratch") using the
+A solution written in every-day python is given below, for you to test against.
+Please write the function using only base python ("from scratch") using the
 data structures and methods discussed earlier.
 
 Run the code below to generate 10 thousand random IDs consisting of 2 letters
 and a digit, then write your function and test it against the solution written below.
 
-```{r}
-library(stringi)
-random_strings <- do.call(paste0, Map(stri_rand_strings, n=1e4, length=c(2, 1),
-                          pattern = c('[A-Z]', '[0-9]')))
+```{python}
+import random
+import string
+
+# Set seed for reproducibility
+random.seed(42)
+
+# Generate random strings
+random_strings = [''.join(random.choices(string.ascii_uppercase, k=2) + random.choices(string.digits, k=1)) for _ in range(10000)]
+
+# Print the first 10 random strings
+print(random_strings[:10])
 ```
 
-```{r}
+```{python}
 # Your function here 
 ```
 
-```{r}
-answer <- 
-    as_tibble(random_strings) %>% 
-    rename(id = value) %>% 
-    group_by(id) %>% 
-    count()
+```{python}
+import pandas as pd
 
-answer
+# Assuming 'random_strings' is a list of strings
+# You can replace it with your actual list
+
+# Create a DataFrame
+df = pd.DataFrame({'id': random_strings})
+
+# Group by 'id' and count occurrences
+answer = df.groupby('id').size().reset_index(name='count')
+
+# Print the result
+print(answer)
 ```
