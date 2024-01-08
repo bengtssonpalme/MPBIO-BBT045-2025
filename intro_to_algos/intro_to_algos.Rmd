@@ -351,7 +351,7 @@ In python, procedures can be encapsulated in functions.
 For example, let's have a function that truncates any negative value to 0 and
 doubles any positive value. Why not.
 
-```{r}
+```{python}
 def amplify_positive(value):
     # The value of the last executed command is the value the function gives back
     # One can also be explicit and use the return() command for clarity
@@ -364,12 +364,12 @@ def amplify_positive(value):
 
 ```
 
-Python is a procedural language that does play well with functions "play well" with the various
+Python is a procedural language that does play well with functions for various
 data structures. Quite often in statistical, mathematical, and bioinformatical programming, 
 one works with vectors as the unit of calculation and the focus is more on the functions 
 that are applied to these vectors. 
 Functional programming is a very deep subject area but it helps to be aware of some common patterns.
-For more info, see the [chapter](https://adv-r.hadley.nz/fp.html) in *Advanced R*.
+
 
 Here we will look at two common functional operations:
 
@@ -387,8 +387,8 @@ Because our example function has a logical test that is defined per atomic value
 it cannot simply be fed an entire vector (like we did for the `log` function).
 The code below will given a warning and not produce what we want.
 
-```{r}
-test_values <- c(-3, -2, -1, 0, 1, 2, 3) 
+```{python}
+test_values = [-3, -2, -1, 0, 1, 2, 3] 
 amplify_positive(test_values)
 ```
 
@@ -397,37 +397,33 @@ There are a few version of this function and you are encouraged to read the vign
 and try these out. The basic syntax is
 
 ```
-lapply(vector, function)     # "l" is for "list"-ify the output
-sapply(vector, function)     # "s" for simplify output
+map( function, vector)     
 ``` 
 
-```{r}
-test_values <- c(-3, -2, -1, 0, 1, 2, 3) 
-sapply(test_values, amplify_positive)
+```{python}
+test_values = c(-3, -2, -1, 0, 1, 2, 3) 
+new_values = map( amplify_positive, test_values)
+
+print(new_values)
+#print(list(new_values))
 ```
 
-The `lapply` version wraps each transformed element in the vector in its own list.
-This looks weird but it's sometimes required depending on how downstream functions work.
 
-```{r}
-lapply(test_values, amplify_positive)
-```
-
-Fun fact: the `dplyr` pipe operator `%>%` is a type of map operation, just
+Fun fact: the `dplyr` pipe operator `%>%`  in R is a type of map operation, just
 written as a "connector" that has the meaning `data %>% function == function(data)`.
 
 If you can (easily) express a procedure as a function, the functional approach
 is strongly encouraged instead of using `for` loops. So **don't write**
 
-```{r}
-amplified_values <- rep(0, length(test_values))
-for (i in 1:length(test_values)) {
-    if (test_values[i] < 0) {
-        amplified_values[i] <- 0
-    } else {
-        amplified_values[i] <- 2 * test_values[i]
-    }
-}
+```{python}
+amplified_values = [0 for _ in test_values]:
+for i in range(len(test_values)):
+    if (test_values[i] < 0):
+        amplified_values[i] = 0
+    else:
+        amplified_values[i] = 2 * test_values[i]
+    
+
 ```
 
 Of course, "under the hood"
@@ -451,34 +447,30 @@ In a single command, this would be `vector[apply(vector, condition)]`
 We'll use a non-trivial toy example, where we're given a vector of query values
 and wish to keep only "interesting" values above a threshold.
 
-```{r}
-baseline_values <- 1:8
-interesting_values <- c(10, 100, 1337, 1e6)
+```{python}
+baseline_values = [i for i in range(8)]
+interesting_values = [10, 100, 1337, 1e6]
 
-is_interesting <- function(value) {
-    if (value > max(baseline_values)) {
-        for (element in interesting_values) {
-            if (element == value) {
+def is_interesting (value):
+    if (value > max(baseline_values)):
+        for (element in interesting_values):
+            if (element == value):
                 # Match found: the function can immediately return TRUE
-                return(TRUE)
-            }
-        }
+                return(True)
+            
+        
         # If we went through all interesting_values without a match
-        return(FALSE)
-    } else {
+        return(False)
+    else:
         # The value was not above the baseline 
-        return(FALSE)
-    }
-}
+        return(False)
+   
 
-query_values <- 1:2000
+query_values = [ i for i in range(2000)]
 
-query_values[sapply(query_values, is_interesting)]
+print(query_values[list(map(is_interesting, query_values)])
 ```
 
-Again, real R code, especially using `dplyr` and its friends, will look much
-simpler. The point here is awareness of the steps involved, often "hidden" inside
-various functions.
 
 #### Question 3
 
@@ -512,20 +504,31 @@ Many operations performed can be expressed using map-reduce patterns.
 For example, let's take the Iris dataset, and compute the average petal area.
 The data frame looks like this
 
-```{r}
-iris
+```{python}
+import pandas as pd
+from sklearn import datasets
+ 
+iris = datasets.load_iris()
+ 
+df = pd.DataFrame(
+    iris.data, 
+    columns=iris.feature_names
+    )
 ```
 We compute the areas (very simplistically), then the average of all areas:
 
-```{r, message=F, warning=F}
-library(dplyr)
+```{python, message=F, warning=F}
 
-iris %>% 
-    dplyr::mutate(Petal.Area = Petal.Length * Petal.Width) %>% 
-    dplyr::summarise(mean(Petal.Area))
+# Assuming 'iris' is a DataFrame with columns 'Petal.Length' and 'Petal.Width'
+# You can replace it with your actual DataFrame and column names
+
+iris['petal area (cm^2)'] = iris['petal length (cm)'] * iris['petal width (cm)']
+result = iris['petal area (cm^2)'].mean()
+
+print(result)
+
 ```
-The `mutate` function maps the multiplication (of two columns) onto the data frame,
-then `summarize` performs a reduction to a single value, using the `mean` function.
+
 
 #### Question 6
 
@@ -587,24 +590,22 @@ And changes will be made. There's no such thing as 100% single-use code.
 
 So instead of something like this:
 
-```r
-data1 <- read_csv("my_data_file_1.csv")
-avg1 <- mean(data1)
-data2 <- read_csv("my_data_file_2.csv")
-avg2 <- mean(data2)
-data2 <-read_csv("my_data_file_3.csv")  # this copy-paste-change error is on purpose, but it happens
-avg3 <- mean(data2)
+```python
+data1 = read_csv("my_data_file_1.csv")
+avg1 = mean(data1)
+data2 = read_csv("my_data_file_2.csv")
+avg2 = mean(data2)
+data2 =read_csv("my_data_file_3.csv")  # this copy-paste-change error is on purpose, but it happens
+avg3 = mean(data2)
 ````
 
 Generalize:
 
 ```python
-filenames <- c("my_data_file_1.csv", "my_data_file_2.csv", "my_data_file_3.csv")
-averages <-
-    sapply(
-        sapply(filenames, read_csv),
-        mean
-    )
+filenames = ["my_data_file_1.csv", "my_data_file_2.csv", "my_data_file_3.csv"]
+averages = map(mean,
+                map(read_csv, filenames)
+              )
 ```
 
 Now you can just extend the list of file names, or use `list.files()`
