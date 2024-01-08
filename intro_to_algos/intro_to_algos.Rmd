@@ -31,7 +31,7 @@ though note that these were written for computer science undergraduates and quic
 
 # Preliminaries
 
-We'll be using the R programming language to discuss some algorithmic concepts.
+We'll be using the the Python programming language to discuss some algorithmic concepts.
 R is perhaps not the best choice for introducing such topics, since it's a high-level
 language, abstracting over many of the low-level operations.
 Still, many of the concepts can be discussed at multiple levels and when writing
