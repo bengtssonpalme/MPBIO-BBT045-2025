@@ -37,7 +37,7 @@ language, abstracting over many of the low-level operations.
 Still, many of the concepts can be discussed at multiple levels and when writing
 your own code it's good to be aware of the time and memory cost of your routines.
 
-Click [here](intro_to_algos.Rmd) to **download this R notebook** 
+Click [here](intro_to_algos.ipynb) to **download this R notebook** 
 so you can run it and write your own code.
 
 # Basic Concepts
@@ -60,17 +60,17 @@ Like their mathematical counterparts, variables are labels assigned to various v
 These values may be *atomic* (e.g. a number) or structured *collections* of atomic values 
 (e.g. a vector of numbers):
 
-```{r}
-protein_count <- 2345                    # atomic value
-organism <- "yeast"                      # string
-temperatures <- c(35.2, 34, 35.7, 34.5)  # vector of floats (real values)
+```{python}
+protein_count = 2345                    # atomic value
+organism = "yeast"                      # string
+temperatures = [35.2, 34, 35.7, 34.5]  # vector of floats (real values)
 
-length(protein_count)
-length(organism)
-length(temperatures)
+len(protein_count)
+len(organism)
+len(temperatures)
 ```
 
-(Note: The length of `organism` is 1 since R treats strings as single values.
+(Note: The len of `organism` is 5 since Python treats characters as single values.
 However, every time we perform some string manipulation operation (e.g. pattern matching),
 these strings are processed character by character.)
 
@@ -79,15 +79,15 @@ The main thing to note here from an algorithmic point of view is:
 > **We can measure a program's running time in terms of atomic operations**,
 i.e. getting and setting atomic values, as well as arithmetic operations with these.
 
-```{r}
+```{python}
 # 1 atomic operation: assigning (setting) a value
-protein_count <- 2345                          
+protein_count = 2345                          
 
 # 3 atomic operations: 
 # - getting the protein_count value from RAM into the CPU
 # - adding an atomic value 
 # - then setting the resulting adjusted_protein_count value from the CPU into RAM
-adjusted_protein_count <- protein_count + 100 
+adjusted_protein_count = protein_count + 100 
 ```
 
 This is our unit of time. Of course the exact number of milliseconds will differ between computers,
@@ -106,8 +106,8 @@ though nowadays you're more likely to bump into long running times than memory l
 Also called *arrays* or *lists* in other languages, these are linear collections
 of atomic values of the same type.
 
-```{r}
-temperatures <- c(35.2, 34, 35.7, 34.5)
+```{python}
+temperatures <- [35.2, 34, 35.7, 34.5]
 ```
 
 Let's say the length of a vector is N.
@@ -129,8 +129,8 @@ Back to vectors: they are meant for storing and fetching values by position.
 As in, assuming you "know" which element you want, 
 you can retrieve it in one atomic operation (or "constant time").
 
-```{r}
-temperatures[4]  # 1 atomic operation: getting the value
+```{python}
+print(temperatures[4])  # 1 atomic operation: getting the value
 ```
 
 This is important to understand. If you want element number 1000 from a vector, 
@@ -156,7 +156,7 @@ the cost explodes even with relatively few data (N)
 
 ## Hash Maps
 
-Also known as "dictionaries" (Python), "hash tables", 
+Also known as "dictionaries" in Python, "hash tables", 
 or "associative array" (in the theory),
 this data type holds a collection of elements, similar to a vector,
 except that elements are indexed by *keys* (unique IDs) and are not sorted in any particular order.
@@ -170,49 +170,43 @@ you can use a hash map indexed by gene name to fetch the associated numeric valu
 With hash maps, this is an atomic operation (i.e. the list of keys is not searched until the 
 matching one is found).
 
-R does not include an explicit hash map structure in the base language.
-However, it's possible to simulate it using R's *environments*. 
-For this purpose, we can think of these as "bags" of variables.
-The fact that they can be used as hash maps is incidental
-and may not work this way for really old versions of R.
-For more details, see [this post](https://riptutorial.com/r/example/18339/environments-as-hash-maps).
 
 
-```{r}
-gene_pos <- new.env(hash = TRUE)
+```{python}
+gene_pos = {} 
 
 # We insert elements one by one using gene names as string keys
 # The syntax is 
-# hashmap[[key]] <- value   Note the double brackets
+# hashmap[key] <- value   Note the double brackets
 
-gene_pos[["gene_a"]] <- c(1, 1000)
-gene_pos[["gene_b"]] <- c(10001, 2010)
-gene_pos[["gene_c"]] <- c(2011, 2999)
+gene_pos["gene_a"] = [1, 1000]
+gene_pos["gene_b"] = [10001, 2010]
+gene_pos["gene_c"] = [2011, 2999]
 ```
 
 To retrieve an element from this hash map using a gene name (the key), simply
 refer to it like this
 
-```{r}
-gene_pos[["gene_b"]]
+```{python}
+print(gene_pos["gene_b"])
 ```
 
-To get a list of keys, inspect the names in the hashmap:
+To get a list of keys, use the dictionary function keys():
 
-```{r}
-names(gene_pos)
+```{python}
+gene_pos.keys()
 ```
 
-If a key is not present, `NULL` is returned. 
-The proper way to check that is with the `is.null()` command:
+If a key is not present, a KeyNotFound error will be triggered . 
+The proper way to check that is with the `has_key()` command:
 
-```{r}
+```{python}
 query_gene = "gene_x"
 
-if (is.null(gene_pos[[query_gene]])) {
+if (~gene_pos.has_key(query_gene):
     print("Gene not preset")
-} else {
-    gene_pos[[query_gene]] 
+else
+    gene_pos[query_gene] 
 }
 ```
 
@@ -224,8 +218,8 @@ Why is this a useful data structure? Because
 ### Question 1
 
 **How would you perform this look up using vectors?** That is, 
-given vectors `gene_start <- c(100, 200, ...)` and 
-`gene_name <- c("gene_a", "gene_b", ...) `, how would you fetch the start position
+given vectors `gene_start = [100, 200, ...]` and 
+`gene_name = ["gene_a", "gene_b", ...] `, how would you fetch the start position
 of a query gene?
 
 
@@ -240,31 +234,24 @@ in a single atomic operation if a value is present or not in the set.
 Which is great if you're testing whether a million values are part of a set containing 
 10 million known values.
 
-Unfortunately R doesn't have these natively, though there are packages available.
-In the spirit of "do more with less" (and to avoid installing extra crap),
-we can simulate these as well with environments.
 
 
-```{r}
-gene_id_set <- new.env(hash = T)
-
-gene_id_set[["AB1234"]] <- T   # Really, any value except NULL
-gene_id_set[["AB1235"]] <- T
-gene_id_set[["AB1236"]] <- T
+```{python}
+gene_id_set = {"AB1234", "AB1235", "AB1236"}
 
 query_gene = "XY1234"
 
-if (is.null(gene_id_set[[query_gene]])) {
+if query_gene not in gene_id_set:
     print("Gene not preset")
-} else {
-    gene_id_set[[query_gene]] 
-}
+else:
+    gene_id_set.add(query_gene) 
+
 ```
 
 To "remove" a value from the set, set it to `NULL`
 
-```{r}
-gene_id_set[["AB1235"]] <- NULL
+```{python}
+gene_id_set.discard("AB1235")
 ```
 
 
@@ -280,17 +267,23 @@ on algorithmic aspects.
 
 ## Looping
 
-The most typical pattern is to apply some sort of processing to many elements in a loop. 
+The most typical pattern is to apply some sort of processing to many elements in a loop or list comprehension. 
 
-```{r}
-CELSIUS_ZERO_IN_KELVIN <- 273.15
+```{PYTHON}
+CELSIUS_ZERO_IN_KELVIN = 273.15
 
-# empty vector of same length as temperatures
-temperatures_kelvin <- rep(0.0, length(temperatures))
-
-for  (i in 1:length(temperatures)) {
+#initialise
+temperatures_kelvin = [0.0 for _ in temperatures]
+# loop
+for  i in range(len(temperatures)): 
     temperatures_kelvin[i] <- CELSIUS_ZERO_IN_KELVIN + temperatures[i]
-}
+
+
+# List comprehesion
+
+temperatures_kelvin = [ CELSIUS_ZERO_IN_KELVIN + temperature for temperature in temperatures]
+
+
 temperatures_kelvin
 ```
 
@@ -303,28 +296,27 @@ Suppose we have a list of lists or a matrix, and we need to change all elements,
 say get log values of protein counts across samples.
 
 ```{r}
-N_PROTEINS <- 3
-N_SAMPLES <- 4
+import numpy as np
 
-protein_counts_across_samples <- matrix(
-    c(
-        c(100, 121, 10, 15),
-        c(1000, 1337, 175, 165),
-        c(100, 121, 10, 15)
-    ),
-    nrow = N_PROTEINS, ncol = N_SAMPLES
-)
 
-protein_log_counts_across_samples <- matrix(0, nrow = N_PROTEINS, ncol = N_SAMPLES)
+N_PROTEINS = 3
+N_SAMPLES = 4
 
-for (protein_num in 1:N_PROTEINS) {
-    for (sample_num in 1:N_SAMPLES) {
-        protein_log_counts_across_samples[protein_num, sample_num] <-
-            log(protein_counts_across_samples[protein_num, sample_num])
+protein_counts_across_samples = np.array(
+    [[100, 121, 10, 15],
+     [1000, 1337, 175, 165],
+     [100, 121, 10, 15]])
+
+protein_log_counts_across_samples = np.zeros((N_PROTEINS, N_SAMPLES))
+
+for protein_num in range(N_PROTEINS):
+    for (sample_num in range(N_SAMPLES):
+        protein_log_counts_across_samples[protein_num, sample_num] =
+        np.log(protein_counts_across_samples[protein_num, sample_num])
     }
 } 
 
-protein_log_counts_across_samples
+print(protein_log_counts_across_samples)
 ```
 
 ### Question 2
@@ -333,15 +325,15 @@ protein_log_counts_across_samples
 
 
 Now, the above is only for illustration.
-Since R is a high-level language with built-in vectorized operations,
+Since numpy is suporting vectorized operations,
 you don't need to do any of that in actual code. You'd simply write:
 
 ```{r}
-temperatures_kelvin <- temperatures + CELSIUS_ZERO_IN_KELVIN
-protein_log_counts_across_samples <- log(protein_counts_across_samples)
+temperatures_kelvin = temperatures + CELSIUS_ZERO_IN_KELVIN
+protein_log_counts_across_samples = np.log(protein_counts_across_samples)
 ```
 
-In fact, `for` loops in R tend to be slower than these vectorized operations 
+In fact, `for` loops in python tend to be slower than these vectorized operations 
 (i.e. operations/functions that can be applied on the vectors as a whole).
 Though keep in mind that "under the hood", it's still for loops!
 (Just in C or Fortran and hence much faster).
@@ -353,26 +345,26 @@ Though keep in mind that "under the hood", it's still for loops!
 
 As with any technological process or pipeline, 
 certain functionality can be made generic and reused. 
-In R, procedures can be encapsulated in functions.
+In python, procedures can be encapsulated in functions.
 
 
 For example, let's have a function that truncates any negative value to 0 and
 doubles any positive value. Why not.
 
 ```{r}
-amplify_positive <- function(value) {
+def amplify_positive(value):
     # The value of the last executed command is the value the function gives back
     # One can also be explicit and use the return() command for clarity
     
-    if (value < 0) {
+    if (value < 0):
         return(0)
-    } else {
+    else: 
         return(2 * value)
-    }
-}
+    
+
 ```
 
-R is a functional language which means functions "play well" with the various
+Python is a procedural language that does play well with functions "play well" with the various
 data structures. Quite often in statistical, mathematical, and bioinformatical programming, 
 one works with vectors as the unit of calculation and the focus is more on the functions 
 that are applied to these vectors. 
