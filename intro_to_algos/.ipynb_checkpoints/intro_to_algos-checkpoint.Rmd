@@ -1,6 +1,6 @@
 ---
 title: "BBT045: Introduction to Algorithmic Thinking"
-author: Sandra Viknander & Filip Buric
+author: Filip Buric
 date: 2021-01-21
 output:
   html_document:
@@ -397,7 +397,7 @@ test_values = [-3, -2, -1, 0, 1, 2, 3]
 amplify_positive(test_values)
 ```
 
-So we must tell Python how to map the function onto a vector (or "apply" it).
+So we must tell R how to map the function onto a vector (or "apply" it).
 There are a few version of this function and you are encouraged to read the vignette
 and try these out. The basic syntax is
 
