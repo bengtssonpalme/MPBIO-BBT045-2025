@@ -88,6 +88,7 @@ protein_count = 2345
 # - adding an atomic value 
 # - then setting the resulting adjusted_protein_count value from the CPU into RAM
 adjusted_protein_count = protein_count + 100 
+print(adjusted_protein_count)
 ```
 
 This is our unit of time. Of course the exact number of milliseconds will differ between computers,
@@ -107,7 +108,7 @@ Also called *arrays* or *lists* in other languages, these are linear collections
 of atomic values of the same type.
 
 ```{python}
-temperatures <- [35.2, 34, 35.7, 34.5]
+temperatures = [35.2, 34, 35.7, 34.5]
 ```
 
 Let's say the length of a vector is N.
@@ -130,7 +131,7 @@ As in, assuming you "know" which element you want,
 you can retrieve it in one atomic operation (or "constant time").
 
 ```{python}
-print(temperatures[4])  # 1 atomic operation: getting the value
+print(temperatures[3])  # 1 atomic operation: getting the value
 ```
 
 This is important to understand. If you want element number 1000 from a vector, 
@@ -201,13 +202,15 @@ If a key is not present, a KeyNotFound error will be triggered .
 The proper way to check that is with the `has_key()` command:
 
 ```{python}
-query_gene = "gene_x"
 
-if (~gene_pos.has_key(query_gene):
-    print("Gene not preset")
-else
-    gene_pos[query_gene] 
-}
+query_gene = "gene_a"
+
+if not gene_pos.get(query_gene):
+    print(f"{query_gene} not preset")
+else:
+    print(gene_pos[query_gene]) 
+
+
 ```
 
 Why is this a useful data structure? Because
@@ -248,7 +251,7 @@ else:
 
 ```
 
-To "remove" a value from the set, set it to `NULL`
+To "remove" a value from the set, you can use the discarde function
 
 ```{python}
 gene_id_set.discard("AB1235")
@@ -329,8 +332,10 @@ Since numpy is suporting vectorized operations,
 you don't need to do any of that in actual code. You'd simply write:
 
 ```{r}
+temperatures = np.array(temperatures)
 temperatures_kelvin = temperatures + CELSIUS_ZERO_IN_KELVIN
 protein_log_counts_across_samples = np.log(protein_counts_across_samples)
+print(protein_log_counts_across_samples)
 ```
 
 In fact, `for` loops in python tend to be slower than these vectorized operations 
@@ -392,7 +397,7 @@ test_values = [-3, -2, -1, 0, 1, 2, 3]
 amplify_positive(test_values)
 ```
 
-So we must tell R how to map the function onto a vector (or "apply" it).
+So we must tell Python how to map the function onto a vector (or "apply" it).
 There are a few version of this function and you are encouraged to read the vignette
 and try these out. The basic syntax is
 
