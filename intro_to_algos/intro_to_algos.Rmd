@@ -65,7 +65,7 @@ protein_count = 2345                    # atomic value
 organism = "yeast"                      # string
 temperatures = [35.2, 34, 35.7, 34.5]  # vector of floats (real values)
 
-len(protein_count)
+#len(protein_count)
 len(organism)
 len(temperatures)
 ```
@@ -272,7 +272,7 @@ on algorithmic aspects.
 
 The most typical pattern is to apply some sort of processing to many elements in a loop or list comprehension. 
 
-```{PYTHON}
+```{python}
 CELSIUS_ZERO_IN_KELVIN = 273.15
 
 #initialise
@@ -298,10 +298,8 @@ Here we applied a simple transformation to all elements of a unidimensional vect
 Suppose we have a list of lists or a matrix, and we need to change all elements,
 say get log values of protein counts across samples.
 
-```{r}
+```{python}
 import numpy as np
-
-
 N_PROTEINS = 3
 N_SAMPLES = 4
 
@@ -313,11 +311,9 @@ protein_counts_across_samples = np.array(
 protein_log_counts_across_samples = np.zeros((N_PROTEINS, N_SAMPLES))
 
 for protein_num in range(N_PROTEINS):
-    for (sample_num in range(N_SAMPLES):
-        protein_log_counts_across_samples[protein_num, sample_num] =
-        np.log(protein_counts_across_samples[protein_num, sample_num])
-    }
-} 
+    for sample_num in range(N_SAMPLES):
+        protein_log_counts_across_samples[protein_num, sample_num] = np.log(protein_counts_across_samples[protein_num, sample_num])
+
 
 print(protein_log_counts_across_samples)
 ```
@@ -331,7 +327,8 @@ Now, the above is only for illustration.
 Since numpy is suporting vectorized operations,
 you don't need to do any of that in actual code. You'd simply write:
 
-```{r}
+```{python}
+#import numpy as np
 temperatures = np.array(temperatures)
 temperatures_kelvin = temperatures + CELSIUS_ZERO_IN_KELVIN
 protein_log_counts_across_samples = np.log(protein_counts_across_samples)
@@ -386,13 +383,13 @@ Here we will look at two common functional operations:
 ### Map
 
 This basically means *applying a function to each element* in a vector.
-In base R this operation is called `apply` (and exists in several version).
+In base Python this operation is called `apply` (and exists in several version).
 
 Because our example function has a logical test that is defined per atomic value,
 it cannot simply be fed an entire vector (like we did for the `log` function).
 The code below will given a warning and not produce what we want.
 
-```{python}
+```python
 test_values = [-3, -2, -1, 0, 1, 2, 3] 
 amplify_positive(test_values)
 ```
@@ -406,11 +403,11 @@ map( function, vector)
 ``` 
 
 ```{python}
-test_values = c(-3, -2, -1, 0, 1, 2, 3) 
+test_values = [-3, -2, -1, 0, 1, 2, 3] 
 new_values = map( amplify_positive, test_values)
 
 print(new_values)
-#print(list(new_values))
+print(list(new_values))
 ```
 
 
@@ -421,7 +418,7 @@ If you can (easily) express a procedure as a function, the functional approach
 is strongly encouraged instead of using `for` loops. So **don't write**
 
 ```{python}
-amplified_values = [0 for _ in test_values]:
+amplified_values = [0 for _ in test_values]
 for i in range(len(test_values)):
     if (test_values[i] < 0):
         amplified_values[i] = 0
@@ -458,7 +455,7 @@ interesting_values = [10, 100, 1337, 1e6]
 
 def is_interesting (value):
     if (value > max(baseline_values)):
-        for (element in interesting_values):
+        for element in interesting_values:
             if (element == value):
                 # Match found: the function can immediately return TRUE
                 return(True)
@@ -466,14 +463,13 @@ def is_interesting (value):
         
         # If we went through all interesting_values without a match
         return(False)
-    else:
         # The value was not above the baseline 
-        return(False)
+    return(False)
    
 
-query_values = [ i for i in range(2000)]
+query_values = np.array([ i for i in range(2000)])
 
-print(query_values[list(map(is_interesting, query_values)])
+print(query_values[list(map(is_interesting, query_values))])
 ```
 
 
@@ -511,14 +507,8 @@ The data frame looks like this
 
 ```{python}
 import pandas as pd
-from sklearn import datasets
- 
-iris = datasets.load_iris()
- 
-df = pd.DataFrame(
-    iris.data, 
-    columns=iris.feature_names
-    )
+
+iris = pd.read_csv("iris.csv")
 ```
 We compute the areas (very simplistically), then the average of all areas:
 
@@ -527,7 +517,7 @@ We compute the areas (very simplistically), then the average of all areas:
 # Assuming 'iris' is a DataFrame with columns 'Petal.Length' and 'Petal.Width'
 # You can replace it with your actual DataFrame and column names
 
-iris['petal area (cm^2)'] = iris['petal length (cm)'] * iris['petal width (cm)']
+iris['petal area (cm^2)'] = iris['petal.length'] * iris['petal.width']
 result = iris['petal area (cm^2)'].mean()
 
 print(result)
