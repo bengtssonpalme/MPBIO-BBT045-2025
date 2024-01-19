@@ -1,0 +1,12 @@
+Bootstrap: docker
+#From: continuumio/miniconda3:latest
+From: condaforge/miniforge3:latest
+
+%files
+    env.yml
+
+%post
+    echo "Debug: Before Conda installation"
+
+    /opt/conda/bin/mamba env update --name base --file env.yml
+    echo "Debug: After Conda installation"
