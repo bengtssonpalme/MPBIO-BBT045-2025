@@ -1,6 +1,6 @@
 ---
-title: "BBT045: Intro to R programming for data analysis"
-author: Filip Buric
+title: "BBT045: Intro to  programming for data analysis"
+author: Sandra Viknander & Filip Buric
 date: "`r Sys.Date()`"
 output:
   html_document:
