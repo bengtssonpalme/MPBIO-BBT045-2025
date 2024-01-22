@@ -7605,56 +7605,35 @@ YNOPE
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f55f0720-bc26-4110-9da1-7bee4d209a23">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f55f0720-bc26-4110-9da1-7bee4d209a23">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># solving the GC content</span>
-<span class="c1"># ref: https://github.com/vappiah/Python-Bioinformatics-Hacks/blob/main/Notebooks/GC_content.ipynb</span>
-<span class="c1"># ref: https://biopython.org/wiki/SeqIO</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">script</span> false --no-raise-error
 
-<span class="n">input_fasta</span> <span class="o">=</span> <span class="s2">"Y55_JRIF00000000_SGD_cds.fsa"</span>
+# solving the GC content
+# ref: https://github.com/vappiah/Python-Bioinformatics-Hacks/blob/main/Notebooks/GC_content.ipynb
+# ref: https://biopython.org/wiki/SeqIO
 
-<span class="c1"># as before, let's use a counter to prevent printing all items</span>
-<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+input_fasta = "Y55_JRIF00000000_SGD_cds.fsa"
 
-<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">input_fasta</span><span class="p">,</span> <span class="s2">"fasta"</span><span class="p">):</span>
-    <span class="c1"># use SeqIO to open the FASTA file</span>
-    <span class="k">if</span> <span class="n">counter</span> <span class="o">&lt;=</span><span class="mi">10</span><span class="p">:</span> 
-    <span class="c1"># print onlyfirst few entries</span>
-        <span class="n">seq_gc_content</span> <span class="o">=</span> <span class="n">GC</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
-        <span class="c1"># print the results</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"For sequence "</span> <span class="o">+</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">", the GC content is "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">seq_gc_content</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">+</span> <span class="s2">"."</span><span class="p">)</span>
-        <span class="c1"># now increase the counter value by 1</span>
-        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+# as before, let's use a counter to prevent printing all items
+counter = 0
+
+for record in SeqIO.parse(input_fasta, "fasta"):
+    # use SeqIO to open the FASTA file
+    if counter &lt;=10: 
+    # print onlyfirst few entries
+        seq_gc_content = GC(record.seq)
+        # print the results
+        print("For sequence " + record.id + ", the GC content is " + str(round(seq_gc_content, 3)) + ".")
+        # now increase the counter value by 1
+        counter += 1
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>For sequence UNDEF_Y55, the GC content is 43.038.
-For sequence UNDEF_Y55, the GC content is 41.648.
-For sequence UNDEF_Y55, the GC content is 40.694.
-For sequence UNDEF_Y55, the GC content is 34.768.
-For sequence UNDEF_Y55, the GC content is 37.634.
-For sequence UNDEF_Y55, the GC content is 38.434.
-For sequence UNDEF_Y55, the GC content is 40.426.
-For sequence UNDEF_Y55, the GC content is 46.512.
-For sequence UNDEF_Y55, the GC content is 43.421.
-For sequence UNDEF_Y55, the GC content is 39.506.
-For sequence UNDEF_Y55, the GC content is 42.262.
-</pre>
 </div>
 </div>
 </div>
@@ -7671,127 +7650,36 @@ For sequence UNDEF_Y55, the GC content is 42.262.
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b7ce81d7-9552-4284-a710-ecad8fc5c653">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b7ce81d7-9552-4284-a710-ecad8fc5c653">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create a Pandas dataframe from the FASTA file</span>
-<span class="c1"># ref: https://stackoverflow.com/questions/19436789/biopython-seqio-to-pandas-dataframe</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">script</span> false --no-raise-error
 
-<span class="c1"># create two empty lists for the sequence IDs and sequences</span>
-<span class="n">id_list</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">sequence_list</span> <span class="o">=</span> <span class="p">[]</span>
+# create a Pandas dataframe from the FASTA file
+# ref: https://stackoverflow.com/questions/19436789/biopython-seqio-to-pandas-dataframe
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_fasta</span><span class="p">)</span> <span class="k">as</span> <span class="n">fasta_file</span><span class="p">:</span> 
-    <span class="c1"># open the file</span>
-    <span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fasta_file</span><span class="p">,</span> <span class="s1">'fasta'</span><span class="p">):</span>
-        <span class="c1"># parse the contents of the FASTA file</span>
-        <span class="c1"># and append the relevant information to the lists</span>
-        <span class="n">id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">sequence_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+# create two empty lists for the sequence IDs and sequences
+id_list = []
+sequence_list = []
 
-<span class="c1"># generate a new Pandas dataframe from the two lists</span>
-<span class="c1"># ref: https://www.geeksforgeeks.org/create-a-pandas-dataframe-from-lists/</span>
-<span class="n">genes_y55_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">id_list</span><span class="p">,</span> <span class="n">sequence_list</span><span class="p">)),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'gene_info'</span><span class="p">,</span> <span class="s1">'sequence'</span><span class="p">])</span>
-<span class="n">genes_y55_df</span>
+with open(input_fasta) as fasta_file: 
+    # open the file
+    for seq_record in SeqIO.parse(fasta_file, 'fasta'):
+        # parse the contents of the FASTA file
+        # and append the relevant information to the lists
+        id_list.append(seq_record.id)
+        sequence_list.append(len(seq_record.seq))
+
+# generate a new Pandas dataframe from the two lists
+# ref: https://www.geeksforgeeks.org/create-a-pandas-dataframe-from-lists/
+genes_y55_df = pd.DataFrame(list(zip(id_list, sequence_list)), columns = ['gene_info', 'sequence'])
+genes_y55_df
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>gene_info</th>
-<th>sequence</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>UNDEF_Y55</td>
-<td>711</td>
-</tr>
-<tr>
-<th>1</th>
-<td>UNDEF_Y55</td>
-<td>1359</td>
-</tr>
-<tr>
-<th>2</th>
-<td>UNDEF_Y55</td>
-<td>951</td>
-</tr>
-<tr>
-<th>3</th>
-<td>UNDEF_Y55</td>
-<td>1533</td>
-</tr>
-<tr>
-<th>4</th>
-<td>UNDEF_Y55</td>
-<td>837</td>
-</tr>
-<tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>5325</th>
-<td>YNL335W_Y55</td>
-<td>393</td>
-</tr>
-<tr>
-<th>5326</th>
-<td>YNL334C_Y55</td>
-<td>555</td>
-</tr>
-<tr>
-<th>5327</th>
-<td>UNDEF_Y55</td>
-<td>891</td>
-</tr>
-<tr>
-<th>5328</th>
-<td>UNDEF_Y55</td>
-<td>546</td>
-</tr>
-<tr>
-<th>5329</th>
-<td>UNDEF_Y55</td>
-<td>303</td>
-</tr>
-</tbody>
-</table>
-<p>5330 rows × 2 columns</p>
-</div>
 </div>
 </div>
 </div>
