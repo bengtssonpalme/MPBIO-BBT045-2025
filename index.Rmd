@@ -15,7 +15,7 @@ output:
 # Homework
 
 * [HW 1: Unix](homework1)
-* [HW 2: R for Data Analysis](r_for_data_analysis/homework.html)
+* [HW 2: Python for Data Analysis](python_for_data_analysis/homework_python_intro.html)
 * [HW 3: Alignment](alignment/homework.html)
 * [HW 4: HMM](HMM/HMM_notebook.html)
 
@@ -85,34 +85,35 @@ output:
 <hr />
 
 
-## Tutorial: Intro to R programming for data analysis
+## Tutorial: Intro to Python programming for data analysis
 
-[Self-study notebook](r_for_data_analysis/intro_r_data_analysis.html)
+[Self-study notebook](python_for_data_analysis/intro_python_data_analysis.html)
 
 **Reading**
 
 A selection of small chapters and sections that explain concepts we cover in the course:
 
-* *R for Data Science*  (the whole book is great and even covers basic R)
-  - Section 1. [Intro](https://r4ds.had.co.nz/introduction.html) (if the tidyverse context or applications are not clear)
-  - Section 4. [Workflow: basics](https://r4ds.had.co.nz/workflow-basics.html) (good tips for working with code)
-  - Section 5. [Data Transformations](https://r4ds.had.co.nz/transform.html)
-  - Section 18. [Pipes](https://r4ds.had.co.nz/pipes.html)  (about the `%>%` operator)
-  - Section 19. [Functions](https://r4ds.had.co.nz/functions.html#functions)  (you can skip the last section about environments)
+- [*An Introduction to Programming for Bioscientists: A Python-Based Primer*](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004867) by Ekmekci et al.
+    - This PLoS article is a good overview/introduction to the use of Python for data science. 
+    - Some aspects may seem confusing in the beginning, but Python (like all languages, programming or otherwise) is best learned through _use_. As you work your way through this course, this article can be used a reference. 
 
-* *Advanced R*
-  - Section 4. [Subsetting](https://adv-r.hadley.nz/subsetting.html)  (different ways to access elements in R data structures)
+- [*Python for Data Analysis, 3E*](https://wesmckinney.com/book/) by Wes McKinney
+    - An alternative option for exploring the use of Python in the context of data analysis & scientific computing
+    - Much more detailed than the PLoS article above, but less relevant for bioinformatics - a potentially useful reference
 
-* *Misc*
-  - [Table manipulation (aka data wrangling) cheat sheet](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
-  - [Quick overview of Biostrings functionality](https://bioconductor.org/packages/release/bioc/vignettes/Biostrings/inst/doc/BiostringsQuickOverview.pdf)
-  - [Simple examples of working with Biostrings](https://web.stanford.edu/class/bios221/labs/biostrings/lab_1_biostrings.html)
-  
-**Recommended Reading**
+- [*Intro to Advanced Python*](https://python-course.eu/advanced-python/) by Bernd Klein
+    - This website provides resources for some of the more advanced utility of Python, which can improve your overall coding ability. 
+    - The [*Intro to Python Tutorial*](https://python-course.eu/python-tutorial/) portion of the same website has more basic introductory materials, if you like all of your references to be in the same place. 
 
-* [Strategies for Reproducible R Environments](https://environments.rstudio.com/)
-* [R for Data Science](https://r4ds.had.co.nz)
-* [Advanced R](https://adv-r.hadley.nz) 
+- Official documentation pages: You do not need to read these in their entirety, but they can provide helpful information for a variety of the modules we will be using. Here, I will include a few of the basics: 
+    - Python programming language official website: https://www.python.org/
+    - Pandas documentation: https://pandas.pydata.org/
+    - Numpy documentation: https://numpy.org/
+    - Scipy (Python for scientific computing): https://scipy.org/
+    - Re (regex/regular expressions in Python): https://docs.python.org/3/library/re.html
+    - Biopython: https://biopython.org/
+
+- Miscellaneous :) There are many good resource on the web. We'll point out some when relevant.
 
 <hr />
 
