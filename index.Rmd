@@ -141,6 +141,8 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 * [How to install your own software on the server](installing_software_on_the_server)
 
+<hr />
+
 # Practical info for clusters
 
 * [How to run Jupyter Lab](Jupyter_and_Containers/Run_Jupyter.html)
