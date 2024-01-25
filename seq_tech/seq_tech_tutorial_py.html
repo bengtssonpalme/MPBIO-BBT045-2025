@@ -7514,7 +7514,10 @@ cp<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/seq_tech_tutorial_py.ipynb
 <p>Then create a results directory:</p>
 <div class="highlight"><pre><span></span>mkdir<span class="w"> </span>results
 </pre></div>
-<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
+<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Container">Container<a class="anchor-link" href="#Container">¶</a></h3><p>For this tutorial, as with other tutorials for this course, you will be using a container. In this case, the <code>sequencing-conda-container.sif</code> container, located in the <code>/cephyr/NOBACKUP/groups/bbt045_2024/Container/</code> directory, just like the container you used earlier.</p>
+<p>In order to run this Jupyter Notebook, you will need to copy the <code>run_jupyter.sh</code> script to your new <code>NGS_Tutorial/</code> directory, and edit the file path for the container. In other words, in the <code>run_jupyter.sh</code> script, replace the name of the container you used previously (<code>bbt045.sif</code>) with the name of the container you will be using for this exercise (<code>sequencing-conda-container.sif</code>).</p>
+<p>Since you will be using this container, the following instructions regarding the creation of a <code>conda</code> environment to run this Notebook in are irrelevant for you. However, I am leaving them in for you to reference, and will briefly cover them in class.</p>
+<h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
 <p><code>Conda</code> can fetch packages from many different sources (aka "channels"). Let's add the Bioconda channel, as well as the general-purpose conda-forge channel ("defaults" is given first to give it top priority when searching for packages).</p>
 <p>Ignore any errors about " Inappropriate ioctl for device" and "no job control in this shell". They're a harmless consequence of this.</p>
 <p>Add the channels by running the following in your Unix terminal (not in your Jupyter Notebook):</p>
@@ -8025,7 +8028,11 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 <h3 id="Step-4:-Inspect-mutations-(pt-2)">Step 4: Inspect mutations (pt 2)<a class="anchor-link" href="#Step-4:-Inspect-mutations-(pt-2)">¶</a></h3><p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command.</p>
 <p>For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
 <p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
-<div class="highlight"><pre><span></span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
+<div class="highlight"><pre><span></span><span class="c1"># for those of you using the sequencing-conda-container.sif container: </span>
+apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>../Container/sequencing-conda-container.sif<span class="w"> </span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
+
+<span class="c1"># alternatively, if you are using a conda environment or otherwise have samtools installed/loaded: </span>
+samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
 </pre></div>
 </div>
 </div>
@@ -8145,7 +8152,7 @@ it is not possible for a single genomic position to have two different bases.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder. (Using the File tab in RStudio, navigate to the file, click on it, and choose "Open in browser") and compare the mutations detected, in comparison to exercise 2.</p>
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder and compare the mutations detected, in comparison to exercise 2. (You should be able to open .html files in Jupyter Lab.)</p>
 <p>Answer:</p>
 <font color="white">
 One mutation is missing in breseq
