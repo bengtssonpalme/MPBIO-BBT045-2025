@@ -143,6 +143,12 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 <hr />
 
+# Practical info for clusters
+
+* [How to run Jupyter Lab](Jupyter_and_Containers/Run_Jupyter.html)
+
+<hr />
+
 Chalmers University of Technology
 
 <footer style="font-size:0.8em">
@@ -150,5 +156,7 @@ Chalmers University of Technology
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
 </a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+
 
 </footer>
