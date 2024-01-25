@@ -78,13 +78,6 @@ output:
 <hr />
 
 
-## Tutorial: Sequencing Technologies
-
-[Exercises](seq_tech/seq_tech_tutorial.html)
-
-<hr />
-
-
 ## Tutorial: Intro to Python programming for data analysis
 
 [Self-study notebook](python_for_data_analysis/intro_python_data_analysis.html)
@@ -116,6 +109,14 @@ A selection of small chapters and sections that explain concepts we cover in the
 - Miscellaneous :) There are many good resource on the web. We'll point out some when relevant.
 
 <hr />
+
+
+## Tutorial: Sequencing Technologies
+
+[Exercises](seq_tech/seq_tech_tutorial_py.html)
+
+<hr />
+
 
 ## Tutorial: Metagenomics and Single-Cell workflows
 
