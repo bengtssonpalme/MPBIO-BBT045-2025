@@ -110,6 +110,11 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 <hr />
 
+## Tutorial: Nextflow
+
+[Exercises](Nextflow_tutorial/Nextflow_tutorial.html)
+
+<hr />
 
 ## Tutorial: Sequencing Technologies
 
