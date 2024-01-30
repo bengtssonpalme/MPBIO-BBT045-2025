@@ -7611,7 +7611,7 @@ YNOPE
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">script</span> false --no-raise-error
@@ -7619,6 +7619,7 @@ YNOPE
 # solving the GC content
 # ref: https://github.com/vappiah/Python-Bioinformatics-Hacks/blob/main/Notebooks/GC_content.ipynb
 # ref: https://biopython.org/wiki/SeqIO
+# ref: https://bioinformatics.stackexchange.com/questions/307/changing-the-record-id-in-a-fasta-file-using-biopython
 
 input_fasta = "Y55_JRIF00000000_SGD_cds.fsa"
 
@@ -7631,7 +7632,7 @@ for record in SeqIO.parse(input_fasta, "fasta"):
     # print onlyfirst few entries
         seq_gc_content = GC(record.seq)
         # print the results
-        print("For sequence " + record.id + ", the GC content is " + str(round(seq_gc_content, 3)) + ".")
+        print("For sequence " + record.description + ", the GC content is " + str(round(seq_gc_content, 3)) + ".")
         # now increase the counter value by 1
         counter += 1
 </pre></div>
@@ -7656,13 +7657,14 @@ for record in SeqIO.parse(input_fasta, "fasta"):
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">script</span> false --no-raise-error
 
 # create a Pandas dataframe from the FASTA file
 # ref: https://stackoverflow.com/questions/19436789/biopython-seqio-to-pandas-dataframe
+# ref: https://stackoverflow.com/questions/69696077/i-want-to-parse-sequences-and-sequence-ids-from-a-fasta-file-and-assign-them-to
 
 # create two empty lists for the sequence IDs and sequences
 id_list = []
@@ -7673,13 +7675,45 @@ with open(input_fasta) as fasta_file:
     for seq_record in SeqIO.parse(fasta_file, 'fasta'):
         # parse the contents of the FASTA file
         # and append the relevant information to the lists
-        id_list.append(seq_record.id)
-        sequence_list.append(len(seq_record.seq))
+        id_list.append(seq_record.description)
+        sequence_list.append(str(seq_record.seq))
 
 # generate a new Pandas dataframe from the two lists
 # ref: https://www.geeksforgeeks.org/create-a-pandas-dataframe-from-lists/
 genes_y55_df = pd.DataFrame(list(zip(id_list, sequence_list)), columns = ['gene_info', 'sequence'])
 genes_y55_df
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4bb90145-c184-44df-8415-c1fd1bae77ed">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Here's a function to extract the gene ID from the <code>gene_info</code> fields:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3d403d6c-8dfd-4f10-9ff4-b25afb16884b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># function to extract the gene IDs from the gene_info columns</span>
+
+<span class="k">def</span> <span class="nf">extract_gene_id_from_names_y55</span><span class="p">(</span><span class="n">gene_info_col</span><span class="p">):</span>
+    <span class="c1"># define the function name &amp; set internal argument</span>
+    <span class="k">return</span> <span class="n">gene_info_col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="c1"># split the string into a list using pipes ("|") as the delimiters</span>
+    <span class="c1"># then take the 4th element in the list (Pythonic index 3)</span>
+    <span class="c1"># return that value to outside of the function</span>
 </pre></div>
 </div>
 </div>
@@ -7692,7 +7726,7 @@ genes_y55_df
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>a. Use the function to add a <code>gene_id</code> column. You'll find the pattern in the last exercise of the tutorial. [1 pt] Hint for cleaning up: you can delete a column from a Pandas dataframe by dropping it: <code>pd.DataFrame.drop</code></p>
+<p>a. Use the function to add a <code>gene_id</code> column. Think about how you might <code>apply</code> a function to a dataframe. (Note that the code here should look different from the code you used to generate the <code>gene_id</code> column in Task 3.) [1 pt] Hint for cleaning up: you can delete a column from a Pandas dataframe by dropping it: <code>pd.DataFrame.drop</code></p>
 <p>b. Rare codons are biologically significant (here's an <a href="https://www.nature.com/articles/srep20608">example</a>, if you're curious). In yeast, the rarest codon (besides stop codons) is <code>CGG</code> (mRNA) [<a href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=4932">source</a>]. So, using dataframe manipulation functions on the resulting dataframe from a., create a column to count the occurrence of <code>GCC</code> (DNA) per gene.</p>
 <h2 id="Task-6:-Search-for-a-motif-in-all-genes-%5B1-pt%5D">Task 6: Search for a motif in all genes [1 pt]<a class="anchor-link" href="#Task-6:-Search-for-a-motif-in-all-genes-%5B1-pt%5D">¶</a></h2><p>Filter the S288C_reference_sequence_R64-3-1_20210421.fsa file (which, if you haven't already, you can download from here: <a href="https://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz">https://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz</a>) for those genes that contain the sequence motif "CCACACCACACCCAC".</p>
 <p>Then convert the hits into a new dataframe (hint: Python &amp; Pandas often don't like operations on variables that are copies of each other, so consider using the <code>.copy()</code> function).</p>
