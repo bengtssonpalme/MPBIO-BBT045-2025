@@ -7497,12 +7497,21 @@ a.anchor-link {
 <h2 id="Directory-and-data-setup">Directory and data setup<a class="anchor-link" href="#Directory-and-data-setup">¶</a></h2><p>We will be working in Jupyter Lab and primarely writing the commands in this Jupyter Notebook. However, the first commands in this section are easier if you run from the terminal. (Note that depending on how you have things set up on your computer, you may have access to a Unix terminal within Jupyter Lab. Simply do: "File" → "New" → "Terminal" and a terminal will open in a new tab in Jupyter Lab.)</p>
 <p>Please create a directory for this tutorial in your home directory and inside there copy the starter notebook from my directory. To do this run the following commands in the terminal after logging on to the server:</p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span>
-mkdir<span class="w"> </span>NGS_Tutorial
-cp<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/seq_tech_tutorial_py.ipynb<span class="w"> </span>NGS_Tutorial/
+mkdir<span class="w"> </span>
 <span class="nb">cd</span><span class="w"> </span>NGS_Tutorial
+wget<span class="w"> </span>https://bengtssonpalme.github.io/MPBIO-BBT045-2024/seq_tech/seq_tech_tutorial_py.ipynb
+<span class="c1">###</span>
+<span class="c1"># optionally, if you want the images to show up properly</span>
+cp<span class="w"> </span>-r<span class="w"> </span>/cephyr/NOBACKUP/groups/bbt045_2024/data/img/<span class="w"> </span>.
 </pre></div>
 <p>Now fetch a copy of the data we will be using:</p>
-<div class="highlight"><pre><span></span>cp<span class="w"> </span>-r<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/data<span class="w"> </span>.
+<div class="highlight"><pre><span></span>cp<span class="w"> </span>/cephyr/NOBACKUP/groups/bbt045_2024/data/data.zip<span class="w"> </span>.
+<span class="c1"># and now decompress the .zip file</span>
+unzip<span class="w"> </span>data.zip<span class="w"> </span>-d<span class="w"> </span>data/
+<span class="c1"># and clean up</span>
+rm<span class="w"> </span>-r<span class="w"> </span>__MACOSX/
+<span class="c1"># this directory is an artifact of the .zip file creation process</span>
+<span class="c1"># it's unnecessary, so it can be deleted</span>
 </pre></div>
 <p>To nicely see the contents of (small) directories, you can use the <code>tree</code> program, but you may need to install it first (<code>conda install tree</code>)</p>
 <div class="highlight"><pre><span></span>tree<span class="w"> </span>data
@@ -7514,10 +7523,7 @@ cp<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/seq_tech_tutorial_py.ipynb
 <p>Then create a results directory:</p>
 <div class="highlight"><pre><span></span>mkdir<span class="w"> </span>results
 </pre></div>
-<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Container">Container<a class="anchor-link" href="#Container">¶</a></h3><p>For this tutorial, as with other tutorials for this course, you will be using a container. In this case, the <code>sequencing-conda-container.sif</code> container, located in the <code>/cephyr/NOBACKUP/groups/bbt045_2024/Container/</code> directory, just like the container you used earlier.</p>
-<p>In order to run this Jupyter Notebook, you will need to copy the <code>run_jupyter.sh</code> script to your new <code>NGS_Tutorial/</code> directory, and edit the file path for the container. In other words, in the <code>run_jupyter.sh</code> script, replace the name of the container you used previously (<code>bbt045.sif</code>) with the name of the container you will be using for this exercise (<code>sequencing-conda-container.sif</code>).</p>
-<p>Since you will be using this container, the following instructions regarding the creation of a <code>conda</code> environment to run this Notebook in are irrelevant for you. However, I am leaving them in for you to reference, and will briefly cover them in class.</p>
-<h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
+<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
 <p><code>Conda</code> can fetch packages from many different sources (aka "channels"). Let's add the Bioconda channel, as well as the general-purpose conda-forge channel ("defaults" is given first to give it top priority when searching for packages).</p>
 <p>Ignore any errors about " Inappropriate ioctl for device" and "no job control in this shell". They're a harmless consequence of this.</p>
 <p>Add the channels by running the following in your Unix terminal (not in your Jupyter Notebook):</p>
@@ -7615,7 +7621,7 @@ conda<span class="w"> </span>install<span class="w"> </span>conda-forge::nb_cond
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># run bash commands from Jupyter Notebook with an ! at the start of the line</span>
@@ -7640,12 +7646,12 @@ conda<span class="w"> </span>install<span class="w"> </span>conda-forge::nb_cond
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0a7c39f9-26b8-4209-aedf-7a876689199a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0a7c39f9-26b8-4209-aedf-7a876689199a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Convert GFF3 &gt; FASTA</span>
@@ -7669,6 +7675,462 @@ conda<span class="w"> </span>install<span class="w"> </span>conda-forge::nb_cond
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Read and write (return) sequences
+Settings:
+  Output files: "results/exercise1/bowtie_index/varicella.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  data/ref/varicella.fasta
+Building a SMALL index
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 31221
+Using parameters --bmax 23416 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 23416 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 7; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 0; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 17839.7 (target: 23415)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 7
+  Reserving size (23416) for bucket 1
+  Calculating Z arrays for bucket 1
+  Entering block accumulator loop for bucket 1:
+  bucket 1: 10%
+  bucket 1: 20%
+  bucket 1: 30%
+  bucket 1: 40%
+  bucket 1: 50%
+  bucket 1: 60%
+  bucket 1: 70%
+  bucket 1: 80%
+  bucket 1: 90%
+  bucket 1: 100%
+  Sorting block of length 18219 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 18220 for bucket 1
+Getting block 2 of 7
+  Reserving size (23416) for bucket 2
+  Calculating Z arrays for bucket 2
+  Entering block accumulator loop for bucket 2:
+  bucket 2: 10%
+  bucket 2: 20%
+  bucket 2: 30%
+  bucket 2: 40%
+  bucket 2: 50%
+  bucket 2: 60%
+  bucket 2: 70%
+  bucket 2: 80%
+  bucket 2: 90%
+  bucket 2: 100%
+  Sorting block of length 20286 for bucket 2
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 20287 for bucket 2
+Getting block 3 of 7
+  Reserving size (23416) for bucket 3
+  Calculating Z arrays for bucket 3
+  Entering block accumulator loop for bucket 3:
+  bucket 3: 10%
+  bucket 3: 20%
+  bucket 3: 30%
+  bucket 3: 40%
+  bucket 3: 50%
+  bucket 3: 60%
+  bucket 3: 70%
+  bucket 3: 80%
+  bucket 3: 90%
+  bucket 3: 100%
+  Sorting block of length 22215 for bucket 3
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 22216 for bucket 3
+Getting block 4 of 7
+  Reserving size (23416) for bucket 4
+  Calculating Z arrays for bucket 4
+  Entering block accumulator loop for bucket 4:
+  bucket 4: 10%
+  bucket 4: 20%
+  bucket 4: 30%
+  bucket 4: 40%
+  bucket 4: 50%
+  bucket 4: 60%
+  bucket 4: 70%
+  bucket 4: 80%
+  bucket 4: 90%
+  bucket 4: 100%
+  Sorting block of length 13841 for bucket 4
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 13842 for bucket 4
+Getting block 5 of 7
+  Reserving size (23416) for bucket 5
+  Calculating Z arrays for bucket 5
+  Entering block accumulator loop for bucket 5:
+  bucket 5: 10%
+  bucket 5: 20%
+  bucket 5: 30%
+  bucket 5: 40%
+  bucket 5: 50%
+  bucket 5: 60%
+  bucket 5: 70%
+  bucket 5: 80%
+  bucket 5: 90%
+  bucket 5: 100%
+  Sorting block of length 18651 for bucket 5
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 18652 for bucket 5
+Getting block 6 of 7
+  Reserving size (23416) for bucket 6
+  Calculating Z arrays for bucket 6
+  Entering block accumulator loop for bucket 6:
+  bucket 6: 10%
+  bucket 6: 20%
+  bucket 6: 30%
+  bucket 6: 40%
+  bucket 6: 50%
+  bucket 6: 60%
+  bucket 6: 70%
+  bucket 6: 80%
+  bucket 6: 90%
+  bucket 6: 100%
+  Sorting block of length 13807 for bucket 6
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 13808 for bucket 6
+Getting block 7 of 7
+  Reserving size (23416) for bucket 7
+  Calculating Z arrays for bucket 7
+  Entering block accumulator loop for bucket 7:
+  bucket 7: 10%
+  bucket 7: 20%
+  bucket 7: 30%
+  bucket 7: 40%
+  bucket 7: 50%
+  bucket 7: 60%
+  bucket 7: 70%
+  bucket 7: 80%
+  bucket 7: 90%
+  bucket 7: 100%
+  Sorting block of length 17859 for bucket 7
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 17860 for bucket 7
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 33789
+fchr[G]: 63084
+fchr[T]: 91261
+fchr[$]: 124884
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4236187 bytes to primary EBWT file: results/exercise1/bowtie_index/varicella.1.bt2.tmp
+Wrote 31228 bytes to secondary EBWT file: results/exercise1/bowtie_index/varicella.2.bt2.tmp
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 124884
+    bwtLen: 124885
+    sz: 31221
+    bwtSz: 31222
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 7806
+    offsSz: 31224
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 651
+    numLines: 651
+    ebwtTotLen: 41664
+    ebwtTotSz: 41664
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 31221
+Using parameters --bmax 23416 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 23416 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 6; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 1; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 17839.7 (target: 23415)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 7
+  Reserving size (23416) for bucket 1
+  Calculating Z arrays for bucket 1
+  Entering block accumulator loop for bucket 1:
+  bucket 1: 10%
+  bucket 1: 20%
+  bucket 1: 30%
+  bucket 1: 40%
+  bucket 1: 50%
+  bucket 1: 60%
+  bucket 1: 70%
+  bucket 1: 80%
+  bucket 1: 90%
+  bucket 1: 100%
+  Sorting block of length 12770 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 12771 for bucket 1
+Getting block 2 of 7
+  Reserving size (23416) for bucket 2
+  Calculating Z arrays for bucket 2
+  Entering block accumulator loop for bucket 2:
+  bucket 2: 10%
+  bucket 2: 20%
+  bucket 2: 30%
+  bucket 2: 40%
+  bucket 2: 50%
+  bucket 2: 60%
+  bucket 2: 70%
+  bucket 2: 80%
+  bucket 2: 90%
+  bucket 2: 100%
+  Sorting block of length 20442 for bucket 2
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 20443 for bucket 2
+Getting block 3 of 7
+  Reserving size (23416) for bucket 3
+  Calculating Z arrays for bucket 3
+  Entering block accumulator loop for bucket 3:
+  bucket 3: 10%
+  bucket 3: 20%
+  bucket 3: 30%
+  bucket 3: 40%
+  bucket 3: 50%
+  bucket 3: 60%
+  bucket 3: 70%
+  bucket 3: 80%
+  bucket 3: 90%
+  bucket 3: 100%
+  Sorting block of length 18984 for bucket 3
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 18985 for bucket 3
+Getting block 4 of 7
+  Reserving size (23416) for bucket 4
+  Calculating Z arrays for bucket 4
+  Entering block accumulator loop for bucket 4:
+  bucket 4: 10%
+  bucket 4: 20%
+  bucket 4: 30%
+  bucket 4: 40%
+  bucket 4: 50%
+  bucket 4: 60%
+  bucket 4: 70%
+  bucket 4: 80%
+  bucket 4: 90%
+  bucket 4: 100%
+  Sorting block of length 17640 for bucket 4
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 17641 for bucket 4
+Getting block 5 of 7
+  Reserving size (23416) for bucket 5
+  Calculating Z arrays for bucket 5
+  Entering block accumulator loop for bucket 5:
+  bucket 5: 10%
+  bucket 5: 20%
+  bucket 5: 30%
+  bucket 5: 40%
+  bucket 5: 50%
+  bucket 5: 60%
+  bucket 5: 70%
+  bucket 5: 80%
+  bucket 5: 90%
+  bucket 5: 100%
+  Sorting block of length 17241 for bucket 5
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 17242 for bucket 5
+Getting block 6 of 7
+  Reserving size (23416) for bucket 6
+  Calculating Z arrays for bucket 6
+  Entering block accumulator loop for bucket 6:
+  bucket 6: 10%
+  bucket 6: 20%
+  bucket 6: 30%
+  bucket 6: 40%
+  bucket 6: 50%
+  bucket 6: 60%
+  bucket 6: 70%
+  bucket 6: 80%
+  bucket 6: 90%
+  bucket 6: 100%
+  Sorting block of length 22923 for bucket 6
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 22924 for bucket 6
+Getting block 7 of 7
+  Reserving size (23416) for bucket 7
+  Calculating Z arrays for bucket 7
+  Entering block accumulator loop for bucket 7:
+  bucket 7: 10%
+  bucket 7: 20%
+  bucket 7: 30%
+  bucket 7: 40%
+  bucket 7: 50%
+  bucket 7: 60%
+  bucket 7: 70%
+  bucket 7: 80%
+  bucket 7: 90%
+  bucket 7: 100%
+  Sorting block of length 14878 for bucket 7
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 14879 for bucket 7
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 33789
+fchr[G]: 63084
+fchr[T]: 91261
+fchr[$]: 124884
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4236187 bytes to primary EBWT file: results/exercise1/bowtie_index/varicella.rev.1.bt2.tmp
+Wrote 31228 bytes to secondary EBWT file: results/exercise1/bowtie_index/varicella.rev.2.bt2.tmp
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 124884
+    bwtLen: 124885
+    sz: 31221
+    bwtSz: 31222
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 7806
+    offsSz: 31224
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 651
+    numLines: 651
+    ebwtTotLen: 41664
+    ebwtTotSz: 41664
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:00
+Renaming results/exercise1/bowtie_index/varicella.3.bt2.tmp to results/exercise1/bowtie_index/varicella.3.bt2
+Renaming results/exercise1/bowtie_index/varicella.4.bt2.tmp to results/exercise1/bowtie_index/varicella.4.bt2
+Renaming results/exercise1/bowtie_index/varicella.1.bt2.tmp to results/exercise1/bowtie_index/varicella.1.bt2
+Renaming results/exercise1/bowtie_index/varicella.2.bt2.tmp to results/exercise1/bowtie_index/varicella.2.bt2
+Renaming results/exercise1/bowtie_index/varicella.rev.1.bt2.tmp to results/exercise1/bowtie_index/varicella.rev.1.bt2
+Renaming results/exercise1/bowtie_index/varicella.rev.2.bt2.tmp to results/exercise1/bowtie_index/varicella.rev.2.bt2
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=215d99e2-9724-45ff-9a76-efa182690c62">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7683,17 +8145,44 @@ conda<span class="w"> </span>install<span class="w"> </span>conda-forge::nb_cond
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9df37733-9e02-4b08-91ba-fdaecf823db6">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9df37733-9e02-4b08-91ba-fdaecf823db6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise1/alignment
 <span class="o">!</span><span class="w"> </span>bowtie2<span class="w"> </span>-x<span class="w"> </span>results/exercise1/bowtie_index/varicella<span class="w"> </span>-1<span class="w"> </span>data/seq/varicella1.fastq<span class="w"> </span>-2<span class="w"> </span>data/seq/varicella2.fastq<span class="w"> </span>-S<span class="w"> </span>results/exercise1/alignment/varicella.sam
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>50000 reads; of these:
+  50000 (100.00%) were paired; of these:
+    24692 (49.38%) aligned concordantly 0 times
+    22163 (44.33%) aligned concordantly exactly 1 time
+    3145 (6.29%) aligned concordantly &gt;1 times
+    ----
+    24692 pairs aligned concordantly 0 times; of these:
+      21725 (87.98%) aligned discordantly 1 time
+    ----
+    2967 pairs aligned 0 times concordantly or discordantly; of these:
+      5934 mates make up the pairs; of these:
+        4 (0.07%) aligned 0 times
+        262 (4.42%) aligned exactly 1 time
+        5668 (95.52%) aligned &gt;1 times
+100.00% overall alignment rate
+</pre>
 </div>
 </div>
 </div>
@@ -7719,7 +8208,7 @@ using the <code>samtools</code> <code>view</code> command:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>view<span class="w"> </span>-b<span class="w"> </span>-S<span class="w"> </span>-o<span class="w"> </span>results/exercise1/alignment/varicella.bam<span class="w"> </span>results/exercise1/alignment/varicella.sam
@@ -7749,7 +8238,7 @@ This will create the file <code>varicella.sorted.bam</code></p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>sort<span class="w"> </span>results/exercise1/alignment/varicella.bam<span class="w"> </span>-o<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam
@@ -7779,7 +8268,7 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>index<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam
@@ -7807,16 +8296,29 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cd7808b3-a7fa-46b3-b997-7d8acc4aa9d8">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cd7808b3-a7fa-46b3-b997-7d8acc4aa9d8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>depth<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'{sum+=$3} END {print "Average = ", sum/124884}'</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Average =  199.775
+</pre>
 </div>
 </div>
 </div>
@@ -7838,7 +8340,7 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>depth<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam<span class="w"> </span>&gt;<span class="w"> </span>results/exercise1/alignment/coverage.tsv
@@ -7863,7 +8365,7 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># load necessary modules</span>
@@ -7877,12 +8379,12 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=378a1058-55e0-42f6-b0e6-2c2192507997">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=378a1058-55e0-42f6-b0e6-2c2192507997">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># import data into Pandas dataframe</span>
@@ -7899,6 +8401,24 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 <span class="c1"># visualize the plot</span>
 <span class="n">alignment_coverage_plot</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>&lt;Axes: title={'center': 'Alignment Coverage'}, xlabel='Alignment coverage depth', ylabel='Counts'&gt;</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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"/>
 </div>
 </div>
 </div>
@@ -7924,12 +8444,12 @@ index the sorted BAM file using <code>samtools</code> <code>index</code> command
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6f2f3a6c-2bd0-424f-9067-481f4843ce03">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6f2f3a6c-2bd0-424f-9067-481f4843ce03">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span>%%bash
@@ -7966,6 +8486,494 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Settings:
+  Output files: "results/exercise2/bowtie_index/varicella.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  data/ref/varicella.fasta
+Reading reference sizes
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>Building a SMALL index
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 31221
+Using parameters --bmax 23416 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 23416 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 7; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 0; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 17839.7 (target: 23415)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 7
+  Reserving size (23416) for bucket 1
+  Calculating Z arrays for bucket 1
+  Entering block accumulator loop for bucket 1:
+  bucket 1: 10%
+  bucket 1: 20%
+  bucket 1: 30%
+  bucket 1: 40%
+  bucket 1: 50%
+  bucket 1: 60%
+  bucket 1: 70%
+  bucket 1: 80%
+  bucket 1: 90%
+  bucket 1: 100%
+  Sorting block of length 18219 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 18220 for bucket 1
+Getting block 2 of 7
+  Reserving size (23416) for bucket 2
+  Calculating Z arrays for bucket 2
+  Entering block accumulator loop for bucket 2:
+  bucket 2: 10%
+  bucket 2: 20%
+  bucket 2: 30%
+  bucket 2: 40%
+  bucket 2: 50%
+  bucket 2: 60%
+  bucket 2: 70%
+  bucket 2: 80%
+  bucket 2: 90%
+  bucket 2: 100%
+  Sorting block of length 20286 for bucket 2
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 20287 for bucket 2
+Getting block 3 of 7
+  Reserving size (23416) for bucket 3
+  Calculating Z arrays for bucket 3
+  Entering block accumulator loop for bucket 3:
+  bucket 3: 10%
+  bucket 3: 20%
+  bucket 3: 30%
+  bucket 3: 40%
+  bucket 3: 50%
+  bucket 3: 60%
+  bucket 3: 70%
+  bucket 3: 80%
+  bucket 3: 90%
+  bucket 3: 100%
+  Sorting block of length 22215 for bucket 3
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 22216 for bucket 3
+Getting block 4 of 7
+  Reserving size (23416) for bucket 4
+  Calculating Z arrays for bucket 4
+  Entering block accumulator loop for bucket 4:
+  bucket 4: 10%
+  bucket 4: 20%
+  bucket 4: 30%
+  bucket 4: 40%
+  bucket 4: 50%
+  bucket 4: 60%
+  bucket 4: 70%
+  bucket 4: 80%
+  bucket 4: 90%
+  bucket 4: 100%
+  Sorting block of length 13841 for bucket 4
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 13842 for bucket 4
+Getting block 5 of 7
+  Reserving size (23416) for bucket 5
+  Calculating Z arrays for bucket 5
+  Entering block accumulator loop for bucket 5:
+  bucket 5: 10%
+  bucket 5: 20%
+  bucket 5: 30%
+  bucket 5: 40%
+  bucket 5: 50%
+  bucket 5: 60%
+  bucket 5: 70%
+  bucket 5: 80%
+  bucket 5: 90%
+  bucket 5: 100%
+  Sorting block of length 18651 for bucket 5
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 18652 for bucket 5
+Getting block 6 of 7
+  Reserving size (23416) for bucket 6
+  Calculating Z arrays for bucket 6
+  Entering block accumulator loop for bucket 6:
+  bucket 6: 10%
+  bucket 6: 20%
+  bucket 6: 30%
+  bucket 6: 40%
+  bucket 6: 50%
+  bucket 6: 60%
+  bucket 6: 70%
+  bucket 6: 80%
+  bucket 6: 90%
+  bucket 6: 100%
+  Sorting block of length 13807 for bucket 6
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 13808 for bucket 6
+Getting block 7 of 7
+  Reserving size (23416) for bucket 7
+  Calculating Z arrays for bucket 7
+  Entering block accumulator loop for bucket 7:
+  bucket 7: 10%
+  bucket 7: 20%
+  bucket 7: 30%
+  bucket 7: 40%
+  bucket 7: 50%
+  bucket 7: 60%
+  bucket 7: 70%
+  bucket 7: 80%
+  bucket 7: 90%
+  bucket 7: 100%
+  Sorting block of length 17859 for bucket 7
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 17860 for bucket 7
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 33789
+fchr[G]: 63084
+fchr[T]: 91261
+fchr[$]: 124884
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4236187 bytes to primary EBWT file: results/exercise2/bowtie_index/varicella.1.bt2.tmp
+Wrote 31228 bytes to secondary EBWT file: results/exercise2/bowtie_index/varicella.2.bt2.tmp
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 124884
+    bwtLen: 124885
+    sz: 31221
+    bwtSz: 31222
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 7806
+    offsSz: 31224
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 651
+    numLines: 651
+    ebwtTotLen: 41664
+    ebwtTotSz: 41664
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:00
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 31221
+Using parameters --bmax 23416 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 23416 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 6; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Split 1, merged 1; iterating...
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 17839.7 (target: 23415)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 7
+  Reserving size (23416) for bucket 1
+  Calculating Z arrays for bucket 1
+  Entering block accumulator loop for bucket 1:
+  bucket 1: 10%
+  bucket 1: 20%
+  bucket 1: 30%
+  bucket 1: 40%
+  bucket 1: 50%
+  bucket 1: 60%
+  bucket 1: 70%
+  bucket 1: 80%
+  bucket 1: 90%
+  bucket 1: 100%
+  Sorting block of length 12770 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 12771 for bucket 1
+Getting block 2 of 7
+  Reserving size (23416) for bucket 2
+  Calculating Z arrays for bucket 2
+  Entering block accumulator loop for bucket 2:
+  bucket 2: 10%
+  bucket 2: 20%
+  bucket 2: 30%
+  bucket 2: 40%
+  bucket 2: 50%
+  bucket 2: 60%
+  bucket 2: 70%
+  bucket 2: 80%
+  bucket 2: 90%
+  bucket 2: 100%
+  Sorting block of length 20442 for bucket 2
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 20443 for bucket 2
+Getting block 3 of 7
+  Reserving size (23416) for bucket 3
+  Calculating Z arrays for bucket 3
+  Entering block accumulator loop for bucket 3:
+  bucket 3: 10%
+  bucket 3: 20%
+  bucket 3: 30%
+  bucket 3: 40%
+  bucket 3: 50%
+  bucket 3: 60%
+  bucket 3: 70%
+  bucket 3: 80%
+  bucket 3: 90%
+  bucket 3: 100%
+  Sorting block of length 18984 for bucket 3
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 18985 for bucket 3
+Getting block 4 of 7
+  Reserving size (23416) for bucket 4
+  Calculating Z arrays for bucket 4
+  Entering block accumulator loop for bucket 4:
+  bucket 4: 10%
+  bucket 4: 20%
+  bucket 4: 30%
+  bucket 4: 40%
+  bucket 4: 50%
+  bucket 4: 60%
+  bucket 4: 70%
+  bucket 4: 80%
+  bucket 4: 90%
+  bucket 4: 100%
+  Sorting block of length 17640 for bucket 4
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 17641 for bucket 4
+Getting block 5 of 7
+  Reserving size (23416) for bucket 5
+  Calculating Z arrays for bucket 5
+  Entering block accumulator loop for bucket 5:
+  bucket 5: 10%
+  bucket 5: 20%
+  bucket 5: 30%
+  bucket 5: 40%
+  bucket 5: 50%
+  bucket 5: 60%
+  bucket 5: 70%
+  bucket 5: 80%
+  bucket 5: 90%
+  bucket 5: 100%
+  Sorting block of length 17241 for bucket 5
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 17242 for bucket 5
+Getting block 6 of 7
+  Reserving size (23416) for bucket 6
+  Calculating Z arrays for bucket 6
+  Entering block accumulator loop for bucket 6:
+  bucket 6: 10%
+  bucket 6: 20%
+  bucket 6: 30%
+  bucket 6: 40%
+  bucket 6: 50%
+  bucket 6: 60%
+  bucket 6: 70%
+  bucket 6: 80%
+  bucket 6: 90%
+  bucket 6: 100%
+  Sorting block of length 22923 for bucket 6
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 22924 for bucket 6
+Getting block 7 of 7
+  Reserving size (23416) for bucket 7
+  Calculating Z arrays for bucket 7
+  Entering block accumulator loop for bucket 7:
+  bucket 7: 10%
+  bucket 7: 20%
+  bucket 7: 30%
+  bucket 7: 40%
+  bucket 7: 50%
+  bucket 7: 60%
+  bucket 7: 70%
+  bucket 7: 80%
+  bucket 7: 90%
+  bucket 7: 100%
+  Sorting block of length 14878 for bucket 7
+  (Using difference cover)
+  Sorting block time: 00:00:00
+Returning block of 14879 for bucket 7
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 33789
+fchr[G]: 63084
+fchr[T]: 91261
+fchr[$]: 124884
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 4236187 bytes to primary EBWT file: results/exercise2/bowtie_index/varicella.rev.1.bt2.tmp
+Wrote 31228 bytes to secondary EBWT file: results/exercise2/bowtie_index/varicella.rev.2.bt2.tmp
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 124884
+    bwtLen: 124885
+    sz: 31221
+    bwtSz: 31222
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 7806
+    offsSz: 31224
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 651
+    numLines: 651
+    ebwtTotLen: 41664
+    ebwtTotSz: 41664
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:01
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>Renaming results/exercise2/bowtie_index/varicella.3.bt2.tmp to results/exercise2/bowtie_index/varicella.3.bt2
+Renaming results/exercise2/bowtie_index/varicella.4.bt2.tmp to results/exercise2/bowtie_index/varicella.4.bt2
+Renaming results/exercise2/bowtie_index/varicella.1.bt2.tmp to results/exercise2/bowtie_index/varicella.1.bt2
+Renaming results/exercise2/bowtie_index/varicella.2.bt2.tmp to results/exercise2/bowtie_index/varicella.2.bt2
+Renaming results/exercise2/bowtie_index/varicella.rev.1.bt2.tmp to results/exercise2/bowtie_index/varicella.rev.1.bt2
+Renaming results/exercise2/bowtie_index/varicella.rev.2.bt2.tmp to results/exercise2/bowtie_index/varicella.rev.2.bt2
+50000 reads; of these:
+  50000 (100.00%) were paired; of these:
+    24692 (49.38%) aligned concordantly 0 times
+    22163 (44.33%) aligned concordantly exactly 1 time
+    3145 (6.29%) aligned concordantly &gt;1 times
+    ----
+    24692 pairs aligned concordantly 0 times; of these:
+      21725 (87.98%) aligned discordantly 1 time
+    ----
+    2967 pairs aligned 0 times concordantly or discordantly; of these:
+      5934 mates make up the pairs; of these:
+        4 (0.07%) aligned 0 times
+        262 (4.42%) aligned exactly 1 time
+        5668 (95.52%) aligned &gt;1 times
+100.00% overall alignment rate
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=63c0fb10-1467-4b75-99f8-30c6fca89a65">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7977,16 +8985,30 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4ad0dd32-fdc1-4627-ac3c-f7b8e0db33ae">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4ad0dd32-fdc1-4627-ac3c-f7b8e0db33ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>bcftools<span class="w"> </span>mpileup<span class="w"> </span>-f<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>-O<span class="w"> </span>u<span class="w"> </span>&gt;<span class="w"> </span>results/exercise2/varicella_variants.bcf
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>[mpileup] 1 samples in 1 input files
+[mpileup] maximum number of reads per input file set to -d 250
+</pre>
 </div>
 </div>
 </div>
@@ -8002,16 +9024,29 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=897a3791-14d5-4f25-a8dc-a45744fbf312">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=897a3791-14d5-4f25-a8dc-a45744fbf312">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>bcftools<span class="w"> </span>call<span class="w"> </span>-c<span class="w"> </span>-v<span class="w"> </span>results/exercise2/varicella_variants.bcf<span class="w"> </span>&gt;<span class="w"> </span>results/exercise2/varicella_variants.vcf
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
+</pre>
 </div>
 </div>
 </div>
@@ -8028,11 +9063,7 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 <h3 id="Step-4:-Inspect-mutations-(pt-2)">Step 4: Inspect mutations (pt 2)<a class="anchor-link" href="#Step-4:-Inspect-mutations-(pt-2)">¶</a></h3><p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command.</p>
 <p>For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
 <p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
-<div class="highlight"><pre><span></span><span class="c1"># for those of you using the sequencing-conda-container.sif container: </span>
-apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>../Container/sequencing-conda-container.sif<span class="w"> </span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
-
-<span class="c1"># alternatively, if you are using a conda environment or otherwise have samtools installed/loaded: </span>
-samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
+<div class="highlight"><pre><span></span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
 </pre></div>
 </div>
 </div>
@@ -8065,16 +9096,30 @@ it is not possible for a single genomic position to have two different bases.
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ffeefaff-78aa-4dc2-88a2-f0909f1248f4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ffeefaff-78aa-4dc2-88a2-f0909f1248f4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>mpileup<span class="w"> </span>-r<span class="w"> </span>NC_001348:73233-73233<span class="w"> </span>-f<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>[mpileup] 1 samples in 1 input files
+NC_001348	73233	t	90	,,,.,.g,,,,,,..,,.,,.,,..,..,A,.,.,.,..,.,,..,..,,g..,.,...,...,.,,,,.....,,...,,,.,.,,..^K.	222C2C22222222222222C22222C22222222222222222222222222222222222222222222222222222222C22C222
+</pre>
 </div>
 </div>
 </div>
@@ -8108,7 +9153,7 @@ it is not possible for a single genomic position to have two different bases.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise3
@@ -8131,16 +9176,377 @@ it is not possible for a single genomic position to have two different bases.
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3880ffda-de3f-4842-8c0a-74737737bfef">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3880ffda-de3f-4842-8c0a-74737737bfef">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>breseq<span class="w"> </span>-j<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span>results/exercise3<span class="w"> </span>-r<span class="w"> </span>data/ref/varicella.gb<span class="w"> </span>data/seq/varicella_mut*.fastq
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>================================================================================
+breseq 0.38.2     http://barricklab.org/breseq
+
+Active Developers: Barrick JE, Deatherage DE
+Contact:           &lt;jeffrey.e.barrick@gmail.com&gt;
+
+breseq is free software; you can redistribute it and/or modify it under the
+terms the GNU General Public License as published by the Free Software 
+Foundation; either version 2, or (at your option) any later version.
+
+Copyright (c) 2008-2010 Michigan State University
+Copyright (c) 2011-2022 The University of Texas at Austin
+
+If you use breseq in your research, please cite:
+
+  Deatherage, D.E., Barrick, J.E. (2014) Identification of mutations
+  in laboratory-evolved microbes from next-generation sequencing
+  data using breseq. Methods Mol. Biol. 1151: 165–188.
+
+If you use structural variation (junction) predictions, please cite:
+
+  Barrick, J.E., Colburn, G., Deatherage D.E., Traverse, C.C.,
+  Strand, M.D., Borges, J.J., Knoester, D.B., Reba, A., Meyer, A.G. 
+  (2014) Identifying structural variation in haploid microbial genomes 
+  from short-read resequencing data using breseq. BMC Genomics 15:1039.
+================================================================================
+---&gt; bowtie2  :: version 2.5.2 [/opt/conda/envs/sequencing/bin/bowtie2]
+---&gt; bowtie2  :: NOTE :: breseq output may vary slightly depending on your bowtie2 version
+---&gt; bowtie2  :: NOTE :: and occasionally bowtie2 versions may have bugs that cause crashes.
+---&gt; bowtie2  :: NOTE :: bowtie2 version 2.4.5 is recommended with this breseq version.
+---&gt; R        :: version 4.3.2 [/opt/conda/envs/sequencing/bin/R]
++++   NOW PROCESSING Read and reference sequence file input
+  READ FILE::varicella_mut1
+    Converting/filtering FASTQ file...
+    Original base quality format: SANGER New format: SANGER
+    Original reads: 50000 bases: 12500000
+    Filtered reads: none
+    Analyzed reads: 50000 bases: 12500000
+  READ FILE::varicella_mut2
+    Converting/filtering FASTQ file...
+    Original base quality format: SANGER New format: SANGER
+    Original reads: 50000 bases: 12500000
+    Filtered reads: none
+    Analyzed reads: 50000 bases: 12500000
+  ::TOTAL::
+    Original reads: 100000 bases: 25000000
+    Analyzed reads: 100000 bases: 25000000
+[samtools] faidx results/exercise3/data/reference.fasta
+  REFERENCE: NC_001348
+  LENGTH: 124884
++++   NOW PROCESSING Read alignment to reference genome
+[system] bowtie2-build -q "results/exercise3/data/reference.fasta" "results/exercise3/02_reference_alignment/reference"
+[system] bowtie2 -t --no-unal -p 1 -L 31 --ma 1 --mp 3 --np 0 --rdg 2,3 --rfg 2,3 --ignore-quals --local -i S,1,0.25 --score-min L,1,0.9 -k 2000 --reorder -x "results/exercise3/02_reference_alignment/reference" -U "results/exercise3/01_sequence_conversion/varicella_mut1.converted.fastq" -S "results/exercise3/02_reference_alignment/varicella_mut1.stage1.sam" --un "results/exercise3/02_reference_alignment/varicella_mut1.stage1.unmatched.fastq"
+Time loading reference: 00:00:00
+Time loading forward index: 00:00:00
+Time loading mirror index: 00:00:00
+Multiseed full-index search: 00:00:31
+50000 reads; of these:
+  50000 (100.00%) were unpaired; of these:
+    12154 (24.31%) aligned 0 times
+    33588 (67.18%) aligned exactly 1 time
+    4258 (8.52%) aligned &gt;1 times
+75.69% overall alignment rate
+Time searching: 00:00:31
+Overall time: 00:00:31
+[system] bowtie2 -t --no-unal -p 1 -L 30 --ma 1 --mp 3 --np 0 --rdg 2,3 --rfg 2,3 --ignore-quals --local -i S,1,0.25 --score-min L,6,0.2 -k 2000 --reorder -x "results/exercise3/02_reference_alignment/reference" -U "results/exercise3/02_reference_alignment/varicella_mut1.stage1.unmatched.fastq" -S "results/exercise3/02_reference_alignment/varicella_mut1.stage2.matched.sam"
+Time loading reference: 00:00:00
+Time loading forward index: 00:00:00
+Time loading mirror index: 00:00:00
+Multiseed full-index search: 00:00:18
+12154 reads; of these:
+  12154 (100.00%) were unpaired; of these:
+    0 (0.00%) aligned 0 times
+    10605 (87.26%) aligned exactly 1 time
+    1549 (12.74%) aligned &gt;1 times
+100.00% overall alignment rate
+Time searching: 00:00:18
+Overall time: 00:00:18
+[system] bowtie2 -t --no-unal -p 1 -L 31 --ma 1 --mp 3 --np 0 --rdg 2,3 --rfg 2,3 --ignore-quals --local -i S,1,0.25 --score-min L,1,0.9 -k 2000 --reorder -x "results/exercise3/02_reference_alignment/reference" -U "results/exercise3/01_sequence_conversion/varicella_mut2.converted.fastq" -S "results/exercise3/02_reference_alignment/varicella_mut2.stage1.sam" --un "results/exercise3/02_reference_alignment/varicella_mut2.stage1.unmatched.fastq"
+Time loading reference: 00:00:00
+Time loading forward index: 00:00:00
+Time loading mirror index: 00:00:00
+Multiseed full-index search: 00:00:31
+50000 reads; of these:
+  50000 (100.00%) were unpaired; of these:
+    12345 (24.69%) aligned 0 times
+    33440 (66.88%) aligned exactly 1 time
+    4215 (8.43%) aligned &gt;1 times
+75.31% overall alignment rate
+Time searching: 00:00:31
+Overall time: 00:00:31
+[system] bowtie2 -t --no-unal -p 1 -L 30 --ma 1 --mp 3 --np 0 --rdg 2,3 --rfg 2,3 --ignore-quals --local -i S,1,0.25 --score-min L,6,0.2 -k 2000 --reorder -x "results/exercise3/02_reference_alignment/reference" -U "results/exercise3/02_reference_alignment/varicella_mut2.stage1.unmatched.fastq" -S "results/exercise3/02_reference_alignment/varicella_mut2.stage2.matched.sam"
+Time loading reference: 00:00:00
+Time loading forward index: 00:00:00
+Time loading mirror index: 00:00:00
+Multiseed full-index search: 00:00:18
+12345 reads; of these:
+  12345 (100.00%) were unpaired; of these:
+    2 (0.02%) aligned 0 times
+    10761 (87.17%) aligned exactly 1 time
+    1582 (12.81%) aligned &gt;1 times
+99.98% overall alignment rate
+Time searching: 00:00:18
+Overall time: 00:00:18
+[system] rm -f "results/exercise3/02_reference_alignment/reference*"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut1.stage1.unmatched.fastq"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut1.stage1.sam"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut1.stage2.matched.sam"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut2.stage1.unmatched.fastq"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut2.stage1.sam"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut2.stage2.matched.sam"
++++   NOW PROCESSING Preprocessing alignments for candidate junction identification
+Preprocessing alignments.
+  READ FILE::varicella_mut1
+  READ FILE::varicella_mut2
+  Summary... 
+  Aligned reads:                                99998
+  Read alignments:                             113197
+  Alignments split on indels:                      13
+  Reads with alignments split on indels:            9
+  Split alignments:                              2294
+  Reads with split alignments:                   1022
++++   NOW PROCESSING Preliminary analysis of coverage distribution
+[samtools] import results/exercise3/data/reference.fasta.fai results/exercise3/03_candidate_junctions/best.sam results/exercise3/03_candidate_junctions/best.unsorted.bam
+[samtools] sort --threads 1 -o results/exercise3/03_candidate_junctions/best.bam -T results/exercise3/03_candidate_junctions/best.bam results/exercise3/03_candidate_junctions/best.unsorted.bam
+[samtools] index results/exercise3/03_candidate_junctions/best.bam results/exercise3/03_candidate_junctions/best.bam.bai
+  REFERENCE: NC_001348
+  LENGTH: 124884
+    POSITION:10000
+    POSITION:20000
+    POSITION:30000
+    POSITION:40000
+    POSITION:50000
+    POSITION:60000
+    POSITION:70000
+    POSITION:80000
+    POSITION:90000
+    POSITION:100000
+    POSITION:110000
+    POSITION:120000
+[system] R --vanilla &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/coverage_distribution.r" &gt; "results/exercise3/03_candidate_junctions/0.unique_only_coverage_distribution.tab.r.log" --args distribution_file="results/exercise3/03_candidate_junctions/0.unique_only_coverage_distribution.tab" plot_file="results/exercise3/03_candidate_junctions/0.coverage.pdf" deletion_propagation_pr_cutoff=0.000141487
+[system] rm -f "results/exercise3/03_candidate_junctions/best.unsorted.bam"
+[system] rm -f "results/exercise3/03_candidate_junctions/best.sam"
+[system] rm -f "results/exercise3/03_candidate_junctions/best.bam"
+[system] rm -f "results/exercise3/03_candidate_junctions/best.bam.bai"
+[system] rm -f "results/exercise3/03_candidate_junctions/0.coverage.pdf"
+[system] rm -f "results/exercise3/03_candidate_junctions/0.unique_only_coverage_distribution.tab"
+[system] rm -f "results/exercise3/03_candidate_junctions/0.unique_only_coverage_distribution.tab.r.log"
++++   NOW PROCESSING Identifying junction candidates
+  READ FILE::varicella_mut1
+  READ FILE::varicella_mut2
+  Passed alignment pairs examined: 16
+  Taking top candidate junctions...
+  Minimum number to keep:     100 
+  Maximum number to keep:    5000 
+  Maximum length to keep:   12488 bases
+    Initial: Number = 1, Cumulative Length = 510 bases
+      Testing Pos Hash Score =    2, Num =      1, Length =    510
+    Accepted: Number = 1, Pos Hash Score &gt;= 2, Cumulative Length = 510 bases
+[samtools] faidx results/exercise3/03_candidate_junctions/candidate_junction.fasta
+[system] rm -f "results/exercise3/03_candidate_junctions/varicella_mut1.split.sam"
+[system] rm -f "results/exercise3/03_candidate_junctions/varicella_mut2.split.sam"
++++   NOW PROCESSING Re-alignment to junction candidates
+[system] bowtie2-build -q "results/exercise3/03_candidate_junctions/candidate_junction.fasta" "results/exercise3/04_candidate_junction_alignment/candidate_junction"
+[system] bowtie2 -t --no-unal -p 1 --local  -L 31 --ma 1 --mp 3 --np 0 --rdg 2,3 --rfg 2,3 --ignore-quals --local -i S,1,0.25 --score-min L,1,0.70 -k 2000 --reorder -x "results/exercise3/04_candidate_junction_alignment/candidate_junction" -U "results/exercise3/01_sequence_conversion/varicella_mut1.converted.fastq" -S "results/exercise3/04_candidate_junction_alignment/varicella_mut1.candidate_junction.sam"
+Time loading reference: 00:00:00
+Time loading forward index: 00:00:00
+Time loading mirror index: 00:00:00
+Multiseed full-index search: 00:00:20
+50000 reads; of these:
+  50000 (100.00%) were unpaired; of these:
+    49904 (99.81%) aligned 0 times
+    3 (0.01%) aligned exactly 1 time
+    93 (0.19%) aligned &gt;1 times
+0.19% overall alignment rate
+Time searching: 00:00:20
+Overall time: 00:00:20
+[system] bowtie2 -t --no-unal -p 1 --local  -L 31 --ma 1 --mp 3 --np 0 --rdg 2,3 --rfg 2,3 --ignore-quals --local -i S,1,0.25 --score-min L,1,0.70 -k 2000 --reorder -x "results/exercise3/04_candidate_junction_alignment/candidate_junction" -U "results/exercise3/01_sequence_conversion/varicella_mut2.converted.fastq" -S "results/exercise3/04_candidate_junction_alignment/varicella_mut2.candidate_junction.sam"
+Time loading reference: 00:00:00
+Time loading forward index: 00:00:00
+Time loading mirror index: 00:00:00
+Multiseed full-index search: 00:00:20
+50000 reads; of these:
+  50000 (100.00%) were unpaired; of these:
+    49935 (99.87%) aligned 0 times
+    1 (0.00%) aligned exactly 1 time
+    64 (0.13%) aligned &gt;1 times
+0.13% overall alignment rate
+Time searching: 00:00:20
+Overall time: 00:00:20
+[system] rm -f "results/exercise3/04_candidate_junction_alignment/candidate_junction*"
++++   NOW PROCESSING Resolving best read alignments
+  READ FILE:varicella_mut1
+    READS:10000
+    READS:20000
+    READS:30000
+    READS:40000
+    READS:50000
+  READ FILE:varicella_mut2
+    READS:60000
+    READS:70000
+    READS:80000
+    READS:90000
+    READS:100000
+[system] rm -f "results/exercise3/01_sequence_conversion/varicella_mut1.converted.fastq"
+[system] rm -f "results/exercise3/01_sequence_conversion/varicella_mut2.converted.fastq"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut1.reference.sam"
+[system] rm -f "results/exercise3/02_reference_alignment/varicella_mut2.reference.sam"
+[system] rm -f "results/exercise3/04_candidate_junction_alignment/varicella_mut1.candidate_junction.sam*"
+[system] rm -f "results/exercise3/04_candidate_junction_alignment/varicella_mut2.candidate_junction.sam*"
++++   NOW PROCESSING Creating BAM files
+[samtools] import results/exercise3/03_candidate_junctions/candidate_junction.fasta.fai results/exercise3/05_alignment_correction/junction.sam results/exercise3/06_bam/junction.unsorted.bam
+[samtools] sort --threads 1 -o results/exercise3/06_bam/junction.bam -T results/exercise3/06_bam/junction.bam results/exercise3/06_bam/junction.unsorted.bam
+[system] rm -f "results/exercise3/06_bam/junction.unsorted.bam"
+[samtools] index results/exercise3/06_bam/junction.bam results/exercise3/06_bam/junction.bam.bai
+[samtools] import results/exercise3/data/reference.fasta.fai results/exercise3/05_alignment_correction/reference.sam results/exercise3/06_bam/reference.unsorted.bam
+[samtools] sort --threads 1 -o results/exercise3/data/reference.bam -T results/exercise3/data/reference.bam results/exercise3/06_bam/reference.unsorted.bam
+[system] rm -f "results/exercise3/06_bam/reference.unsorted.bam"
+[samtools] index results/exercise3/data/reference.bam results/exercise3/data/reference.bam.bai
+[system] rm -f "results/exercise3/05_alignment_correction/reference.sam"
+[system] rm -f "results/exercise3/05_alignment_correction/junction.sam"
++++   NOW PROCESSING Tabulating error counts
+  REFERENCE: NC_001348
+  LENGTH: 124884
+    POSITION:10000
+    POSITION:20000
+    POSITION:30000
+    POSITION:40000
+    POSITION:50000
+    POSITION:60000
+    POSITION:70000
+    POSITION:80000
+    POSITION:90000
+    POSITION:100000
+    POSITION:110000
+    POSITION:120000
++++   NOW PROCESSING Re-calibrating base error rates
+[system] R --vanilla &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/coverage_distribution.r" &gt; "results/exercise3/07_error_calibration/0.unique_only_coverage_distribution.tab.r.log" --args distribution_file="results/exercise3/07_error_calibration/0.unique_only_coverage_distribution.tab" plot_file="results/exercise3/output/calibration/0.unique_coverage.pdf" deletion_propagation_pr_cutoff=0.000141487
+[system] R --vanilla &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/plot_error_rate.r" &gt; "results/exercise3/07_error_calibration/varicella_mut1.plot_error_rate.log" --args in_file="results/exercise3/07_error_calibration/base_qual_error_prob.varicella_mut1.tab" out_file="results/exercise3/output/calibration/varicella_mut1.error_rates.pdf" &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/plot_error_rate.r" &gt; "results/exercise3/07_error_calibration/varicella_mut1.plot_error_rate.log"
+[system] R --vanilla &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/plot_error_rate.r" &gt; "results/exercise3/07_error_calibration/varicella_mut2.plot_error_rate.log" --args in_file="results/exercise3/07_error_calibration/base_qual_error_prob.varicella_mut2.tab" out_file="results/exercise3/output/calibration/varicella_mut2.error_rates.pdf" &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/plot_error_rate.r" &gt; "results/exercise3/07_error_calibration/varicella_mut2.plot_error_rate.log"
++++   NOW PROCESSING Examining read alignment evidence
+  REFERENCE: NC_001348
+  LENGTH: 124884
+    POSITION:10000
+    POSITION:20000
+    POSITION:30000
+    POSITION:40000
+    POSITION:50000
+    POSITION:60000
+    POSITION:70000
+    POSITION:80000
+    POSITION:90000
+    POSITION:100000
+    POSITION:110000
+    POSITION:120000
++++   NOW PROCESSING Polymorphism statistics
+[system] R --vanilla &lt; "/opt/conda/envs/sequencing/bin/../share/breseq/polymorphism_statistics.r" &gt; "results/exercise3/08_mutation_identification/polymorphism_statistics_output.log" --args total_length=124884 in_file="results/exercise3/08_mutation_identification/polymorphism_statistics_input.tab" out_file="results/exercise3/08_mutation_identification/polymorphism_statistics_output.tab" qual_file="results/exercise3/08_mutation_identification/error_counts.tab"
++++   NOW PROCESSING Output
++++   NOW PROCESSING Output :: Mutation Prediction
+Creating merged genome diff evidence file...
+Predicting mutations from evidence...
+  Preparing junctions...
+  Predicting mobile element insertions...
+  Predicting large deletions...
+  Predicting small indels and substitutions from junctions...
+  Predicting small indels and substitutions from alignments...
+  Reconciling mutation predictions...
+  Making final adjustments to mutations...
+  Writing final GD file...
+  Writing final VCF file...
++++   NOW PROCESSING Output :: Mutation Annotation
+Annotating mutations...
+[system] rm -f "results/exercise3/output/evidence/preannotated.gd"
+Drawing coverage plots...
+Creating coverage plot for region: NC_001348:1-124884
+Creating coverage plot for region: NC_001348:1-380
+Creating coverage plot for region: NC_001348:117622-124884
+Creating evidence file: MC_SIDE_1_56.html
+Creating read alignment for region: NC_001348:0-0
+Creating evidence file: MC_SIDE_2_56.html
+Creating read alignment for region: NC_001348:381-381
+Creating evidence file: MC_PLOT_56.html
+Creating evidence file: MC_SIDE_1_57.html
+Creating read alignment for region: NC_001348:117621-117621
+Creating evidence file: MC_SIDE_2_57.html
+Creating read alignment for region: NC_001348:124885-124885
+Creating evidence file: MC_PLOT_57.html
+Creating evidence file: SNP_1.html
+Creating read alignment for region: NC_001348:4258.0-4258.0
+Creating evidence file: SNP_2.html
+Creating read alignment for region: NC_001348:11894.0-11894.0
+Creating evidence file: SNP_3.html
+Creating read alignment for region: NC_001348:17404.0-17404.0
+Creating evidence file: SNP_4.html
+Creating read alignment for region: NC_001348:18467.0-18467.0
+Creating evidence file: SNP_5.html
+Creating read alignment for region: NC_001348:33722.0-33722.0
+Creating evidence file: SNP_6.html
+Creating read alignment for region: NC_001348:42242.0-42242.0
+Creating evidence file: SNP_7.html
+Creating read alignment for region: NC_001348:42899.0-42899.0
+Creating evidence file: SNP_8.html
+Creating read alignment for region: NC_001348:51920.0-51920.0
+Creating evidence file: SNP_9.html
+Creating read alignment for region: NC_001348:53523.0-53523.0
+Creating evidence file: SNP_10.html
+Creating read alignment for region: NC_001348:65669.0-65669.0
+Creating evidence file: SNP_11.html
+Creating read alignment for region: NC_001348:66879.0-66879.0
+Creating evidence file: SNP_12.html
+Creating read alignment for region: NC_001348:67999.0-67999.0
+Creating evidence file: SNP_13.html
+Creating read alignment for region: NC_001348:73993.0-73993.0
+Creating evidence file: SNP_14.html
+Creating read alignment for region: NC_001348:77985.0-77985.0
+Creating evidence file: SNP_15.html
+Creating read alignment for region: NC_001348:85805.0-85805.0
+Creating evidence file: SNP_16.html
+Creating read alignment for region: NC_001348:86866.0-86866.0
+Creating evidence file: SNP_17.html
+Creating read alignment for region: NC_001348:90202.0-90202.0
+Creating evidence file: SNP_18.html
+Creating read alignment for region: NC_001348:90903.0-90903.0
+Creating evidence file: SNP_19.html
+Creating read alignment for region: NC_001348:91002.0-91002.0
+Creating evidence file: SNP_20.html
+Creating read alignment for region: NC_001348:97804.0-97804.0
+Creating evidence file: SNP_21.html
+Creating read alignment for region: NC_001348:101883.0-101883.0
+Creating evidence file: SNP_22.html
+Creating read alignment for region: NC_001348:102203.0-102203.0
+Creating evidence file: SNP_23.html
+Creating read alignment for region: NC_001348:102403.0-102403.0
+Creating evidence file: SNP_24.html
+Creating read alignment for region: NC_001348:103805.0-103805.0
+Creating evidence file: SNP_25.html
+Creating read alignment for region: NC_001348:104898.0-104898.0
+Creating evidence file: SNP_26.html
+Creating read alignment for region: NC_001348:112198.0-112198.0
+Creating evidence file: SNP_27.html
+Creating read alignment for region: NC_001348:114140.0-114140.0
+Creating index HTML table...
+[system] rm -f "results/exercise3/01_sequence_conversion/*.trims"
+[system] rm -f "results/exercise3/03_candidate_junctions/candidate_junction.fasta"
+[system] rm -f "results/exercise3/03_candidate_junctions/candidate_junction.fasta.fai"
+[system] rm -f "results/exercise3/05_alignment_correction/jc_evidence.gd"
+[system] rm -f "results/exercise3/06_bam/junction.bam"
+[system] rm -f "results/exercise3/06_bam/junction.bam.bai"
++++   SUCCESSFULLY COMPLETED
+</pre>
 </div>
 </div>
 </div>
@@ -8152,7 +9558,7 @@ it is not possible for a single genomic position to have two different bases.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder and compare the mutations detected, in comparison to exercise 2. (You should be able to open .html files in Jupyter Lab.)</p>
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder. (Using the File tab in RStudio, navigate to the file, click on it, and choose "Open in browser") and compare the mutations detected, in comparison to exercise 2.</p>
 <p>Answer:</p>
 <font color="white">
 One mutation is missing in breseq
@@ -8200,7 +9606,7 @@ Here, we'll be using the <code>abyss</code> assembler with reads from the <em>du
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise4
@@ -8223,16 +9629,188 @@ Here, we'll be using the <code>abyss</code> assembler with reads from the <em>du
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=651aba26-9d81-4aa3-adfb-5014e67338d4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=651aba26-9d81-4aa3-adfb-5014e67338d4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>abyss-pe<span class="w"> </span><span class="nv">name</span><span class="o">=</span>varicella<span class="w"> </span><span class="nv">k</span><span class="o">=</span><span class="m">128</span><span class="w"> </span><span class="nv">B</span><span class="o">=</span>8K<span class="w"> </span>--directory<span class="o">=</span>results/exercise4<span class="w"> </span><span class="k">in</span><span class="o">=</span><span class="s1">'../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq'</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>make: Entering directory '/cephyr/users/viragv/Vera/BBT045-2024/Seq_Tech/results/exercise4'
+abyss-stack-size 65536 abyss-bloom-dbg -k128 -q3  -b8K -j1  ../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq  &gt; varicella-1.fa
+Running with max stack size of 65536 KB: abyss-bloom-dbg -k128 -q3 -b8K -j1 ../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq
+AdjList    -k128 -m50 --dot varicella-1.fa &gt;varicella-1.dot
+abyss-rresolver-short  -b8K -f0.8 -j1 -k128 \
+ -h varicella-1-rr --dot -c varicella-1-rr.fa \
+-g varicella-1-rr.dot varicella-1.fa varicella-1.dot ../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq 
+No small resolveable junctions were found!
+abyss-filtergraph  --dot   -k128 -g varicella-2.dot1 varicella-1-rr.dot varicella-1-rr.fa &gt;varicella-1-rr.path
+MergeContigs --dot   -k128 -g varicella-2.dot -o varicella-2.fa varicella-1-rr.fa varicella-2.dot1 varicella-1-rr.path
+PopBubbles  --dot -j1 -k128  -p0.9  -g varicella-3.dot varicella-2.fa varicella-2.dot &gt;varicella-2.path
+MergeContigs   -k128 -o varicella-3.fa varicella-2.fa varicella-2.dot varicella-2.path
+The minimum coverage of single-end contigs is 255.
+The minimum coverage of merged contigs is 255.
+awk '!/^&gt;/ {x["&gt;" $1]=1; next} {getline s} $1 in x {print $0 "\n" s}' \
+	varicella-2.path varicella-1-rr.fa &gt;varicella-indel.fa
+ln -sf varicella-3.fa varicella-unitigs.fa
+abyss-map   -j1 -l40    ../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq varicella-3.fa \
+	|abyss-fixmate   -l40  -h varicella-3.hist \
+	|sort -snk3 -k4 \
+	|DistanceEst   -j1 -k128  -l40 -s1000 -n10  -o varicella-3.dist varicella-3.hist
+Building the suffix array...
+Building the Burrows-Wheeler transform...
+Building the character occurrence table...
+Mateless       0
+Unaligned  29291  58.6%
+Singleton  17047  34.1%
+FR           655  1.31%
+RF             0
+FF             0
+Different   3007  6.01%
+Total      50000
+Overlap  --dot   -k128 -g varicella-4.dot -o varicella-4.fa varicella-3.fa varicella-3.dot varicella-3.dist
+Overlap: 0
+Scaffold: 0
+No overlap: 0
+Insignificant (&lt;5bp): 0
+Homopolymer: 0
+Motif: 0
+Ambiguous: 0
+abyss-stack-size 65536 SimpleGraph   -s1000 -n10  -j1 -k128 -o varicella-4.path1 varicella-4.dot varicella-3.dist
+Running with max stack size of 65536 KB: SimpleGraph -s1000 -n10 -j1 -k128 -o varicella-4.path1 varicella-4.dot varicella-3.dist
+Seed too short: 0
+Seeds with no edges: 0
+Edges removed: 0
+Total paths attempted: 0
+Unique path: 0
+No possible paths: 0
+No valid paths: 0
+Repetitive: 0
+Multiple valid paths: 0
+Too many solutions: 0
+Too complex: 0
+
+The minimum number of pairs in a distance estimate is 4294967295.
+abyss-index  --fai varicella-3.fa
+Reading `varicella-3.fa'...
+Writing `varicella-3.fa.fai'...
+abyss-index  --fai varicella-4.fa
+Reading `varicella-4.fa'...
+Writing `varicella-4.fa.fai'...
+cat varicella-3.fa.fai varicella-4.fa.fai \
+	| MergePaths   -j1 -k128 -s1000  -o varicella-4.path2 - varicella-4.path1
+Ignored 0 paths whose seeds are shorter than 1000 bp.
+n	n:1000	L50	min	N75	N50	N25	E-size	max	sum	name
+99	0	0	0	0	0	0	0	0	0	varicella-4.path2
+PathOverlap --assemble   -k128  varicella-4.dot varicella-4.path2 &gt;varicella-4.path3
+cat varicella-3.fa varicella-4.fa \
+	| abyss-stack-size 65536 PathConsensus  --dot -k128  -p0.9  -o varicella-5.path -s varicella-5.fa -g varicella-5.dot - varicella-4.dot varicella-4.path3
+Running with max stack size of 65536 KB: PathConsensus --dot -k128 -p0.9 -o varicella-5.path -s varicella-5.fa -g varicella-5.dot - varicella-4.dot varicella-4.path3
+Ambiguous paths: 0
+Merged:          0
+No paths:        0
+Too many paths:  0
+Too complex:     0
+Dissimilar:      0
+cat varicella-3.fa varicella-4.fa varicella-5.fa | MergeContigs   -k128 -o varicella-6.fa - varicella-5.dot varicella-5.path
+ln -sf varicella-6.fa varicella-contigs.fa
+PathOverlap --overlap   -k128 --dot varicella-5.dot varicella-5.path &gt;varicella-6.dot
+ln -sf varicella-6.dot varicella-contigs.dot
+abyss-map   -j1 -l40    ../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq varicella-6.fa \
+	|abyss-fixmate   -l40  -h varicella-6.hist \
+	|sort -snk3 -k4 \
+	|DistanceEst   --dot --median -j1 -k128  -l40 -s1000 -n10  -o varicella-6.dist.dot varicella-6.hist
+Building the suffix array...
+Building the Burrows-Wheeler transform...
+Building the character occurrence table...
+Mateless       0
+Unaligned  29291  58.6%
+Singleton  17047  34.1%
+FR           655  1.31%
+RF             0
+FF             0
+Different   3007  6.01%
+Total      50000
+abyss-scaffold    -k128 -s100-5000 -n15-20 -g varicella-6.path.dot  varicella-6.dot varicella-6.dist.dot &gt;varicella-6.path
+n	n:100	L50	min	N75	N50	N25	E-size	max	sum	name
+99	99	99	250	250	250	250	250	250	24750	n=15 s=100
+99	99	99	250	250	250	250	250	250	24750	n=15 s=200
+99	99	99	250	250	250	250	250	250	24750	n=15 s=500
+99	99	99	250	250	250	250	250	250	24750	n=15 s=1000
+99	99	99	250	250	250	250	250	250	24750	n=15 s=2000
+99	99	99	250	250	250	250	250	250	24750	n=15 s=5000
+99	99	99	250	250	250	250	250	250	24750	n=16 s=100
+99	99	99	250	250	250	250	250	250	24750	n=16 s=200
+99	99	99	250	250	250	250	250	250	24750	n=16 s=500
+99	99	99	250	250	250	250	250	250	24750	n=16 s=1000
+99	99	99	250	250	250	250	250	250	24750	n=16 s=2000
+99	99	99	250	250	250	250	250	250	24750	n=16 s=5000
+99	99	99	250	250	250	250	250	250	24750	n=17 s=100
+99	99	99	250	250	250	250	250	250	24750	n=17 s=200
+99	99	99	250	250	250	250	250	250	24750	n=17 s=500
+99	99	99	250	250	250	250	250	250	24750	n=17 s=1000
+99	99	99	250	250	250	250	250	250	24750	n=17 s=2000
+99	99	99	250	250	250	250	250	250	24750	n=17 s=5000
+99	99	99	250	250	250	250	250	250	24750	n=18 s=100
+99	99	99	250	250	250	250	250	250	24750	n=18 s=200
+99	99	99	250	250	250	250	250	250	24750	n=18 s=500
+99	99	99	250	250	250	250	250	250	24750	n=18 s=1000
+99	99	99	250	250	250	250	250	250	24750	n=18 s=2000
+99	99	99	250	250	250	250	250	250	24750	n=18 s=5000
+99	99	99	250	250	250	250	250	250	24750	n=19 s=100
+99	99	99	250	250	250	250	250	250	24750	n=19 s=200
+99	99	99	250	250	250	250	250	250	24750	n=19 s=500
+99	99	99	250	250	250	250	250	250	24750	n=19 s=1000
+99	99	99	250	250	250	250	250	250	24750	n=19 s=2000
+99	99	99	250	250	250	250	250	250	24750	n=19 s=5000
+99	99	99	250	250	250	250	250	250	24750	n=20 s=100
+99	99	99	250	250	250	250	250	250	24750	n=20 s=200
+99	99	99	250	250	250	250	250	250	24750	n=20 s=500
+99	99	99	250	250	250	250	250	250	24750	n=20 s=1000
+99	99	99	250	250	250	250	250	250	24750	n=20 s=2000
+99	99	99	250	250	250	250	250	250	24750	n=20 s=5000
+
+Best scaffold N50 is 250 at n=15 s=100.
+
+n	n:100	L50	min	N75	N50	N25	E-size	max	sum	name
+99	99	99	250	250	250	250	250	250	24750	n=15 s=100
+abyss-stack-size 65536 PathConsensus  --dot -k128  -p0.9  -s varicella-7.fa -g varicella-7.dot -o varicella-7.path varicella-6.fa varicella-6.dot varicella-6.path
+Running with max stack size of 65536 KB: PathConsensus --dot -k128 -p0.9 -s varicella-7.fa -g varicella-7.dot -o varicella-7.path varicella-6.fa varicella-6.dot varicella-6.path
+Ambiguous paths: 0
+Merged:          0
+No paths:        0
+Too many paths:  0
+Too complex:     0
+Dissimilar:      0
+cat varicella-6.fa varicella-7.fa \
+	| MergeContigs   -k128 -o varicella-8.fa - varicella-7.dot varicella-7.path
+ln -sf varicella-8.fa varicella-scaffolds.fa
+PathOverlap --overlap   -k128 --dot varicella-7.dot varicella-7.path &gt;varicella-8.dot
+ln -sf varicella-8.dot varicella-scaffolds.dot
+abyss-fac   varicella-unitigs.fa varicella-contigs.fa varicella-scaffolds.fa |tee varicella-stats.tab
+n	n:500	L50	min	N75	N50	N25	E-size	max	sum	name
+99	0	0	0	0	0	0	0	0	0	varicella-unitigs.fa
+99	0	0	0	0	0	0	0	0	0	varicella-contigs.fa
+99	0	0	0	0	0	0	0	0	0	varicella-scaffolds.fa
+ln -sf varicella-stats.tab varicella-stats
+tr '\t' , &lt;varicella-stats.tab &gt;varicella-stats.csv
+abyss-tabtomd varicella-stats.tab &gt;varicella-stats.md
+make: Leaving directory '/cephyr/users/viragv/Vera/BBT045-2024/Seq_Tech/results/exercise4'
+</pre>
 </div>
 </div>
 </div>
