@@ -7492,17 +7492,26 @@ a.anchor-link {
 </ul>
 <h2 id="Initial-setup:-Work-environment-and-Data">Initial setup: Work environment and Data<a class="anchor-link" href="#Initial-setup:-Work-environment-and-Data">¶</a></h2><p>The starter notebook contains instructions for setting up your <code>conda</code> environment. Please follow these instructions, then continue using the notebook to write the commands used here and take notes for the exercises. You can also download a copy from <a href="seq_tech_tutorial_py.ipynb">here</a> for your own computer.</p>
 <p>The notebook will serve as both a rudimentary pipeline and final (reproducible) report.</p>
-<p><img alt="Notebook usage example" src="img/notebook_usage.drawio.png"/></p>
+<p><img alt="Notebook usage example" src="./img/notebook_usage.drawio.png"/></p>
 <p>If you have not done so already, you need to first install <code>conda</code>. See instructions <a href="../unix/conda_install.html">here</a></p>
 <h2 id="Directory-and-data-setup">Directory and data setup<a class="anchor-link" href="#Directory-and-data-setup">¶</a></h2><p>We will be working in Jupyter Lab and primarely writing the commands in this Jupyter Notebook. However, the first commands in this section are easier if you run from the terminal. (Note that depending on how you have things set up on your computer, you may have access to a Unix terminal within Jupyter Lab. Simply do: "File" → "New" → "Terminal" and a terminal will open in a new tab in Jupyter Lab.)</p>
 <p>Please create a directory for this tutorial in your home directory and inside there copy the starter notebook from my directory. To do this run the following commands in the terminal after logging on to the server:</p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span>
-mkdir<span class="w"> </span>NGS_Tutorial
-cp<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/seq_tech_tutorial_py.ipynb<span class="w"> </span>NGS_Tutorial/
+mkdir<span class="w"> </span>
 <span class="nb">cd</span><span class="w"> </span>NGS_Tutorial
+wget<span class="w"> </span>https://bengtssonpalme.github.io/MPBIO-BBT045-2024/seq_tech/seq_tech_tutorial_py.ipynb
+<span class="c1">###</span>
+<span class="c1"># optionally, if you want the images to show up properly</span>
+cp<span class="w"> </span>-r<span class="w"> </span>/cephyr/NOBACKUP/groups/bbt045_2024/data/img/<span class="w"> </span>.
 </pre></div>
 <p>Now fetch a copy of the data we will be using:</p>
-<div class="highlight"><pre><span></span>cp<span class="w"> </span>-r<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/data<span class="w"> </span>.
+<div class="highlight"><pre><span></span>cp<span class="w"> </span>/cephyr/NOBACKUP/groups/bbt045_2024/data/data.zip<span class="w"> </span>.
+<span class="c1"># and now decompress the .zip file</span>
+unzip<span class="w"> </span>data.zip<span class="w"> </span>-d<span class="w"> </span>data/
+<span class="c1"># and clean up</span>
+rm<span class="w"> </span>-r<span class="w"> </span>__MACOSX/
+<span class="c1"># this directory is an artifact of the .zip file creation process</span>
+<span class="c1"># it's unnecessary, so it can be deleted</span>
 </pre></div>
 <p>To nicely see the contents of (small) directories, you can use the <code>tree</code> program, but you may need to install it first (<code>conda install tree</code>)</p>
 <div class="highlight"><pre><span></span>tree<span class="w"> </span>data
@@ -7514,10 +7523,7 @@ cp<span class="w"> </span>/PATH/TO/FILES/NGS_Tutorial/seq_tech_tutorial_py.ipynb
 <p>Then create a results directory:</p>
 <div class="highlight"><pre><span></span>mkdir<span class="w"> </span>results
 </pre></div>
-<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Container">Container<a class="anchor-link" href="#Container">¶</a></h3><p>For this tutorial, as with other tutorials for this course, you will be using a container. In this case, the <code>sequencing-conda-container.sif</code> container, located in the <code>/cephyr/NOBACKUP/groups/bbt045_2024/Container/</code> directory, just like the container you used earlier.</p>
-<p>In order to run this Jupyter Notebook, you will need to copy the <code>run_jupyter.sh</code> script to your new <code>NGS_Tutorial/</code> directory, and edit the file path for the container. In other words, in the <code>run_jupyter.sh</code> script, replace the name of the container you used previously (<code>bbt045.sif</code>) with the name of the container you will be using for this exercise (<code>sequencing-conda-container.sif</code>).</p>
-<p>Since you will be using this container, the following instructions regarding the creation of a <code>conda</code> environment to run this Notebook in are irrelevant for you. However, I am leaving them in for you to reference, and will briefly cover them in class.</p>
-<h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
+<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
 <p><code>Conda</code> can fetch packages from many different sources (aka "channels"). Let's add the Bioconda channel, as well as the general-purpose conda-forge channel ("defaults" is given first to give it top priority when searching for packages).</p>
 <p>Ignore any errors about " Inappropriate ioctl for device" and "no job control in this shell". They're a harmless consequence of this.</p>
 <p>Add the channels by running the following in your Unix terminal (not in your Jupyter Notebook):</p>
@@ -7581,8 +7587,8 @@ conda<span class="w"> </span>install<span class="w"> </span>conda-forge::nb_cond
 <span class="c1"># ref: https://stackoverflow.com/questions/39604271/conda-environments-not-showing-up-in-jupyter-notebook/56409235#56409235</span>
 </pre></div>
 <p>You should now be able to activate the <code>sequencing</code> <code>conda</code> environment within this Jupyter Notebook, by selecting the <code>Python [conda env:sequencing]</code> kernel within Jupyter Lab. Since you will be working within a kernel made from your <code>conda</code> environment, there will be no need to run <code>conda activate sequencing</code> in any of the cells in this Notebook. (There should also be a <code>sequencing</code> kernel, but you likely won't be able to run programs installed in the environment using this kernel.) This can be done either from the kernel display at the top right side of the Jupyter Lab screen, or via "Kernel" → "Change Kernel..." → select the kernel of choice</p>
-<p><img alt="Two options for changing the kernel" src="img/select_kernel.png"/></p>
-<p><img alt="Kernel selection popup" src="img/select_kernel_dropdown.png"/></p>
+<p><img alt="Two options for changing the kernel" src="./img/select_kernel.png"/></p>
+<p><img alt="Kernel selection popup" src="./img/select_kernel_dropdown.png"/></p>
 <p>If this doesn't work, please ask for help so we make sure we all start from the same place.</p>
 </div>
 </div>
@@ -8028,11 +8034,7 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 <h3 id="Step-4:-Inspect-mutations-(pt-2)">Step 4: Inspect mutations (pt 2)<a class="anchor-link" href="#Step-4:-Inspect-mutations-(pt-2)">¶</a></h3><p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command.</p>
 <p>For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
 <p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
-<div class="highlight"><pre><span></span><span class="c1"># for those of you using the sequencing-conda-container.sif container: </span>
-apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>../Container/sequencing-conda-container.sif<span class="w"> </span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
-
-<span class="c1"># alternatively, if you are using a conda environment or otherwise have samtools installed/loaded: </span>
-samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
+<div class="highlight"><pre><span></span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
 </pre></div>
 </div>
 </div>
@@ -8053,13 +8055,13 @@ grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">"^#"</spa
 <p>Are all mutations homozygous? Should you expect any heterozygous mutations in this case?</p>
 <h3 id="Q2">Q2<a class="anchor-link" href="#Q2">¶</a></h3><p>What assumption does <code>samtools mpileup</code> make about the model of genetic mutations? (Try running <code>bcftools mpileup</code> for help and scroll down.)</p>
 <p>Is this model appropriate for a virus?</p>
-<p>Answer:</p>
+<p>Answer:
 <font color="white">
 samtools mpileup assumes the data originates from a diploid organism
 and models mutations based on the existence of two similar copies of the same sequence.
-Since viruses only have one copy of the genome, this model is not correct and 
+Since viruses only have one copy of the genome, this model is not correct and
 it is not possible for a single genomic position to have two different bases.
-</font>
+</font></p>
 <h3 id="Q3">Q3<a class="anchor-link" href="#Q3">¶</a></h3><p>Use <code>samtools mpileup</code> to inspect the site 73233. What is the frequency of each base on this site?</p>
 <p>Run the command below and see <a href="https://en.wikipedia.org/wiki/Pileup_format">Pileup format</a></p>
 </div>
@@ -8152,7 +8154,7 @@ it is not possible for a single genomic position to have two different bases.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder and compare the mutations detected, in comparison to exercise 2. (You should be able to open .html files in Jupyter Lab.)</p>
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder. (Using the File tab in RStudio, navigate to the file, click on it, and choose "Open in browser") and compare the mutations detected, in comparison to exercise 2.</p>
 <p>Answer:</p>
 <font color="white">
 One mutation is missing in breseq
