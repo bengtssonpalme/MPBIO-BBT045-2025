@@ -33,6 +33,7 @@ And feel free to add some of your own.
 By testing code in small modular parts (e.g. functions),
 you can trust these parts in "downstream" (more complex) applications.
 
+
 The terms "cost", "distance", and "penalty" are used interchangeably since 
 in this context they represent equivalent ways of looking at the same concepts. 
 It also helps illustrate that these algorithms are quite general and can be applied to many different problems.
@@ -253,10 +254,10 @@ global_alignment_matrix <- function(seq1, seq2) {
     
     D <- matrix(0L, nrow = length(seq1) + 1, ncol = length(seq2) + 1)
     
-    for (i in seq(from = 2, to = length(seq1)))
+    for (i in seq(from = 2, to = length(seq1)+1))
         D[i, 1] <- D[i - 1, 1] + dist_global(seq1[i - 1], "-")
         
-    for (j in seq(from = 2, to = length(seq2)))
+    for (j in seq(from = 2, to = length(seq2)+1))
         D[1, j] <- D[1, j - 1] + dist_global("-", seq2[j - 1])
     
     for (i in seq(from = 2, to = length(seq1) + 1)) {
