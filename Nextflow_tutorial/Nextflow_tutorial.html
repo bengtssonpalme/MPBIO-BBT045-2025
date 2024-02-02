@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.528">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Marcus Wenne">
+
+<title>Nextflow workshop</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Nextflow_tutorial_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Nextflow_tutorial_files/libs/quarto-html/quarto.js"></script>
+<script src="Nextflow_tutorial_files/libs/quarto-html/popper.min.js"></script>
+<script src="Nextflow_tutorial_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Nextflow_tutorial_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Nextflow_tutorial_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Nextflow_tutorial_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Nextflow_tutorial_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Nextflow_tutorial_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Nextflow_tutorial_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Nextflow_tutorial_files/libs/quarto-diagram/mermaid.min.js"></script>
+<script src="Nextflow_tutorial_files/libs/quarto-diagram/mermaid-init.js"></script>
+<link href="Nextflow_tutorial_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#goals-of-this-tutorial" id="toc-goals-of-this-tutorial" class="nav-link active" data-scroll-target="#goals-of-this-tutorial">Goals of This Tutorial</a></li>
+  <li><a href="#layout-of-this-tutorial" id="toc-layout-of-this-tutorial" class="nav-link" data-scroll-target="#layout-of-this-tutorial">Layout of This Tutorial</a></li>
+  <li><a href="#sec-flow" id="toc-sec-flow" class="nav-link" data-scroll-target="#sec-flow">Processes and channels</a>
+  <ul class="collapse">
+  <li><a href="#processes" id="toc-processes" class="nav-link" data-scroll-target="#processes">Processes</a></li>
+  <li><a href="#example-processes" id="toc-example-processes" class="nav-link" data-scroll-target="#example-processes">Example processes</a>
+  <ul class="collapse">
+  <li><a href="#process-1-initial-data-processing" id="toc-process-1-initial-data-processing" class="nav-link" data-scroll-target="#process-1-initial-data-processing">Process 1: Initial Data Processing</a></li>
+  <li><a href="#process-2-further-data-manipulation" id="toc-process-2-further-data-manipulation" class="nav-link" data-scroll-target="#process-2-further-data-manipulation">Process 2: Further Data Manipulation</a></li>
+  </ul></li>
+  <li><a href="#workflow-connecting-processes" id="toc-workflow-connecting-processes" class="nav-link" data-scroll-target="#workflow-connecting-processes">Workflow: Connecting Processes</a></li>
+  </ul></li>
+  <li><a href="#nextflow-executor" id="toc-nextflow-executor" class="nav-link" data-scroll-target="#nextflow-executor">Nextflow executor</a>
+  <ul class="collapse">
+  <li><a href="#slurm" id="toc-slurm" class="nav-link" data-scroll-target="#slurm">Slurm</a></li>
+  </ul></li>
+  <li><a href="#tips-and-tricks" id="toc-tips-and-tricks" class="nav-link" data-scroll-target="#tips-and-tricks">Tips and tricks</a>
+  <ul class="collapse">
+  <li><a href="#operators" id="toc-operators" class="nav-link" data-scroll-target="#operators">Operators</a>
+  <ul class="collapse">
+  <li><a href="#view" id="toc-view" class="nav-link" data-scroll-target="#view">View</a></li>
+  <li><a href="#collect" id="toc-collect" class="nav-link" data-scroll-target="#collect">Collect</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#sec-description" id="toc-sec-description" class="nav-link" data-scroll-target="#sec-description">Description of the Pipeline</a>
+  <ul class="collapse">
+  <li><a href="#sec-process" id="toc-sec-process" class="nav-link" data-scroll-target="#sec-process">Each process</a>
+  <ul class="collapse">
+  <li><a href="#fastq-files" id="toc-fastq-files" class="nav-link" data-scroll-target="#fastq-files">FASTQ files</a></li>
+  <li><a href="#build_resfinder_db" id="toc-build_resfinder_db" class="nav-link" data-scroll-target="#build_resfinder_db">Build_ResFinder_db</a></li>
+  <li><a href="#trimgalore" id="toc-trimgalore" class="nav-link" data-scroll-target="#trimgalore">TrimGalore</a></li>
+  <li><a href="#diamond" id="toc-diamond" class="nav-link" data-scroll-target="#diamond">Diamond</a></li>
+  <li><a href="#metaxaqr" id="toc-metaxaqr" class="nav-link" data-scroll-target="#metaxaqr">MetaxaQR</a></li>
+  <li><a href="#metaxaqr_ttt" id="toc-metaxaqr_ttt" class="nav-link" data-scroll-target="#metaxaqr_ttt">MetaxaQR_ttt</a></li>
+  <li><a href="#metaxaqr_dc" id="toc-metaxaqr_dc" class="nav-link" data-scroll-target="#metaxaqr_dc">MetaxaQR_dc</a></li>
+  <li><a href="#gene_normalization" id="toc-gene_normalization" class="nav-link" data-scroll-target="#gene_normalization">Gene_Normalization</a></li>
+  <li><a href="#multiqc" id="toc-multiqc" class="nav-link" data-scroll-target="#multiqc">MultiQC</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#where-can-you-find-all-the-necessary-files" id="toc-where-can-you-find-all-the-necessary-files" class="nav-link" data-scroll-target="#where-can-you-find-all-the-necessary-files">Where Can You Find All the Necessary Files?</a></li>
+  <li><a href="#sec-container" id="toc-sec-container" class="nav-link" data-scroll-target="#sec-container">Building the Container</a></li>
+  <li><a href="#lets-get-started" id="toc-lets-get-started" class="nav-link" data-scroll-target="#lets-get-started">Let’s Get Started!</a>
+  <ul class="collapse">
+  <li><a href="#where-is-the-data" id="toc-where-is-the-data" class="nav-link" data-scroll-target="#where-is-the-data">Where is the data?</a></li>
+  <li><a href="#adding-a-configuration-file" id="toc-adding-a-configuration-file" class="nav-link" data-scroll-target="#adding-a-configuration-file">Adding a Configuration File</a>
+  <ul class="collapse">
+  <li><a href="#enable-dsl-2" id="toc-enable-dsl-2" class="nav-link" data-scroll-target="#enable-dsl-2">Enable DSL 2</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#profiles" id="toc-profiles" class="nav-link" data-scroll-target="#profiles">Profiles</a></li>
+  </ul></li>
+  <li><a href="#start-building-the-pipeline" id="toc-start-building-the-pipeline" class="nav-link" data-scroll-target="#start-building-the-pipeline">Start Building the Pipeline</a></li>
+  <li><a href="#adding-trace-report-and-process-execution-time" id="toc-adding-trace-report-and-process-execution-time" class="nav-link" data-scroll-target="#adding-trace-report-and-process-execution-time">Adding Trace Report and Process Execution Time</a></li>
+  <li><a href="#adding-resource-requirements" id="toc-adding-resource-requirements" class="nav-link" data-scroll-target="#adding-resource-requirements">Adding Resource Requirements</a></li>
+  <li><a href="#submitting-a-job-using-slurm" id="toc-submitting-a-job-using-slurm" class="nav-link" data-scroll-target="#submitting-a-job-using-slurm">Submitting a Job Using Slurm</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Nextflow workshop</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Marcus Wenne </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Invalid Date</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goals-of-this-tutorial" class="level1">
+<h1>Goals of This Tutorial</h1>
+<ol type="1">
+<li>Gain a clear understanding of how Nextflow functions.</li>
+<li>Learn to create your own pipeline.</li>
+<li>Discover how to use Nextflow operators to simplify your coding.</li>
+<li>Explore the integration of containers with Nextflow.</li>
+<li>Learn the steps to launch a job on the Vera cluster.</li>
+</ol>
+</section>
+<section id="layout-of-this-tutorial" class="level1">
+<h1>Layout of This Tutorial</h1>
+<p>In this tutorial, you will primarily work with pre-written code. We will provide you with practical examples and helpful hints. However, you will be crafting much of the code on your own. Use the <a href="https://www.nextflow.io/docs/latest/getstarted.html">Nextflow documentation</a> as your primary resource. Of course, feel free to ask as many questions as you need!</p>
+<p>We’ll begin with a brief presentation on Nextflow’s mechanics, followed by hands-on coding sessions.</p>
+</section>
+<section id="sec-flow" class="level1">
+<h1>Processes and channels</h1>
+<section id="processes" class="level2">
+<h2 class="anchored" data-anchor-id="processes">Processes</h2>
+<blockquote class="blockquote">
+<p>In practice a Nextflow pipeline script is made by joining together different processes. Each process can be written in any scripting language that can be executed by the Linux platform (Bash, Perl, Ruby, Python, etc.).</p>
+<p>Processes are executed independently and are isolated from each other, i.e.&nbsp;they do not share a common (writable) state. The only way they can communicate is via asynchronous FIFO queues, called channels in Nextflow. The fact that the flow of data is asynchronous means that the output files might not be in the same order as the input files. ie Nextflow does not care about the order of the files. Just that they flow between processes in the proper order.</p>
+<p>Any process can define one or more channels as input and output. The interaction between these processes, and ultimately the pipeline execution flow itself, is implicitly defined by these input and output declarations.</p>
+</blockquote>
+<p><a href="https://www.nextflow.io/docs/latest/basic.html#processes-and-channels">Source</a></p>
+<p>In Nextflow, you decide what kind of data each process handles. This includes defining <a href="https://www.nextflow.io/docs/latest/process.html#inputs">inputs</a> and <a href="https://www.nextflow.io/docs/latest/process.html#outputs">outputs</a>. Inputs and outputs can vary – they might be a simple variable, a file path, standard output, etc. This versatility is what makes channels in Nextflow so powerful. You can seamlessly integrate file paths with variables (like sample names), as you’ll discover in this tutorial.</p>
+<p>The inputs and outputs for each process are defined within the <code>Process</code> itself. But how do you link the output of one process to the input of another? Let’s look at an example workflow where this connection is made.</p>
+<p>In Nextflow, processes are defined within curly braces {}. Each process specifies its inputs, outputs, and the command to be executed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span>NAME OF PROCESS<span class="op">}</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  input<span class="op">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>INPUT FILES<span class="op">}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  output<span class="op">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>OUTPUT FILES<span class="op">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  script<span class="op">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">    {SCRIPT TO RUN}</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="example-processes" class="level2">
+<h2 class="anchored" data-anchor-id="example-processes">Example processes</h2>
+<section id="process-1-initial-data-processing" class="level3">
+<h3 class="anchored" data-anchor-id="process-1-initial-data-processing">Process 1: Initial Data Processing</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>process Process_1 <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    val VAL_1</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    path INPUT_1</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    output<span class="op">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    val VAL_1</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    path <span class="st">"output_file_1.txt"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    shell<span class="op">:</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">    program_x --input </span><span class="ss">${</span>INPUT_1<span class="ss">}</span><span class="st"> --output output_file_1.txt</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ul>
+<li><p><strong>Inputs</strong>: val VAL_1 and path INPUT_1 are placeholders for the input data. The actual data these variables represent will be assigned later in the workflow.</p></li>
+<li><p><strong>Outputs</strong>: The process outputs the same val VAL_1 it received and creates a new file, output_file_1.txt.</p></li>
+<li><p><strong>Shell Command</strong>: Executes program_x using the input file and generates an output file. Writing ${INPUT_1} allows the Shell command to access that variable.</p></li>
+</ul>
+</section>
+<section id="process-2-further-data-manipulation" class="level3">
+<h3 class="anchored" data-anchor-id="process-2-further-data-manipulation">Process 2: Further Data Manipulation</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>process Process_2 <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    val VAL_1</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    path OUTPUT_1</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    output<span class="op">:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    path <span class="st">"output_file_2.txt"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    shell<span class="op">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">    program_y --input </span><span class="ss">${</span>OUTPUT_1<span class="ss">}</span><span class="st"> --output output_file_2.txt</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ul>
+<li><p><strong>Inputs</strong>: This process takes the output from Process_1. path OUTPUT_1 is the output file from Process_1.</p></li>
+<li><p><strong>Output</strong>: Generates a new file, output_file_2.txt.</p></li>
+<li><p><strong>Shell Command</strong>: Runs program_y using the output from Process_1.</p></li>
+</ul>
+</section>
+</section>
+<section id="workflow-connecting-processes" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-connecting-processes">Workflow: Connecting Processes</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>workflow <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    process_1 <span class="op">=</span> <span class="fu">Process_1</span><span class="op">(</span><span class="st">"human_gut_1"</span><span class="op">,</span> <span class="st">" /cephyr/NOBACKUP/groups/bbt045_2024/turorial_Nextflow/data/human_gut_1_R1.fastq.gz"</span><span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Process_2</span><span class="op">(</span>process_1<span class="op">[</span><span class="dv">0</span><span class="op">],</span> process_1<span class="op">[</span><span class="dv">1</span><span class="op">])</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Explanation</strong>:</p>
+<ul>
+<li><p><strong>Variable process_1</strong>: This is a user-defined variable that stores the outputs from Process_1. The name is arbitrary but should be descriptive.</p></li>
+<li><p><strong>Connecting Processes</strong>: Process_2 takes the outputs from process_1 (process_1[1] and process_1[2]) as its inputs, linking the two processes in the workflow.</p></li>
+</ul>
+<p>In Nextflow, each process has an <code>output:</code> section where we define what it produces and an <code>input:</code> section for what it needs to start. These sections, along with the <code>workflow</code> structure, are what make Nextflow so efficient and powerful. Within the <code>workflow</code>, variables like <code>process_1</code> and <code>process_2</code> hold the outputs from their corresponding processes in a list format. For example, by using <code>process_1[1]</code>, you access the first output you specify in <code>Process_1</code> (VAL_1). To learn more about how workflows function, check out this <a href="https://www.nextflow.io/docs/latest/workflow.html">Workflow Guide</a>.</p>
+</section>
+</section>
+<section id="nextflow-executor" class="level1">
+<h1>Nextflow executor</h1>
+<blockquote class="blockquote">
+<p>In the Nextflow framework architecture, the executor is the component that determines the system where a pipeline process is run and supervises its execution.</p>
+<p>The executor provides an abstraction between the pipeline processes and the underlying execution system. This allows you to write the pipeline functional logic independently from the actual processing platform.</p>
+<p>In other words, you can write your pipeline script once and have it running on your computer, a cluster resource manager, or the cloud — simply change the executor definition in the Nextflow configuration file.</p>
+</blockquote>
+<p><a href="https://www.nextflow.io/docs/latest/executor.html#executors">Source</a></p>
+<section id="slurm" class="level2">
+<h2 class="anchored" data-anchor-id="slurm">Slurm</h2>
+<blockquote class="blockquote">
+<p>The <code>slurm</code> executor allows you to run your pipeline script using the <a href="https://slurm.schedmd.com/documentation.html">SLURM</a> resource manager.</p>
+<p>Nextflow manages each process as a separate job that is submitted to the cluster using the <code>sbatch</code> command.</p>
+<p>The pipeline must be launched from a node where the <code>sbatch</code> command is available, which is typically the cluster login node.</p>
+<p>To enable the SLURM executor, set <code>process.executor = 'slurm'</code> in the <code>nextflow.config</code> file.</p>
+</blockquote>
+<p><a href="https://www.nextflow.io/docs/latest/executor.html#slurm">Source</a></p>
+<p>The administrators of the Vera cluster asks that you use their <code>TMPDIR</code> for executing processes to reduce I/O in the main storage. What does this mean? It means that files for a process are symlinked to this directory, and that all temporary output files are located here. The final output will then be copied to the permanent storage, and all temporary file deleted. You activate this by having <code>process.scratch = true</code> in the config file. (already included for you).</p>
+</section>
+</section>
+<section id="tips-and-tricks" class="level1">
+<h1>Tips and tricks</h1>
+<section id="operators" class="level2">
+<h2 class="anchored" data-anchor-id="operators">Operators</h2>
+<p>Operators are helper functions which can be very useful, especially when directing data streams between processes. They can be used to combine, split, and so much more. Here is the documentation about <a href="https://www.nextflow.io/docs/latest/operator.html#operators">operators</a>. At the top of that page are the most useful and commonly used operators listed.</p>
+<section id="view" class="level3">
+<h3 class="anchored" data-anchor-id="view">View</h3>
+<p>Sometimes it might be difficult to know what files flow through each channel. If so you can use the <a href="https://www.nextflow.io/docs/latest/operator.html#view">view</a> operator to print the content of a channel.</p>
+</section>
+<section id="collect" class="level3">
+<h3 class="anchored" data-anchor-id="collect">Collect</h3>
+<p>Normally Nextflow provides a process with one set of files per sample. But what if a process needs the files produced for all samples. This can be useful in a summary process such as MultiQC, which will combine all quality reports from TrimGalore!. Can you figure out how the <a href="https://www.nextflow.io/docs/latest/operator.html#collect">collect</a> operator?</p>
+</section>
+</section>
+</section>
+<section id="sec-description" class="level1">
+<h1>Description of the Pipeline</h1>
+<p>In this tutorial, you’ll be recreating a version of a pipeline used for determining the composition of antibiotic resistance genes and taxonomy in a metagenomic sample. We’ll provide the commands for each process, and guide you on the order in which they should be executed. Additionally, we’ll offer hints on linking channels to processes. If anything is unclear or if you have questions at any point, please don’t hesitate to ask!</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+
+        p7[Build_ResFinder_db]
+
+        p0{FASTQ files}
+        p1[TrimGalore]
+
+        p14[Diamond]
+        p15[MetaxaQR]
+        p17[MetaxaQR_ttt]
+        p20[MetaxaQR_dc]
+        p24[Gene_Normalization]
+
+        p4[MultiQC]
+ 
+    p0 --&gt; p1
+    p1 --&gt; p14
+    p1 --&gt; p4
+    p1 --&gt; p15
+    p7 --&gt; p14
+    p14 --&gt; p24
+    p15 --&gt; p17
+    p17 --&gt; p20
+    p17 --&gt;p24
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<section id="sec-process" class="level2">
+<h2 class="anchored" data-anchor-id="sec-process">Each process</h2>
+<section id="fastq-files" class="level3">
+<h3 class="anchored" data-anchor-id="fastq-files">FASTQ files</h3>
+<p>This is technically not a process, but part of the workflow. The primary input for this pipeline is FASTQ files. To efficiently add these files to a channel, we’ll use the <code>fromFilePairs</code> operator. This operator creates a <a href="https://www.nextflow.io/docs/latest/process.html#input-type-tuple">tuple</a> for each pair of FASTQ files: <code>[sample_id, [R1, R2]]</code>. This approach simplifies tracking which sample each read belongs to and ensures that the pairs of R1 and R2 files are correctly associated. Learn more about using this operator <a href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs">here</a>.</p>
+</section>
+<section id="build_resfinder_db" class="level3">
+<h3 class="anchored" data-anchor-id="build_resfinder_db">Build_ResFinder_db</h3>
+<p>ResFinder is an extensively used, manually curated database. It contains antibiotic resistance genes, particularly those found in mobile genetic elements.</p>
+<p>This script:</p>
+<ul>
+<li>Downloads the database in DNA format by cloning it from GitHub.</li>
+<li>Creates a file will ar resistance genes.</li>
+<li><code>prodigal</code> is use to identify the coding part of the gene and translating it into amino acids.</li>
+<li><code>sed</code>is used to remove unnecessary characters added by <code>prodigal</code>.</li>
+<li>ResFinder can contain genes which are very similar to each other. <code>cd-hit</code> clusters them at 95% identity to create a non redundant database where <code>diamond</code>will have a greater likelihood of differentiating the different genes from each other.</li>
+<li><code>diamond makedb</code> is use to convert the ResFinder database to a format that <code>diamond</code> can use.</li>
+</ul>
+<section id="code" class="level4">
+<h4 class="anchored" data-anchor-id="code">Code</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Download ResFinder from github</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> clone https://git@bitbucket.org/genomicepidemiology/resfinder_db.git</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combines  individual ARG files </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span> resfinder_db/<span class="pp">*</span>.fsa <span class="op">&gt;</span> Combined_Resfinder.fsa</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove unnecessary dir</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mv</span> resfinder_db/<span class="pp">*</span> .</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-r</span> resfinder_db/</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Translates DNA to protein</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">prodigal</span> <span class="at">-i</span> Combined_Resfinder.fsa <span class="at">-a</span> Combined_Resfinder.translations.faa <span class="at">-p</span> meta</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Removes characters added by prodigal during translation</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/\\*//g'</span> Combined_Resfinder.translations.faa</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/ .*\$//'</span> Combined_Resfinder.translations.faa</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cluster db at 95% identity</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">cd-hit</span> <span class="at">-i</span> Combined_Resfinder.translations.faa <span class="at">-o</span> Combined_Resfinder.translations_cluster_95.fasta <span class="at">-c</span> 0.95 <span class="at">-n</span> 5 <span class="at">-M</span> 0 <span class="at">-d</span> 1000 <span class="at">-T</span> 1</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Created Diamond db</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">diamond</span> makedb <span class="at">--in</span> Combined_Resfinder.translations_cluster_95.fasta <span class="at">-d</span> ResFinderARGs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus">Flag to specify nr CPUs</h5>
+<p><strong>None</strong></p>
+</section>
+</section>
+<section id="data-flow" class="level4">
+<h4 class="anchored" data-anchor-id="data-flow">Data flow</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">input:</span> None</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">output:</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ResFinderARGs.dmnd</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Combined_Resfinder.translations.faa</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">phenotypes.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="trimgalore" class="level3">
+<h3 class="anchored" data-anchor-id="trimgalore">TrimGalore</h3>
+<p>This tool perform quality trimming of the reads.</p>
+<ul>
+<li>Removes sequences of poor quality and length</li>
+<li>Removes sequencing adapters</li>
+<li>Outputs quality reports</li>
+</ul>
+<section id="code-1" class="level4">
+<h4 class="anchored" data-anchor-id="code-1">Code</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">-j</span> 5 <span class="at">--fastqc</span> <span class="va">${ENTER_READ_R1}</span> <span class="va">${ENTER_READ_R2}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus-1" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-1">Flag to specify nr CPUs</h5>
+<p><code>-j</code></p>
+</section>
+</section>
+<section id="input-and-output" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output">Input and output</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sample_id</span> and reads</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sample</span> id, <span class="pp">*</span>R1<span class="pp">*</span>val<span class="pp">*</span>.fq.gz and <span class="pp">*</span>R2<span class="pp">*</span>val<span class="pp">*</span>.fq.gz <span class="co"># Write this in such a way that it captures both R1 and R2 in one glob pattern</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span><span class="va">${sample_id}</span><span class="ex">*fastqc.zip</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span><span class="va">${sample_id}</span><span class="ex">*trimming_report.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should write the glob pattern in such a way that the first output contains both the R1 and R2 files.</p>
+</section>
+</section>
+<section id="diamond" class="level3">
+<h3 class="anchored" data-anchor-id="diamond">Diamond</h3>
+<p>This tool is a faster version of <code>BLASTX</code> (100X - 1 000x faster). It translates the DNA reads into the 6 possible amino acid reading frames and aligns them to the amino acid database.</p>
+<section id="code-2" class="level4">
+<h4 class="anchored" data-anchor-id="code-2">Code</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">diamond</span> blastx <span class="at">--query</span> <span class="va">${R1_read}</span> <span class="at">--db</span>  <span class="va">${ENTER_DB}</span> <span class="at">-o</span> <span class="va">${ENTER_SAMPLE_ID}</span>.tsv  <span class="at">--id</span> 90 <span class="at">--query-cover</span> 80  <span class="at">--threads</span> 5 <span class="at">--outfmt</span> 6 qseqid sseqid pident evalue length slen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus-2" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-2">Flag to specify nr CPUs</h5>
+<p><code>--threads</code></p>
+</section>
+</section>
+<section id="input-and-output-1" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output-1">Input and output</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sample</span> id and trimmed reads</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ResFinderARGs.dmnd</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">{SAMPLE_ID}.tsv</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="metaxaqr" class="level3">
+<h3 class="anchored" data-anchor-id="metaxaqr">MetaxaQR</h3>
+<p><code>MetaxaQR</code> is a tool that determines the taxonomic composition of a sample. It uses HMMs to identify reads from the 16s rRNA gene. This gene contains conserved regions across bacteria, making it easy to identify. It also contains hyper variable regions, making it distinguishable between taxa.</p>
+<p>This script:</p>
+<ul>
+<li>Unzip the read files</li>
+<li>Performs taxonomic classification</li>
+<li>Removes unziped metagenomic reads</li>
+<li>Gzip MetaxaQR fasta output</li>
+</ul>
+<section id="code-3" class="level4">
+<h4 class="anchored" data-anchor-id="code-3">Code</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Unzip metagenomes</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">${READS_R1}</span> <span class="op">&gt;</span> read_R1.fastq <span class="kw">&amp;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">${READS_R2}</span> <span class="op">&gt;</span> read_R2.fastq <span class="kw">&amp;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Wait for the background processes to finish</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">wait</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Run MetaxaQR</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">metaxaQR</span> <span class="at">-1</span> read_R1.fastq <span class="at">-2</span> read_R2.fastq <span class="at">-o</span> <span class="va">${SAMPLE_ID}</span> <span class="at">--cpu</span> 5 <span class="at">-g</span> SSU <span class="at">-d</span> /MetaxaQR/metaxaQR_db/SSU/mqr</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove unziped metagenomes</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> read_R<span class="pp">*</span>.fastq </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Zip fasta output</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ex">pigz</span> <span class="at">-p</span> 5 <span class="pp">*</span>.fasta </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="input-and-output-2" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output-2">Input and output</h4>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sample</span> id and trimmed reads</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sample</span> id and <span class="va">${sample_id}</span>.taxonomy.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus-3" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-3">Flag to specify nr CPUs</h5>
+<p><code>--cpu</code></p>
+</section>
+</section>
+</section>
+<section id="metaxaqr_ttt" class="level3">
+<h3 class="anchored" data-anchor-id="metaxaqr_ttt">MetaxaQR_ttt</h3>
+<p>This tool converts <code>MetaxaQR</code>’s output to a workable tsv file.</p>
+<section id="code-4" class="level4">
+<h4 class="anchored" data-anchor-id="code-4">Code</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">metaxaQR_ttt</span> <span class="at">-i</span> <span class="va">${METAXAQR_OUTPUT}</span> <span class="at">-o</span> <span class="va">${SAMPLE_ID}</span>  <span class="at">-m</span> 6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus-4" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-4">Flag to specify nr CPUs</h5>
+<p><strong>None</strong></p>
+</section>
+</section>
+<section id="input-and-output-3" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output-3">Input and Output</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sample_id</span> and output from MetaxaQR</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="va">${sample_id}</span><span class="ex">.level_1.txt</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="va">${sample_id}</span><span class="ex">.level_6.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="metaxaqr_dc" class="level3">
+<h3 class="anchored" data-anchor-id="metaxaqr_dc">MetaxaQR_dc</h3>
+<p>This tool takes all output files from <code>MetaxaQR_ttt</code> and concatenates them into a singe file.</p>
+<section id="code-5" class="level4">
+<h4 class="anchored" data-anchor-id="code-5">Code</h4>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">metaxaQR_dc</span> <span class="pp">*</span>.level_6.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Note</strong> Do not forget to use the collect operator for the <code>level_6.txt</code> input.</p>
+<section id="flag-to-specify-nr-cpus-5" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-5">Flag to specify nr CPUs</h5>
+<p><strong>None</strong></p>
+</section>
+</section>
+<section id="input-and-output-4" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output-4">Input and Output</h4>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">level_6.txt</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">collected_data.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="gene_normalization" class="level3">
+<h3 class="anchored" data-anchor-id="gene_normalization">Gene_Normalization</h3>
+<p>This code does:</p>
+<ul>
+<li>Identifies the number of 16s rRNA sequences per sample.</li>
+<li>Chooses the best match per read for the <code>diamond</code> output.</li>
+<li>Group and summarize the abundance of each individual resistance gene.</li>
+<li>Normalizes the antibiotic resistance gene abundance per sample.</li>
+<li>Assigns each resistance gene a resistance phenotype.</li>
+</ul>
+<section id="code-6" class="level4">
+<h4 class="anchored" data-anchor-id="code-6">Code</h4>
+<p>Copy this code to a script and save it on the cluster like this {NAME}.py</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> concurrent.futures <span class="im">import</span> ProcessPoolExecutor</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_16s_sequences():</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Counts the number of 16s sequences in files matching '*.level_1.txt'.</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">        dict: A dictionary mapping sample IDs to the number of 16s sequences.</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find all relevant MetaxaQR files</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    files <span class="op">=</span> glob.glob(<span class="st">'*.level_1.txt'</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    sequence_count_dict <span class="op">=</span> {}</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Load files and append sample_id and nr SSU to dict   </span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> files:</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        sample_id <span class="op">=</span> <span class="bu">file</span>.split(<span class="st">'.level_1.txt'</span>)[<span class="dv">0</span>]</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.read_csv(<span class="bu">file</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, names<span class="op">=</span>[<span class="st">'kingdom'</span>, <span class="st">'nr_ssu'</span>])</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        bacteria_count <span class="op">=</span> <span class="bu">list</span>(df[df.kingdom <span class="op">==</span> <span class="st">'Bacteria'</span>].nr_ssu)[<span class="dv">0</span>]</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Dict with sample ID as key and nr bacterial SSU as value</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>        sequence_count_dict[sample_id] <span class="op">=</span> bacteria_count</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sequence_count_dict</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filter_group_for_best_alignment(group):</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co">    Filters a DataFrame group to find the best alignment based on criteria.</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="co">        group (DataFrame): The DataFrame group to filter.</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame: A DataFrame containing the filtered results.</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Best his has lowest e-value, highest pident and length</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If multiple hits has same value return a randomly selected best hit</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    group <span class="op">=</span> group[group[<span class="st">'evalue'</span>] <span class="op">==</span> group[<span class="st">'evalue'</span>].<span class="bu">min</span>()]</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    group <span class="op">=</span> group[group[<span class="st">'pident'</span>] <span class="op">==</span> group[<span class="st">'pident'</span>].<span class="bu">max</span>()]</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    group <span class="op">=</span> group[group[<span class="st">'length'</span>] <span class="op">==</span> group[<span class="st">'length'</span>].<span class="bu">max</span>()]</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> group.sample(<span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process_file(<span class="bu">file</span>, mode):</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="co">    Processes a single file to group and filter data based on sequence identity.</span></span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a><span class="co">        file (str): The file path to process.</span></span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="co">        mode (str): The mode of processing, affects file parsing.</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame: A DataFrame with processed and filtered data.</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>    sample_id <span class="op">=</span> <span class="bu">file</span>.split(<span class="ss">f'.tsv'</span>)[<span class="dv">0</span>]</span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>    colnames <span class="op">=</span> [<span class="st">'qseqid'</span>, <span class="st">'sseqid'</span>, <span class="st">'pident'</span>, <span class="st">'evalue'</span>, <span class="st">'length'</span>, <span class="st">'slen'</span>]</span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(<span class="bu">file</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, names<span class="op">=</span>colnames)</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Function for selecting best hit</span></span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>    df_grouped <span class="op">=</span> df.groupby(<span class="st">'qseqid'</span>).<span class="bu">apply</span>(filter_group_for_best_alignment).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>    df_grouped[<span class="st">'sample_id'</span>] <span class="op">=</span> sample_id</span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_grouped[[<span class="st">'sseqid'</span>, <span class="st">'slen'</span>, <span class="st">'sample_id'</span>]]</span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process_file_wrapper(<span class="bu">file</span>, mode):</span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a><span class="co">    Wrapper function for process_file to make it compatible with ProcessPoolExecutor.</span></span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a><span class="co">        file (str): The file path to process.</span></span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a><span class="co">        mode (str): The mode of processing.</span></span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame: A DataFrame with processed and filtered data.</span></span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> process_file(<span class="bu">file</span>, mode)</span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_files(mode):</span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="co">    Retrieves and processes files in parallel, concatenating the results.</span></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a><span class="co">        mode (str): The mode of processing to determine file patterns.</span></span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame: A concatenated DataFrame of all processed files.</span></span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a>    files <span class="op">=</span> glob.glob(<span class="ss">f'*.tsv'</span>)</span>
+<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parallelizes processing files</span></span>
+<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> ProcessPoolExecutor() <span class="im">as</span> executor:</span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> <span class="bu">list</span>(executor.<span class="bu">map</span>(process_file_wrapper, files, [mode]<span class="op">*</span><span class="bu">len</span>(files)))</span>
+<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Output here is the best hit for each read</span></span>
+<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.concat(results, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_gene_data(df_temp, nr_ssu):</span>
+<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a><span class="co">    Normalizes gene data based on sequence length and 16s sequence counts.</span></span>
+<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a><span class="co">        df_temp (DataFrame): The DataFrame with gene data.</span></span>
+<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a><span class="co">        nr_ssu (dict): A dictionary mapping sample IDs to 16s sequence counts.</span></span>
+<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame: A DataFrame with normalized gene data.</span></span>
+<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Counts how many reads aligned with each ARG/MGE</span></span>
+<span id="cb17-107"><a href="#cb17-107" aria-hidden="true" tabindex="-1"></a>    gene_counts <span class="op">=</span> df_temp[<span class="st">'sseqid'</span>].value_counts().reset_index()</span>
+<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a>    gene_counts.columns <span class="op">=</span> [<span class="st">"Genes"</span>, <span class="st">"Count"</span>]</span>
+<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add data like gene length etc</span></span>
+<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a>    df_temp <span class="op">=</span> df_temp.merge(gene_counts, left_on<span class="op">=</span><span class="st">'sseqid'</span>, right_on<span class="op">=</span><span class="st">'Genes'</span>, how<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add nr of ssu for each sample</span></span>
+<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a>    df_temp[<span class="st">'nr_ssu'</span>] <span class="op">=</span> df_temp[<span class="st">'sample_id'</span>].<span class="bu">map</span>(nr_ssu)</span>
+<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize gene abundance  </span></span>
+<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a>    df_temp[<span class="st">'Gene_normalized'</span>] <span class="op">=</span> (df_temp[<span class="st">'Count'</span>] <span class="op">/</span> df_temp[<span class="st">'slen'</span>]) <span class="op">/</span> (df_temp[<span class="st">'nr_ssu'</span>] <span class="op">/</span> <span class="dv">720</span>)</span>
+<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Due to me writing the script in a strange way we will get duplicate rows with identical data</span></span>
+<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Output here is a non redundant df.</span></span>
+<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a>    df_temp.drop_duplicates(subset<span class="op">=</span>[<span class="st">'sseqid'</span>, <span class="st">'sample_id'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_temp[[<span class="st">'Genes'</span>, <span class="st">'Count'</span>, <span class="st">'nr_ssu'</span>, <span class="st">'slen'</span>, <span class="st">'Gene_normalized'</span>, <span class="st">'sample_id'</span>]]</span>
+<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_and_normalize_files(mode, nr_ssu):</span>
+<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a><span class="co">    Reads and normalizes files based on the specified mode and 16s sequence counts.</span></span>
+<span id="cb17-128"><a href="#cb17-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a><span class="co">        mode (str): The mode of processing.</span></span>
+<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a><span class="co">        nr_ssu (dict): A dictionary mapping sample IDs to 16s sequence counts.</span></span>
+<span id="cb17-132"><a href="#cb17-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame: A DataFrame with normalized gene data.</span></span>
+<span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a>    df_temp <span class="op">=</span> get_files(mode)</span>
+<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> normalize_gene_data(df_temp, nr_ssu)</span>
+<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-139"><a href="#cb17-139" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assign_phenotypes_to_args(diamond_out):</span>
+<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a><span class="co">    Assigns phenotypes to ARGs based on gene accession numbers.</span></span>
+<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a><span class="co">        diamond_out (DataFrame): The DataFrame containing ARG data.</span></span>
+<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Load phenotypic information from ResFinder</span></span>
+<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> [<span class="st">'Gene_accession no.'</span>, <span class="st">'Class'</span>]</span>
+<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a>    phenotype_data <span class="op">=</span> pd.read_csv(<span class="st">'phenotypes.txt'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, usecols<span class="op">=</span>cols)</span>
+<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Handling multiple resistance phenotypes</span></span>
+<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a>    <span class="co"># looking for ',' since phenotypes are written "tetracycline, aminoglycosides" etc.</span></span>
+<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a>    <span class="co"># eg. If a gene confers resistance towards more than 1 antibiotic is it called "multiple"</span></span>
+<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a>    multiple_resistance_classes <span class="op">=</span> [cls <span class="cf">for</span> cls <span class="kw">in</span> phenotype_data[<span class="st">'Class'</span>].unique() <span class="cf">if</span> <span class="st">','</span> <span class="kw">in</span> cls]</span>
+<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prodigal adds _ and a number to each translated gene name. </span></span>
+<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Here I remove those characters from the gene name so it matches </span></span>
+<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a>    <span class="co"># with the one in the ResFinder Phenotype file.</span></span>
+<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a>    diamond_out[<span class="st">'Phenotype'</span>] <span class="op">=</span> diamond_out[<span class="st">'Genes'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">'_'</span>.join(x.rsplit(<span class="st">'_'</span>, <span class="dv">1</span>)[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Replace phenotype to multiple if in multiple_resistance_classes list</span></span>
+<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a>    phenotype_data.loc[phenotype_data[<span class="st">'Class'</span>].isin(multiple_resistance_classes), <span class="st">'Class'</span>] <span class="op">=</span> <span class="st">'Multiple'</span></span>
+<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a>    <span class="co"># There are some genes which have multiple entries in the Phenotype list</span></span>
+<span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Here I make sure that they are classified as Multiple</span></span>
+<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a>    duplicated_args <span class="op">=</span> phenotype_data[phenotype_data.duplicated([<span class="st">'Gene_accession no.'</span>])]</span>
+<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a>    phenotype_data.loc[phenotype_data[<span class="st">'Gene_accession no.'</span>].isin(duplicated_args[<span class="st">"Gene_accession no."</span>]), <span class="st">'Class'</span>] <span class="op">=</span> <span class="st">'Multiple'</span></span>
+<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a>    phenotype_data.drop_duplicates(subset<span class="op">=</span>[<span class="st">'Gene_accession no.'</span>], inplace<span class="op">=</span><span class="va">True</span>, keep<span class="op">=</span><span class="st">'first'</span>)</span>
+<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a>    phenotype_data.set_index(<span class="st">'Gene_accession no.'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Converting phenotype_data to dict and use it to translate gene manes to phenotype</span></span>
+<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a>    phenotype_dict <span class="op">=</span> phenotype_data[<span class="st">'Class'</span>].to_dict()</span>
+<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a>    diamond_out.replace({<span class="st">"Phenotype"</span>: phenotype_dict}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a>    diamond_out.to_csv(<span class="st">'ARG_norm.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a><span class="co">    Main function to process files and infer phenotypes.</span></span>
+<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a>    modes <span class="op">=</span> [<span class="st">'ResFinder'</span>]</span>
+<span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> mode <span class="kw">in</span> modes: </span>
+<span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a>        SSU_counts <span class="op">=</span> count_16s_sequences()</span>
+<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a>        normalized_files <span class="op">=</span> read_and_normalize_files(mode, SSU_counts)  </span>
+<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> mode <span class="op">==</span> <span class="st">'ResFinder'</span>:</span>
+<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a>            assign_phenotypes_to_args(normalized_files)</span>
+<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> mode <span class="op">==</span> <span class="st">'mobileOG'</span>:</span>
+<span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a>            normalized_files.to_csv(<span class="st">'MGE_norm.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
+<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>    main()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus-6" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-6">Flag to specify nr CPUs</h5>
+<p><strong>None</strong></p>
+</section>
+<section id="how-to-execute-script" class="level5">
+<h5 class="anchored" data-anchor-id="how-to-execute-script">How to execute script</h5>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> {PATH_TO_SCRIPT}/{NAME}.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="input-and-output-5" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output-5">Input and Output</h4>
+<p><strong>Note</strong> Do not forget to use the collect operator for the <code>${sample_id}.tsv</code> and <code>${sample_id}.level_1.txt</code> input.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">phenotypes.txt</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="va">${sample_id}</span><span class="ex">.tsv</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="va">${sample_id}</span><span class="ex">.level_1.txt</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ARG_norm.tsv</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="multiqc" class="level3">
+<h3 class="anchored" data-anchor-id="multiqc">MultiQC</h3>
+<section id="code-7" class="level4">
+<h4 class="anchored" data-anchor-id="code-7">Code</h4>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">-f</span> <span class="pp">*</span>fastqc.zip</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="input-and-output-6" class="level4">
+<h4 class="anchored" data-anchor-id="input-and-output-6">Input and Output</h4>
+<p><strong>Note</strong> Do not forget to use the collect operator for the <code>*fastqc.zip</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Input:</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*fastqc.zip</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Output:</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc_report.html</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc_data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="flag-to-specify-nr-cpus-7" class="level5">
+<h5 class="anchored" data-anchor-id="flag-to-specify-nr-cpus-7">Flag to specify nr CPUs</h5>
+<p><strong>None</strong></p>
+</section>
+</section>
+</section>
+</section>
+</section>
+<section id="where-can-you-find-all-the-necessary-files" class="level1">
+<h1>Where Can You Find All the Necessary Files?</h1>
+<p>You can locate all the required files for this tutorial at the following link: [Insert Link Here].</p>
+</section>
+<section id="sec-container" class="level1">
+<h1>Building the Container</h1>
+<p>Below is the code for the container definition file. Simply copy this code into a file on the cluster and save it as <code>{name}.def</code>. To build the container, execute the command <code>apptainer build {name}.sif {name}.def</code>. Please note, building the container might take some time, so it’s best to start this at the beginning of the tutorial.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Bootstrap:</span> docker</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">From:</span> ubuntu:23.10</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="ex">%post</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">DEBIAN_FRONTEND</span><span class="op">=</span>noninteractive</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update OS and install packages</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">apt-get</span> update </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">apt-get</span> install <span class="at">-y</span> <span class="dt">\</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    git <span class="dt">\</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    wget <span class="dt">\</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    original-awk <span class="dt">\</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    python3.11 <span class="dt">\</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    python3-pip <span class="dt">\</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    zlib1g-dev <span class="dt">\</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    curl <span class="dt">\</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    cutadapt <span class="dt">\</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    fastqc <span class="dt">\</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    mafft <span class="dt">\</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    hmmer <span class="dt">\</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    autoconf <span class="dt">\</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    prodigal</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="ex">apt-get</span> clean</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Install Nextflow </span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mkdir</span> Nextflow</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> Nextflow</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wget</span> <span class="at">-qO-</span> https://get.nextflow.io <span class="kw">|</span> <span class="fu">bash</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chmod</span> +x nextflow</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Install Vsearch</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wget</span> https://github.com/torognes/vsearch/archive/v2.25.0.tar.gz</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar</span> xzf v2.25.0.tar.gz</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> vsearch-2.25.0</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>  <span class="ex">./autogen.sh</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  <span class="ex">./configure</span> CFLAGS=<span class="st">"-O3"</span> CXXFLAGS=<span class="st">"-O3"</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make</span> install</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span> v2.25.0.tar.gz</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Install cd-hit</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wget</span> https://github.com/weizhongli/cdhit/releases/download/V4.8.1/cd-hit-v4.8.1-2019-0228.tar.gz</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar</span> xvf cd-hit-v4.8.1-2019-0228.tar.gz</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span> <span class="at">-rf</span> cd-hit-v4.8.1-2019-0228.tar.gz</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> cd-hit-v4.8.1-2019-0228</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make</span></span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> cd-hit-auxtools</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make</span></span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># install Trim Galore</span></span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-fsSL</span> https://github.com/FelixKrueger/TrimGalore/archive/0.6.10.tar.gz <span class="at">-o</span> trim_galore.tar.gz</span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar</span> xvzf trim_galore.tar.gz</span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span> trim_galore.tar.gz</span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Install Diamond</span></span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mkdir</span> Diamond</span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> Diamond</span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wget</span> http://github.com/bbuchfink/diamond/releases/download/v2.1.8/diamond-linux64.tar.gz</span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar</span> xzf diamond-linux64.tar.gz</span>
+<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span> <span class="at">-rf</span> diamond-linux64.tar.gz</span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> ..</span>
+<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Install MetaxaQR </span></span>
+<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> clone https://github.com/bengtssonpalme/MetaxaQR.git</span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chmod</span> +x MetaxaQR/<span class="pp">*</span></span>
+<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a>  <span class="ex">MetaxaQR/metaxaQR_install_database</span> <span class="at">-g</span> SSU <span class="at">-v</span> SILVA138</span>
+<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Install python packages</span></span>
+<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>  <span class="ex">python3</span> <span class="at">-m</span> pip install  pandas==2.1.3 biopython==1.81 multiqc==1.18 <span class="at">--break-system-packages</span></span>
+<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="ex">%environment</span></span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">LC_ALL</span><span class="op">=</span>C</span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span>/MetaxaQR/:<span class="va">$PATH</span></span>
+<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span>/Nextflow/:<span class="va">$PATH</span></span>
+<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span>/TrimGalore-0.6.10/:<span class="va">$PATH</span></span>
+<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span>/Diamond/:<span class="va">$PATH</span></span>
+<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span>/vsearch-2.25.0/:<span class="va">$PATH</span></span>
+<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a>  <span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span>/cd-hit-v4.8.1-2019-0228/:<span class="va">$PATH</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="lets-get-started" class="level1">
+<h1>Let’s Get Started!</h1>
+<p>Now, it’s time for you to define processes and channels and connect them in a workflow. But first, you need to add a configuration file.</p>
+<section id="where-is-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="where-is-the-data">Where is the data?</h2>
+<p>The input fastq files for the pipeline can be found here <code>/cephyr/NOBACKUP/groups/bbt045_2024/turorial_Nextflow/data/</code>.</p>
+</section>
+<section id="adding-a-configuration-file" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-configuration-file">Adding a Configuration File</h2>
+<p>A configuration file is essential for running your pipeline in Nextflow. While Nextflow allows extensive customization, we will only cover the basics in this workshop. Combine all the following code snippets into a single document named <code>nextflow.config</code>.</p>
+<section id="enable-dsl-2" class="level3">
+<h3 class="anchored" data-anchor-id="enable-dsl-2">Enable DSL 2</h3>
+<p>DSL2 is the latest version of the Nextflow language.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>nextflow<span class="op">.</span>enable<span class="op">.</span>dsl<span class="op">=</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="parameters" class="level3">
+<h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>params<span class="op">.</span>files <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>params<span class="op">.</span>cluster_options <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>params<span class="op">.</span>container <span class="op">=</span> <span class="st">""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This setup creates the following flags:</p>
+<ul>
+<li><p><code>--files</code>: Specify the location of the FASTQ files.</p></li>
+<li><p><code>--cluster_options</code>: Enter specific options for the cluster. This should be assign the value <code>"-A C3SE2023-2-17 -p vera"</code>.</p></li>
+<li><p><code>--container</code>: Define where the container is located.</p></li>
+</ul>
+<p>These will become variables in your processes and workflows. You can name them as you like. Alternatively, assign values directly here, like <code>params.container = "{PATH}/container.sif"</code>.</p>
+</section>
+<section id="profiles" class="level3">
+<h3 class="anchored" data-anchor-id="profiles">Profiles</h3>
+<p>Your configuration will vary depending on whether you’re running Nextflow from the command line or using an Sbatch script. Here, we define profiles to instruct Nextflow how to behave in local or Slurm environments. Later on you can use <code>-profile 'local'</code> or <code>-profile 'slurm'</code> to specify the desired environment from the command line or an sbatch script.</p>
+<p>Note here that you only need one <code>-</code>. This is because <code>-profile</code> is a pre-defined Nextflow flag. All flags you define through <code>params.</code> require two dashes <code>--</code>. If you want to read more about how to configure the config file you can read about it <a href="https://www.nextflow.io/docs/latest/config.html#configuration-file">here</a>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>profiles <span class="op">{</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    local <span class="op">{</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>cache <span class="op">=</span> <span class="kw">true</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>container <span class="op">=</span> params<span class="op">.</span>container</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>executor <span class="op">=</span> <span class="st">'local'</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        apptainer<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        apptainer<span class="op">.</span>autoMounts <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    slurm <span class="op">{</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>cache <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>container <span class="op">=</span> params<span class="op">.</span>container</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>executor <span class="op">=</span> <span class="st">'slurm'</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>clusterOptions <span class="op">=</span> params<span class="op">.</span>cluster_options</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>scratch <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>        apptainer<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>        apptainer<span class="op">.</span>autoMounts <span class="op">=</span> <span class="kw">true</span>   </span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="start-building-the-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="start-building-the-pipeline">Start Building the Pipeline</h2>
+<ol type="1">
+<li>Save the config file in the same directory and name it <code>nextflow.config</code>. Nextflow will automatically find this file. If the file is located elsewhere, specify its location using the <code>-c</code> flag.</li>
+<li>Begin by creating processes for the tools (<a href="#sec-process" class="quarto-xref">Section&nbsp;6.1</a>) and connect them using a workflow (<a href="#sec-description" class="quarto-xref">Section&nbsp;6</a>). The file containing the processes and workflow should have the <code>.nf</code> extension and be called <code>main.nf</code>.</li>
+<li>Use the <code>publishDir</code> directive to tell Nextflow where to store the pipeline’s output. More about this can be found <a href="https://www.nextflow.io/docs/latest/process.html#publishdir">here</a>.</li>
+<li>Test locally with a single file using an interactive Slurm session. Find more information about <code>nextflow run</code> <a href="https://www.nextflow.io/docs/latest/cli.html#run">here</a>.</li>
+</ol>
+<p>If you haven’t specified the values of <code>params.container</code> and <code>params.files</code> in the config file, you’ll need to include them in the command line.</p>
+<p>On Vera, you can either submit a non-interactive sbatch job to run in the background, or start an interactive session like this (replace <code>{NR_CPU}</code> with the number of CPUs needed and the estimated duration in HH:MM:SS.</p>
+<p><strong>Change -t</strong></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">-A</span> C3SE2023-2-17 <span class="at">--nodes</span> 1 <span class="at">--ntasks</span> 1 <span class="at">--cpus-per-task</span> 10  <span class="at">-t</span> 00:00:00  <span class="at">--pty</span> bash <span class="at">-is</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nextflow is preinstalled on the cluster. All you have to do is to load it.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load Nextflow/23.10.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To check that it loaded correctly you type:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you got the help output everything worked as expected!</p>
+<p>You run the pipeline by executing this command on the command line.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run main.nf <span class="at">-profile</span> <span class="st">'local'</span> <span class="at">-resume</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <a href="https://www.nextflow.io/docs/latest/cache-and-resume.html"><code>-resume</code></a> flag enables Nextflow to start the pipeline from where you last left off. Nextflow automatically caches runs, but it does not automatically resume them unless you use this flag.</p>
+<p>Once your pipeline works correctly with one file, try running it with all the FASTQ files in <code>/cephyr/NOBACKUP/groups/bbt045_2024/turorial_Nextflow/data/</code>.</p>
+</section>
+<section id="adding-trace-report-and-process-execution-time" class="level2">
+<h2 class="anchored" data-anchor-id="adding-trace-report-and-process-execution-time">Adding Trace Report and Process Execution Time</h2>
+<p>Gaining detailed insights into the resource requirements of a process can be very valuable. Questions like how long a process ran, how much RAM it consumed, and whether it fully utilized the allocated CPU cores are crucial. This information can help you benchmark different tools to find the best fit for your needs based on available resources. Moreover, it’s likely you’ll use this information to specify the resource demand for each tool in the next step of this workshop. You can find more about what this report looks like and how to activate it <a href="https://www.nextflow.io/docs/latest/tracing.html">here</a>. Also, don’t forget to activate the <a href="https://www.nextflow.io/docs/latest/tracing.html#timeline-report">timeline report function</a>.</p>
+</section>
+<section id="adding-resource-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="adding-resource-requirements">Adding Resource Requirements</h2>
+<p>Review the <code>tracing</code> and <code>timeline report</code> to determine the resource demands of each process. Then, specify the <a href="https://www.nextflow.io/docs/latest/process.html#time">time</a>, <a href="https://www.nextflow.io/docs/latest/process.html#cpus">cpus</a>, and <a href="https://www.nextflow.io/docs/latest/process.html#memory">memory</a> each process needs.</p>
+<p>When you specify <a href="https://www.nextflow.io/docs/latest/process.html#cpus"><code>cpus</code></a>, you tell Nextflow that the process is <strong>supposed</strong> to use x number of cpus. You also need to tell the tool the number of cpus it is supposed to use. That is usually done via a flag. When you specify <code>cpus</code> the value you assing it wil lalso be saved in a varible called <code>${task.cpus}</code>. Call this varible after the cpu allocation flag for each script that needs it to automatically assign the right number of cpus.</p>
+<p>Compare the timeline report before and after you added the resource requirements.</p>
+<p>Why is this important? No matter where you run your processes (locally or on a cluster), there will be resource limitations. By telling Nextflow the amount of resources each process requires, it can optimize resource utilization through parallelization.</p>
+</section>
+<section id="submitting-a-job-using-slurm" class="level2">
+<h2 class="anchored" data-anchor-id="submitting-a-job-using-slurm">Submitting a Job Using Slurm</h2>
+<p>Here’s an sbatch script you’ll need to modify slightly. Replace <code>{NAME}</code> with a name for your run (the specific name isn’t crucial). Then, indicate the expected duration of the run after the <code>-t</code> flag (in HH:MM:SS). Remember, the time specified here is for the entire pipeline, not individual processes. Also, replace <code>{PATH}</code> with where you’d like the stdout and stderr output to go. This will help you monitor the pipeline’s progress and catch any errors.</p>
+<p>This sbatch job will submit a separate sbatch job for each process.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -A C3SE2023-2-17 -p vera</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -J {NAME}</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -c 1</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -t 00:00:00</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --error={PATH}/job.%J.err </span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output={PATH}/job.%J.out </span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Unload unwanted packages and load Nextflow</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> purge</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load Nextflow/23.10.0</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add flags if relevant</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run main.nf <span class="at">-profile</span> <span class="st">'slurm'</span> <span class="at">-resume</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You save this script <code>{NAME}.sh</code>. To submit the job you enter <code>sbatch {NAME}.sh</code>. To monitor how the job is going you can either open the <code>{PATH}/job.%J.err</code> or <code>{PATH}/job.%J.out</code> files. If you want a list of all your submitted jobs use this comand <code>squeue -u {your_username}</code>. If you want to get inforamtion about a specific job use <code>squeue -j {job_id}</code>.</p>
+<p>For this job I want you to analyze all fastq files in the directory. When it has finished take a look at the time line report. Can you now see the value of using Nextflow to parallelize your processes?</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>homework_python_intro</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>seq_tech_tutorial_py</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7476,262 +7476,783 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c1ddc7e7-a8ad-4151-b8bf-5ceb48a6b1f2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=253f131b-18b9-403e-a546-8cb2a4f7b0c3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Homework-2:-Intro-to-Python-programming-for-data-analysis">Homework 2: Intro to Python programming for data analysis<a class="anchor-link" href="#Homework-2:-Intro-to-Python-programming-for-data-analysis">¶</a></h1><p>Last updated: 11.01.2024</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=976df629-0130-41a6-9b89-17238170f006">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Instructions">Instructions<a class="anchor-link" href="#Instructions">¶</a></h2><p>Create an Jupyter Notebook and write the Python code that solves the tasks below. Then add that Jupyter Notebook to your <strong>homework repo</strong> (make sure you actually <strong>push to GitHub</strong>). Try to work on the server. That's where the data files are located.</p>
-<p>To <strong>pass the homework</strong> you need <strong>5 points</strong>. The tasks are meant to be rather independent (and a few have subtasks).</p>
-<p><strong>To get full points</strong>, please:</p>
-<ol>
-<li><p><strong><code>[1 pt]</code></strong> Describe what the code is doing. Even if you find solutions online, it's important that you understand what's going on.</p>
-</li>
-<li><p><strong><code>[1 pt]</code></strong> <strong>Make sure your notebook can be run from top to bottom</strong> (i.e. is reproducible). To check, restart the Python 3 kernel to get a fresh session and re-run all cells (in Jupyter Lab: "Kernel" → "Restart Kernel and Run All Cells..."). This is <strong>crucial</strong> because as you work, various variables will accumulate in the session and this can "sabotage" your code.</p>
-</li>
-</ol>
-<p><strong>Bonus point</strong>: Write code that is understandable! I won't mind not choosing the best possible names for variables but try to inform the reader what's going on by naming things in a clear way. So use something like <code>reference_genome_df</code> rather than simply <code>df</code> or <code>x</code>. This is also a service to future you!</p>
-<h2 id="Advice">Advice<a class="anchor-link" href="#Advice">¶</a></h2><ul>
-<li>Remember to always inspect both the input data, as well as intermediate results</li>
-<li>We try to point to relevant sources of information, but using the Internet and biological databases is a skill in itself, so if the contents of certain biological files are confusing, try to find information about the formats. Most databases have these described somewhere.</li>
+<h1 id="BBT045:-Sequencing-Technologies-Tutorial">BBT045: Sequencing Technologies Tutorial<a class="anchor-link" href="#BBT045:-Sequencing-Technologies-Tutorial">¶</a></h1><p>Author: Vi Varga (Adapted from Filip Buric (adapted from Rui Pereira))</p>
+<p>Last updated: 11.01.2024</p>
+<h2 id="Tutorial-Overview">Tutorial Overview<a class="anchor-link" href="#Tutorial-Overview">¶</a></h2><ul>
+<li>Working with Jupyter Notebooks to construct reproducible procedures</li>
+<li>Running sequence processing software from the command line</li>
+<li>Running sequence processing software from wrapper Python modules</li>
+<li>Inspecting different output formats</li>
 </ul>
-<p>Before you begin, a preliminary module loading section is provided below. These are all necessary to run the example codes provided to you throughout this homework. However, you are more than welcome to use other modules to solve the tasks, if you wish.</p>
-<p>If you would like to download this notebook, you can do so <a href="homework_python_intro.ipynb">here</a>.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=efda1163-ef08-4b13-958d-7642b6555325">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># load modules</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># enables manipulation of dataframes in Python</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span> <span class="c1"># enables manipulation of sequence files</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">GC</span> <span class="c1"># calculate GC content with Biopython</span>
+<h2 id="Initial-setup:-Work-environment-and-Data">Initial setup: Work environment and Data<a class="anchor-link" href="#Initial-setup:-Work-environment-and-Data">¶</a></h2><p>The starter notebook contains instructions for setting up your <code>conda</code> environment. Please follow these instructions, then continue using the notebook to write the commands used here and take notes for the exercises. You can also download a copy from <a href="seq_tech_tutorial_py.ipynb">here</a> for your own computer.</p>
+<p>The notebook will serve as both a rudimentary pipeline and final (reproducible) report.</p>
+<p><img alt="Notebook usage example" src="./img/notebook_usage.drawio.png"/></p>
+<p>If you have not done so already, you need to first install <code>conda</code>. See instructions <a href="../unix/conda_install.html">here</a></p>
+<h2 id="Directory-and-data-setup">Directory and data setup<a class="anchor-link" href="#Directory-and-data-setup">¶</a></h2><p>We will be working in Jupyter Lab and primarely writing the commands in this Jupyter Notebook. However, the first commands in this section are easier if you run from the terminal. (Note that depending on how you have things set up on your computer, you may have access to a Unix terminal within Jupyter Lab. Simply do: "File" → "New" → "Terminal" and a terminal will open in a new tab in Jupyter Lab.)</p>
+<p>Please create a directory for this tutorial in your home directory and inside there copy the starter notebook from my directory. To do this run the following commands in the terminal after logging on to the server:</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span>
+mkdir<span class="w"> </span>
+<span class="nb">cd</span><span class="w"> </span>NGS_Tutorial
+wget<span class="w"> </span>https://bengtssonpalme.github.io/MPBIO-BBT045-2024/seq_tech/seq_tech_tutorial_py.ipynb
+<span class="c1">###</span>
+<span class="c1"># optionally, if you want the images to show up properly</span>
+cp<span class="w"> </span>-r<span class="w"> </span>/cephyr/NOBACKUP/groups/bbt045_2024/data/img/<span class="w"> </span>.
 </pre></div>
+<p>Now fetch a copy of the data we will be using:</p>
+<div class="highlight"><pre><span></span>cp<span class="w"> </span>/cephyr/NOBACKUP/groups/bbt045_2024/data/data.zip<span class="w"> </span>.
+<span class="c1"># and now decompress the .zip file</span>
+unzip<span class="w"> </span>data.zip
+<span class="c1"># and clean up</span>
+rm<span class="w"> </span>-r<span class="w"> </span>__MACOSX/
+<span class="c1"># this directory is an artifact of the .zip file creation process</span>
+<span class="c1"># it's unnecessary, so it can be deleted</span>
+</pre></div>
+<p>To nicely see the contents of (small) directories, you can use the <code>tree</code> program, but you may need to install it first (<code>conda install tree</code>)</p>
+<div class="highlight"><pre><span></span>tree<span class="w"> </span>data
+</pre></div>
+<p>You can also run <code>ls *</code> (which works on any system).</p>
+<p>To make sure this data is protected from accidental writes, remove the write permission (<code>-w</code>) for anyone on the server (<code>ugo</code>) on it by running:</p>
+<div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-print0<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-0<span class="w"> </span>chmod<span class="w"> </span>ugo-w
+</pre></div>
+<p>Then create a results directory:</p>
+<div class="highlight"><pre><span></span>mkdir<span class="w"> </span>results
+</pre></div>
+<h2 id="Work-environment">Work environment<a class="anchor-link" href="#Work-environment">¶</a></h2><h3 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h3><p>It's standard practice to create a new <code>conda</code> environment for each project. This is because each project may require a number of different software packages, with certain versions. Even if these requirements are very similar between the projects, even small differences may topple the house of cards that is the software ecosystem. This is officially referred to as <a href="https://en.wikipedia.org/wiki/Dependency_hell">"dependency hell"</a> and can cause you <em>more than a little</em> frustration (to put it <em>mildly</em>).</p>
+<p><code>Conda</code> can fetch packages from many different sources (aka "channels"). Let's add the Bioconda channel, as well as the general-purpose conda-forge channel ("defaults" is given first to give it top priority when searching for packages).</p>
+<p>Ignore any errors about " Inappropriate ioctl for device" and "no job control in this shell". They're a harmless consequence of this.</p>
+<p>Add the channels by running the following in your Unix terminal (not in your Jupyter Notebook):</p>
+<div class="highlight"><pre><span></span><span class="c1"># adding conda channels</span>
+conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>defaults
+conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>bioconda
+conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>conda-forge
+</pre></div>
+<h3 id="Setting-up-our-environment">Setting up our environment<a class="anchor-link" href="#Setting-up-our-environment">¶</a></h3><p>Create and activate a new environment for this exercise.</p>
+<p>The <code>conda create</code> command creates new environments, the option <code>--name</code> (or <code>-n</code>) specifies the name of your new environment and the option <code>-y</code> lets <code>conda</code> know that you answer "yes" to all prompts. Without <code>-y</code> you will have to manually type in "yes" or "y" when prompted.</p>
+<p>The command <code>conda activate</code> activates the environment within the current code chunk <strong>and only the current code chunk</strong>. Which means that within every code chunk that we want to use our environment we need to first run <code>conda activate &lt;environment_name&gt;</code>.</p>
+<p>Create and activate the <code>conda</code> environment used for this exercise by running the following in your Unix terminal (not in your Jupyter Notebook):</p>
+<div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>sequencing<span class="w"> </span>-y
+<span class="c1"># you can activate the environment by running: </span>
+conda<span class="w"> </span>activate<span class="w"> </span>sequencing
+</pre></div>
+<h3 id="Installing-relevant-software">Installing relevant software<a class="anchor-link" href="#Installing-relevant-software">¶</a></h3><p>Now install the software needed for this exercise. We want to install the software on to our new environment so we first activate the environment with <code>conda activate</code>. The command <code>conda install</code> will install the packages that you specify to it. You can specify multiple packages at a time by separating them with spaces. This step will also ask for confirmation if we do not specify the <code>-y</code> option.</p>
+<p>Later on/in real life, it's good to to examine what changes are made when installing new packages. You can easily view all the packages installed in an environment by running <code>conda list</code> once the environment is activated.</p>
+<p><strong>Make sure you activated the <code>sequencing</code> environment!</strong></p>
+<p>Once again, run the following lines of code from your Unix terminal:</p>
+<div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>sequencing
+<span class="c1"># conda install gsl==2.5 samtools bowtie2 breseq abyss bcftools wgsim emboss tree ncurses -y</span>
+<span class="c1"># you can often install all packages in a conda environment as shown above</span>
+<span class="c1"># however in this case, it's actually quicker to run multiple commands: </span>
+conda<span class="w"> </span>install<span class="w"> </span><span class="nv">gsl</span><span class="o">==</span><span class="m">2</span>.5
+<span class="c1"># this is necessary to prevent a dependency issue with bcftools</span>
+<span class="c1"># ref: https://www.biostars.org/p/9480029/#9573995</span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>samtools
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>bowtie2<span class="w"> </span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>breseq<span class="w"> </span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>abyss<span class="w"> </span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>bcftools<span class="w"> </span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>wgsim<span class="w"> </span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>emboss<span class="w"> </span>
+conda<span class="w"> </span>install<span class="w"> </span>tree
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>ncurses
+<span class="c1"># otherwise ncurses may install without a version number, which will cause samtools to raise an error</span>
+<span class="c1"># ref: https://stackoverflow.com/questions/72103046/libtinfo-so-6-no-version-information-available-message-using-conda-environment</span>
+<span class="c1"># and install a few python libraries</span>
+conda<span class="w"> </span>install<span class="w"> </span>pandas<span class="w"> </span>seaborn
+</pre></div>
+<p>Lets inspect the packages that we just installed.</p>
+<div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>sequencing
+conda<span class="w"> </span>list
+</pre></div>
+<h3 id="Running-conda-in-Jupyter-Notebooks">Running <code>conda</code> in Jupyter Notebooks<a class="anchor-link" href="#Running-conda-in-Jupyter-Notebooks">¶</a></h3><p>Because Jupyter is packaged within an Anaconda installation, you should be able to run <code>conda</code> commands directly from this Jupyter Notebook with just a little modification. Simply install the IPython kernel in any environment you wish to use in Jupyter Notebooks, <strong>and</strong> the <code>nb_conda_kernels</code> program in your <code>base</code> <code>conda</code> environment. Do this now in your Unix terminal, where you have the <code>sequencing</code> environment activated.</p>
+<p><strong>PLEASE NOTE!!!</strong> Enable the creation of a kernel only <em>after</em> you have installed all of the programs you intend to install in your environment! Starting with the <code>ipykernel</code> installation can raise errors that will prevent you from installing the programs you are actually going to use in your environment!</p>
+<div class="highlight"><pre><span></span><span class="c1"># do this inside of your working conda environment, not in the base environment</span>
+conda<span class="w"> </span>install<span class="w"> </span>ipykernel
+</pre></div>
+<p>Now create a kernel for the <code>conda</code> environment, by running the following in that same Unix terminal:</p>
+<div class="highlight"><pre><span></span><span class="c1"># you can run this from the base conda environment</span>
+python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="o">=</span>sequencing
+<span class="c1"># this should return soemthing like: </span>
+<span class="c1"># Installed kernelspec sequencing in /home/vivarga/.local/share/jupyter/kernels/sequencing</span>
+</pre></div>
+<p>For more information, check out <a href="https://saturncloud.io/blog/how-to-use-conda-environment-in-a-jupyter-notebook/">this website</a>.</p>
+<p>Once you have installed the above in your environment, you also need to install the <code>nb_conda_kernels</code> program in your <code>base</code> <code>conda</code> environment:</p>
+<div class="highlight"><pre><span></span><span class="c1"># in base conda environment</span>
+conda<span class="w"> </span>install<span class="w"> </span>conda-forge::nb_conda_kernels
+<span class="c1"># ref: https://stackoverflow.com/questions/39604271/conda-environments-not-showing-up-in-jupyter-notebook/56409235#56409235</span>
+</pre></div>
+<p>You should now be able to activate the <code>sequencing</code> <code>conda</code> environment within this Jupyter Notebook, by selecting the <code>Python [conda env:sequencing]</code> kernel within Jupyter Lab. Since you will be working within a kernel made from your <code>conda</code> environment, there will be no need to run <code>conda activate sequencing</code> in any of the cells in this Notebook. (There should also be a <code>sequencing</code> kernel, but you likely won't be able to run programs installed in the environment using this kernel.) This can be done either from the kernel display at the top right side of the Jupyter Lab screen, or via "Kernel" → "Change Kernel..." → select the kernel of choice</p>
+<p><img alt="Two options for changing the kernel" src="./img/select_kernel.png"/></p>
+<p><img alt="Kernel selection popup" src="./img/select_kernel_dropdown.png"/></p>
+<p>If this doesn't work, please ask for help so we make sure we all start from the same place.</p>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fbd76f64-b534-4704-b6a2-922dd347d2d6">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ebd47267-c5d9-486b-b160-acb70726b092">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Task-1:-How-many-genes-are-on-yeast-S288C-chromosome-II?-%5B1-pt%5D">Task 1: How many genes are on yeast S288C chromosome II? [1 pt]<a class="anchor-link" href="#Task-1:-How-many-genes-are-on-yeast-S288C-chromosome-II?-%5B1-pt%5D">¶</a></h2><p>Let's redo task 1 in homework 1 using Python.</p>
-<p>Read in your version of the file <code>saccharomyces_cerevisiae_R64-4-1_20230830.gff</code> that you downloaded for the first homework as a table (hint: use the <code>pd.read_csv()</code> function). Note that <em>the first column is the chromosome</em>, not the sequence ID as in other GFF files.</p>
-<p>Count the number of genes on chromosome II using dataframe filtering and manipulation functions like you've seen in the tutorial. Please have your code produce a numerical result.</p>
-<p>If you need help, try taking a look at the <a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">Pandas cheat sheet</a> or searching for answers on StackOverflow (or other coding help sites). Being able to combine key search terms in a search engine in order to find the information you're looking for is a very important skill to have.</p>
-<h2 id="Task-2:-Compute-average-gene-length-by-chromosome-in-the-S288C-yeast-strain--%5B1-pts%5D">Task 2: Compute average gene length by chromosome in the S288C yeast strain  [1 pts]<a class="anchor-link" href="#Task-2:-Compute-average-gene-length-by-chromosome-in-the-S288C-yeast-strain--%5B1-pts%5D">¶</a></h2><p>Using the same dataframe you used in the Task 1, calculate the average gene length <strong>per chromosome</strong>. Remember to inspect your data, to see what you're working with. Please use the Pandas dataframe manipulation methods we've covered in the tutorial, as much as you can.</p>
-<h2 id="Task-3:-Extract-gene-IDs-from-the-S288C-yeast-GFF-file-and-look-for-some-genes-%5B2-pts%5D">Task 3: Extract gene IDs from the S288C yeast GFF file and look for some genes [2 pts]<a class="anchor-link" href="#Task-3:-Extract-gene-IDs-from-the-S288C-yeast-GFF-file-and-look-for-some-genes-%5B2-pts%5D">¶</a></h2><p>Using the S288C GFF file again, you may have noticed the attributes column contains a lot of information, some of which is quite important, like the gene ID.</p>
-<p>Here's a function that extracts the gene ID from that column:</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=807b842e-5c1f-4e2e-9af6-75525af965b7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">extract_gene_id_from_attributes_s288c</span><span class="p">(</span><span class="n">df_name</span><span class="p">):</span> 
-    <span class="c1"># this function requires the argument of the GFF dataframe name be given to it</span>
-    <span class="c1"># it retrieves the IDs in a Pandas series from the attributes column of the GFF file</span>
-    <span class="c1"># first save the dataframe to a temporary version to work with</span>
-    <span class="n">tmp_df</span> <span class="o">=</span> <span class="n">df_name</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="c1"># split the contents of the attributes column into a list using the semicolons as delimiters</span>
-    <span class="n">tmp_series</span> <span class="o">=</span> <span class="n">tmp_df</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
-    <span class="c1"># overwrite the contents of the attributes column into lists instead of strings </span>
-    <span class="n">tmp_df</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_series</span>
-    <span class="c1"># extract the first element of each list into a new series</span>
-    <span class="n">tmp_series</span> <span class="o">=</span> <span class="n">tmp_df</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="c1"># split that item into a new list and save only the second element to the series</span>
-    <span class="n">tmp_series</span> <span class="o">=</span> <span class="n">tmp_series</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="c1"># the series containing the gene IDs will be returned</span>
-    <span class="k">return</span> <span class="n">tmp_series</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=63801707-a2da-48e9-b075-2965bfc5499f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>a. Using the table manipulation functions, create a new column <code>gene_id</code> in the GFF table. You should find clues for how to do this in the last exercise of the tutorial. [1 pt]</p>
-<p>b. Write code (using the table manipulation functions) that 1) checks whether the following gene IDs are present in the table and 2) only prints the chromosomes on which these are found. [1 pt]</p>
+<h2 id="Exercise-1:-Alignment">Exercise 1: Alignment<a class="anchor-link" href="#Exercise-1:-Alignment">¶</a></h2><p>We'll be aligning sequencing data against the reference genome of a Varicella virus.</p>
+<p><img alt="" src="img/align_to_ref.png"/></p>
+<p>This mainly involves using <code>bowtie2</code> to align short-read sequencing data to the reference genome and <code>samtools</code> to post-process and visualize the result:</p>
+<p>Raw data files:</p>
 <ul>
-<li>Hint: For 1), check out the <code>isin()</code> function though it's not the only way.</li>
-<li>(Obs: only 0.5 points if you have a separate copy of the code for each gene ID :) )</li>
+<li>Varicella reference genome: <code>data/ref/varicella.gb</code></li>
+<li>Sequencing files: <code>data/seq/varicella1.fastq</code>, <code>data/seq/varicella2.fastq</code></li>
 </ul>
-<pre><code>YJR117W
-YKL156C-A
-YOL110W
-YJR104C
-YJL111W
-YXYZZY
-YNOPE
-</code></pre>
-<h2 id="Task-4:-Find-top-5-longest-genes-in-the-S288C-yeast--%5B1-pt%5D">Task 4: Find top 5 longest genes in the S288C yeast  [1 pt]<a class="anchor-link" href="#Task-4:-Find-top-5-longest-genes-in-the-S288C-yeast--%5B1-pt%5D">¶</a></h2><p>Compute gene lengths as before, but this time simply get the highest 5 values. There are several ways to do this using the basic table manipulation functions you've seen in the tutorial. If you're having trouble with those, maybe there's something else you could use from the <a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">Pandas cheat sheet</a> or searching for answers on StackOverflow.</p>
-<h2 id="Task-5:-Calculations-per-gene-in-the-Y55-strain-%5B2-pts%5D">Task 5: Calculations per gene in the Y55 strain [2 pts]<a class="anchor-link" href="#Task-5:-Calculations-per-gene-in-the-Y55-strain-%5B2-pts%5D">¶</a></h2><p>The yeast Y55 strain FASTA: <code>Y55_JRIF00000000_SGD_cds.fsa</code> should also already be downloaded in HW1 so you can just copy it to the directory for HW2. If you are doing these exercises out of order, note that the file can be obtained from here: <a href="http://sgd-archive.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/archive/Y55_JRIF00000000_SGD_cds.fsa.gz">http://sgd-archive.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/archive/Y55_JRIF00000000_SGD_cds.fsa.gz</a>.</p>
-<p>As a demo of Biopython, let's compute the GC content per gene. To do this you first need to load in the <code>.fsa</code> file with the Biopython's <code>SeqIO</code> module. Write that small bit of code to load the <code>.fsa</code> file, since you'll need it, plus the code below to solve this task.</p>
-<p>To compute the GC contents you can use a function called <code>GC()</code> from the Biopython <code>SeqUtils</code> module, which you can load like so: <code>from Bio.SeqUtils import GC</code></p>
-<p>You can run the command directly on any given <code>sequence</code> in a FASTA file like so:</p>
-<div class="highlight"><pre><span></span><span class="n">gc_content</span> <span class="o">=</span> <span class="n">GC</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+<p>You can run the commands in the terminal directly to test them out, but they should be included (in order) in the Jupyter Notebook, so copy the code chunks and run the chunk from the notebook. The next code block demonstrates how to run bash commands from a Jupyter Notebook.</p>
+<h2 id="Protocol">Protocol<a class="anchor-link" href="#Protocol">¶</a></h2><h3 id="Step-1:-Init">Step 1: Init<a class="anchor-link" href="#Step-1:-Init">¶</a></h3><p>Create a separate results directory, using either the command line, or your Jupyter Notebook. In your <code>bash</code> terminal, you can run:</p>
+<div class="highlight"><pre><span></span>mkdir<span class="w"> </span>results/exercise1
 </pre></div>
-<p>You can use <code>SeqIO</code> in combination with the code snippet above to calculate the GC content for each gene, by running the code in a <code>for</code> loop, as shown below:</p>
+<p>Alternately, you can run the folloing directly from your Jupyter Notebook. (Note the "! " at the start of the line; this tells Jupyter to execute the commands on that line on the command line, rather than in Python.)</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f55f0720-bc26-4110-9da1-7bee4d209a23">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=58c5630a-d589-4387-9d4a-9cba06d4c2b7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">script</span> false --no-raise-error
-
-# solving the GC content
-# ref: https://github.com/vappiah/Python-Bioinformatics-Hacks/blob/main/Notebooks/GC_content.ipynb
-# ref: https://biopython.org/wiki/SeqIO
-# ref: https://bioinformatics.stackexchange.com/questions/307/changing-the-record-id-in-a-fasta-file-using-biopython
-
-input_fasta = "Y55_JRIF00000000_SGD_cds.fsa"
-
-# as before, let's use a counter to prevent printing all items
-counter = 0
-
-for record in SeqIO.parse(input_fasta, "fasta"):
-    # use SeqIO to open the FASTA file
-    if counter &lt;=10: 
-    # print onlyfirst few entries
-        seq_gc_content = GC(record.seq)
-        # print the results
-        print("For sequence " + record.description + ", the GC content is " + str(round(seq_gc_content, 3)) + ".")
-        # now increase the counter value by 1
-        counter += 1
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># run bash commands from Jupyter Notebook with an ! at the start of the line</span>
+<span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise1
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a9610ab9-4e50-46da-a24b-247f475fd360">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d4ad1a8d-345c-4cb5-8cef-78b1ecc384e4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>But what happens if we want to compute something else not supported by Biopython? In that case, the simplest solution may be to convert the FASTA file's contents into a Pandas dataframe.</p>
-<p>So let's convert it to a dataframe instead using the <code>DataFrame()</code> function, setting the columns as <code>gene_info</code> and <code>sequence</code>:</p>
+<h3 id="Step-2:-Preprocess">Step 2: Preprocess<a class="anchor-link" href="#Step-2:-Preprocess">¶</a></h3><p><code>bowtie2</code> requires an index file for the reference sequence. This index can only be constructed from a FASTA file but it's common practice to find reference genomes in GenBank (GFF3) format.</p>
+<p>Convert <code>varicella.gb</code> to FASTA using the <a href="http://emboss.sourceforge.net/apps/cvs/emboss/apps/seqret.html">seqret</a> converter from the EMBOSS package, then build the bowtie index accordingly.</p>
+<blockquote>
+<p>(Computation time: seconds)</p>
+</blockquote>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b7ce81d7-9552-4284-a710-ecad8fc5c653">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0a7c39f9-26b8-4209-aedf-7a876689199a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">script</span> false --no-raise-error
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Convert GFF3 &gt; FASTA</span>
+<span class="o">!</span><span class="w"> </span>seqret<span class="w"> </span>-sequence<span class="w"> </span>data/ref/varicella.gb<span class="w"> </span>-feature<span class="w"> </span>-fformat<span class="w"> </span>gff3<span class="w"> </span>-osformat<span class="w"> </span>fasta<span class="w"> </span>data/ref/varicella.fasta
 
-# create a Pandas dataframe from the FASTA file
-# ref: https://stackoverflow.com/questions/19436789/biopython-seqio-to-pandas-dataframe
-# ref: https://stackoverflow.com/questions/69696077/i-want-to-parse-sequences-and-sequence-ids-from-a-fasta-file-and-assign-them-to
+<span class="c1"># This file is outptut by seqret in the current directory (because bad design)</span>
+<span class="c1"># So we move it where it belongs</span>
+<span class="o">!</span><span class="w"> </span>mv<span class="w"> </span>varicella.gff<span class="w"> </span>data/ref/
 
-# create two empty lists for the sequence IDs and sequences
-id_list = []
-sequence_list = []
+<span class="c1"># Document how the FASTA file was created</span>
+<span class="o">!</span><span class="w"> </span>touch<span class="w"> </span>data/ref/README.txt
+<span class="o">!</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"vaircella.fasta converted from GFF as:"</span><span class="w"> </span>&gt;<span class="w"> </span>data/ref/README.txt
+<span class="o">!</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"seqret -sequence data/ref/varicella.gb -feature -fformat gff3 -osformat fasta data/ref/varicella.fasta"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>data/ref/README.txt
 
-with open(input_fasta) as fasta_file: 
-    # open the file
-    for seq_record in SeqIO.parse(fasta_file, 'fasta'):
-        # parse the contents of the FASTA file
-        # and append the relevant information to the lists
-        id_list.append(seq_record.description)
-        sequence_list.append(str(seq_record.seq))
-
-# generate a new Pandas dataframe from the two lists
-# ref: https://www.geeksforgeeks.org/create-a-pandas-dataframe-from-lists/
-genes_y55_df = pd.DataFrame(list(zip(id_list, sequence_list)), columns = ['gene_info', 'sequence'])
-genes_y55_df
+<span class="c1"># Save index files in own directory</span>
+<span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise1/bowtie_index
+<span class="c1"># Build the bowtie2 index</span>
+<span class="o">!</span><span class="w"> </span>bowtie2-build<span class="w"> </span>-f<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>results/exercise1/bowtie_index/varicella
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4bb90145-c184-44df-8415-c1fd1bae77ed">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=215d99e2-9724-45ff-9a76-efa182690c62">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Here's a function to extract the gene ID from the <code>gene_info</code> fields:</p>
+<h3 id="Step-3:-Align-sequences-to-reference">Step 3: Align sequences to reference<a class="anchor-link" href="#Step-3:-Align-sequences-to-reference">¶</a></h3><p>Align the sequencing data to the reference genome using <code>bowtie2</code>. This will create the file <code>varicella.sam</code>. The <code>\</code> symbol simply breaks the command across multiple lines for readability.</p>
+<blockquote>
+<p>(Computation time: 1 min)</p>
+</blockquote>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3d403d6c-8dfd-4f10-9ff4-b25afb16884b">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9df37733-9e02-4b08-91ba-fdaecf823db6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># function to extract the gene IDs from the gene_info columns</span>
-
-<span class="k">def</span> <span class="nf">extract_gene_id_from_names_y55</span><span class="p">(</span><span class="n">gene_info_col</span><span class="p">):</span>
-    <span class="c1"># define the function name &amp; set internal argument</span>
-    <span class="k">return</span> <span class="n">gene_info_col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
-    <span class="c1"># split the string into a list using pipes ("|") as the delimiters</span>
-    <span class="c1"># then take the 4th element in the list (Pythonic index 3)</span>
-    <span class="c1"># return that value to outside of the function</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise1/alignment
+<span class="o">!</span><span class="w"> </span>bowtie2<span class="w"> </span>-x<span class="w"> </span>results/exercise1/bowtie_index/varicella<span class="w"> </span>-1<span class="w"> </span>data/seq/varicella1.fastq<span class="w"> </span>-2<span class="w"> </span>data/seq/varicella2.fastq<span class="w"> </span>-S<span class="w"> </span>results/exercise1/alignment/varicella.sam
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c4bff071-98c9-49cb-a6f9-506fbd19758c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=891da8b2-8817-4cb6-911e-a32b4c9a5b3c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>a. Use the function to add a <code>gene_id</code> column. Think about how you might <code>apply</code> a function to a dataframe. (Note that the code here should look different from the code you used to generate the <code>gene_id</code> column in Task 3.) [1 pt] Hint for cleaning up: you can delete a column from a Pandas dataframe by dropping it: <code>pd.DataFrame.drop</code></p>
-<p>b. Rare codons are biologically significant (here's an <a href="https://www.nature.com/articles/srep20608">example</a>, if you're curious). In yeast, the rarest codon (besides stop codons) is <code>CGG</code> (mRNA) [<a href="https://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=4932">source</a>]. So, using dataframe manipulation functions on the resulting dataframe from a., create a column to count the occurrence of <code>GCC</code> (DNA) per gene.</p>
-<h2 id="Task-6:-Search-for-a-motif-in-all-genes-%5B1-pt%5D">Task 6: Search for a motif in all genes [1 pt]<a class="anchor-link" href="#Task-6:-Search-for-a-motif-in-all-genes-%5B1-pt%5D">¶</a></h2><p>Filter the S288C_reference_sequence_R64-4-1_20230830.fsa file (which, if you haven't already, you can download from here: <a href="https://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz">https://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz</a>) for those genes that contain the sequence motif "CCACACCACACCCAC".</p>
-<p>Then convert the hits into a new dataframe (hint: Python &amp; Pandas often don't like operations on variables that are copies of each other, so consider using the <code>.copy()</code> function).</p>
-<p>Which chromosome has the most hits? (Hint: try adapting the code above to create a new list to add to the Pandas dataframe, which contains information on the chromosome IDs of each FASTA record.)</p>
-<p>Write the code solution using dataframe manipulation functions. Your code should produce only the chromosome number with the highest motif count (i.e. not just printing the table of all chromosomes). Remember that the column "group" means "chromosome" since the input FASTA file simply has full chromosomes as entries, not individual genes ("group_name" is irrelevant here).</p>
+<h3 id="Step-4:-Convert-alignment-to-binary-format">Step 4: Convert alignment to binary format<a class="anchor-link" href="#Step-4:-Convert-alignment-to-binary-format">¶</a></h3><p>To make reading the alignment info easier for the computer,
+convert the sequence alignment map (SAM) file to binary alignment map (BAM)
+using the <code>samtools</code> <code>view</code> command:</p>
+<blockquote>
+<p>(Computation time: seconds)</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b41c25ea-37a4-4955-9727-52fed2aa2388">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>view<span class="w"> </span>-b<span class="w"> </span>-S<span class="w"> </span>-o<span class="w"> </span>results/exercise1/alignment/varicella.bam<span class="w"> </span>results/exercise1/alignment/varicella.sam
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c347a1cc-7bbf-45bf-abc9-605eec2fd895">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-5:-Optimize-alignment-(pt-1)">Step 5: Optimize alignment (pt 1)<a class="anchor-link" href="#Step-5:-Optimize-alignment-(pt-1)">¶</a></h3><p>To optimize the lookup in the alignment map,
+sort the BAM file using <code>samtools sort</code> command.
+This will create the file <code>varicella.sorted.bam</code></p>
+<blockquote>
+<p>(Computation time: seconds)</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8aa7edb9-3425-4812-bcab-e4b8ca4adea5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>sort<span class="w"> </span>results/exercise1/alignment/varicella.bam<span class="w"> </span>-o<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=90aca9fd-06e5-4605-ba8b-de4db82faf8c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-6:-Optimize-alignment-(pt-2)">Step 6: Optimize alignment (pt 2)<a class="anchor-link" href="#Step-6:-Optimize-alignment-(pt-2)">¶</a></h3><p>To speed up reading the BAM file even more,
+index the sorted BAM file using <code>samtools</code> <code>index</code> command:</p>
+<blockquote>
+<p>(Computation time: seconds)</p>
+</blockquote>
+<p>This will create a BAI file called <code>results/exercise1/alignment/varicella.sorted.bam.bai</code></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=731b609a-0155-4556-9712-fb895a2faa8a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>index<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c9220abf-32e5-4ab1-9918-586aee62d9f1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-7:-Calculate-alignment-coverage">Step 7: Calculate alignment coverage<a class="anchor-link" href="#Step-7:-Calculate-alignment-coverage">¶</a></h3><p>Calculate the average coverage of the alignment using the <code>samtools depth</code> command and the Unix <code>awk</code> text processor to extract the values of interest:</p>
+<blockquote>
+<p>(Computation time: 1s)</p>
+</blockquote>
+<p>Output should be:</p>
+<p>Answer:</p>
+<font color="white">
+`average =  199.775`
+</font>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cd7808b3-a7fa-46b3-b997-7d8acc4aa9d8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>depth<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'{sum+=$3} END {print "Average = ", sum/124884}'</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a2195a88-9b14-43e9-bcac-acf88241ef15">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Question">Question<a class="anchor-link" href="#Question">¶</a></h2><p>Use the <code>samtools depth</code> command to extract coverage info and create a coverage map of the genome (position vs. coverage). Read the help for the tool with <code>samtools help depth</code>. The output format is described at the end of the help.</p>
+<p>Answer:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4eb80458-b35d-4a37-a8b9-2eedecc024dc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>depth<span class="w"> </span>results/exercise1/alignment/varicella.sorted.bam<span class="w"> </span>&gt;<span class="w"> </span>results/exercise1/alignment/coverage.tsv
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7d873bc5-25db-477b-95c7-ffc1c6c8a192">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Plot the result with Python:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d739cb0a-5d76-4281-98c1-cdf041f2de2b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># load necessary modules</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">warnings</span> <span class="c1"># module to manage warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span> <span class="c1"># prevent Python from warning of future feature deprecation</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=378a1058-55e0-42f6-b0e6-2c2192507997">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># import data into Pandas dataframe</span>
+<span class="n">alignment_coverage_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'results/exercise1/alignment/coverage.tsv'</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"reference_name"</span><span class="p">,</span> <span class="s2">"position"</span><span class="p">,</span> <span class="s2">"coverage_depth"</span><span class="p">])</span>
+
+
+<span class="c1"># create histogram of data</span>
+<span class="n">alignment_coverage_plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">alignment_coverage_df</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">"coverage_depth"</span><span class="p">)</span>
+<span class="c1"># next add labels to the axes &amp; a title</span>
+<span class="n">alignment_coverage_plot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Alignment Coverage'</span><span class="p">)</span>
+<span class="n">alignment_coverage_plot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Counts'</span><span class="p">)</span>
+<span class="n">alignment_coverage_plot</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Alignment coverage depth'</span><span class="p">)</span>
+
+<span class="c1"># visualize the plot</span>
+<span class="n">alignment_coverage_plot</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cfecefac-d0da-428d-a59e-32b6e7a0c5a0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Exercise-2:-Finding-Mutations-with-SAMtools">Exercise 2: Finding Mutations with SAMtools<a class="anchor-link" href="#Exercise-2:-Finding-Mutations-with-SAMtools">¶</a></h2><p>We now look at a second set of sequencing data, with mutations (<code>data/seq/varicella_mut1.fastq</code> and <code>data/seq/varicella_mut1.fastq</code>)</p>
+<p><img alt="" src="img/align_mut_to_ref.png"/></p>
+<p>We'll still be using <code>bowtie2</code> and <code>samtools</code> to perform these tasks, however we'll be doing structuring all the steps in to one script.</p>
+<p>This approach has the great advantage that we don't need to copy-paste all we did above just to change the name of the input files. That's cumbersome and <em>very</em> error-prone. Instead we just need to change the file name at one location.</p>
+<h2 id="Protocol">Protocol<a class="anchor-link" href="#Protocol">¶</a></h2><h3 id="Step-1:-Align-sequences-to-reference">Step 1: Align sequences to reference<a class="anchor-link" href="#Step-1:-Align-sequences-to-reference">¶</a></h3><p>Create a sorted and indexed BAM file using the code below, which encapsulates steps 2-6 from Exercise 1 (except for the GFF &gt; FASTA conversion).</p>
+<p>Tip: Run <code>ls -l data/*</code> or <code>tree data</code> if you forget what files you're working on.</p>
+<p>The workflow will also create <code>results/exercise2</code> for you.</p>
+<blockquote>
+<p>(Computation time: 5 minutes)</p>
+</blockquote>
+<p>Note that here I've used <code>%%bash</code> at the start of the cell; this is part of IPython's "cell magics". When you start a code cell with <code>%%</code>, you can transform the entire cell into a different language, rather than only transforming a single line. So for example, you could do <code>%%R</code> to transform a regular Jupyter Notebook code cell (which runs Python by default) into an R code cell.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6f2f3a6c-2bd0-424f-9067-481f4843ce03">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>%%bash
+
+<span class="nv">DATA_DIR</span><span class="o">=</span>data/seq
+<span class="nv">RESULT_DIR</span><span class="o">=</span>results/exercise2
+
+<span class="nv">REFERENCE_GENOME</span><span class="o">=</span>data/ref/varicella.fasta
+<span class="nv">READS_1</span><span class="o">=</span><span class="nv">$DATA_DIR</span>/varicella_mut1.fastq
+<span class="nv">READS_2</span><span class="o">=</span><span class="nv">$DATA_DIR</span>/varicella_mut2.fastq
+
+
+<span class="nv">BOWTIE_INDEX_DIR</span><span class="o">=</span><span class="nv">$RESULT_DIR</span>/bowtie_index
+<span class="nv">ALIGNMENT_DIR</span><span class="o">=</span><span class="nv">$RESULT_DIR</span>/alignment
+
+<span class="c1"># Make all directories</span>
+mkdir<span class="w"> </span><span class="nv">$RESULT_DIR</span>
+mkdir<span class="w"> </span><span class="nv">$BOWTIE_INDEX_DIR</span>
+mkdir<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>
+
+<span class="c1"># Build the bowtie2 index</span>
+bowtie2-build<span class="w"> </span>-f<span class="w"> </span><span class="nv">$REFERENCE_GENOME</span><span class="w"> </span><span class="nv">$BOWTIE_INDEX_DIR</span>/varicella
+
+
+bowtie2<span class="w"> </span>-x<span class="w"> </span><span class="nv">$BOWTIE_INDEX_DIR</span>/varicella<span class="w"> </span>-1<span class="w"> </span><span class="nv">$READS_1</span><span class="w"> </span>-2<span class="w"> </span><span class="nv">$READS_2</span><span class="w"> </span>-S<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>/varicella_mut.sam
+
+samtools<span class="w"> </span>view<span class="w"> </span>-b<span class="w"> </span>-S<span class="w"> </span>-o<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>/varicella_mut.bam<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>/varicella_mut.sam
+<span class="w">    </span>
+samtools<span class="w"> </span>sort<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>/varicella_mut.bam<span class="w"> </span>-o<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>/varicella_mut.sorted.bam
+<span class="w">    </span>
+samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$ALIGNMENT_DIR</span>/varicella_mut.sorted.bam
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=63c0fb10-1467-4b75-99f8-30c6fca89a65">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-2:-Identify-point-mutations">Step 2: Identify point mutations<a class="anchor-link" href="#Step-2:-Identify-point-mutations">¶</a></h3><p>Use the <code>samtools mpileup</code> command to identify genomic variants (aka single nucleotide variants, <a href="https://en.wikipedia.org/wiki/SNV_calling_from_NGS_data">SNVs</a>) in the alignment. This will create the file <code>varicella_variants.bcf</code></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4ad0dd32-fdc1-4627-ac3c-f7b8e0db33ae">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>bcftools<span class="w"> </span>mpileup<span class="w"> </span>-f<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>-O<span class="w"> </span>u<span class="w"> </span>&gt;<span class="w"> </span>results/exercise2/varicella_variants.bcf
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f398067f-606e-4142-87a0-becaff050f60">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-3:-Inspect-mutations-(pt-1)">Step 3: Inspect mutations (pt 1)<a class="anchor-link" href="#Step-3:-Inspect-mutations-(pt-1)">¶</a></h3><p>Use <code>bcftools call</code> command to convert the binary call format (BCF) to (human-readable) variant call format (<a href="https://en.wikipedia.org/wiki/Variant_Call_Format">VCF</a>). This will create the file <code>varicella_variants.vcf</code></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=897a3791-14d5-4f25-a8dc-a45744fbf312">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>bcftools<span class="w"> </span>call<span class="w"> </span>-c<span class="w"> </span>-v<span class="w"> </span>results/exercise2/varicella_variants.bcf<span class="w"> </span>&gt;<span class="w"> </span>results/exercise2/varicella_variants.vcf
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9345a519-33d0-41d7-a441-3944350b59c0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>If you wish to inspect it, run <code>less -S results/exercise2/varicella_variants.vcf</code>.</p>
+<p>The file contains quite a lot of information, which we'll use later on. See <a href="https://en.wikipedia.org/wiki/Variant_Call_Format">https://en.wikipedia.org/wiki/Variant_Call_Format</a> for more info.</p>
+<h3 id="Step-4:-Inspect-mutations-(pt-2)">Step 4: Inspect mutations (pt 2)<a class="anchor-link" href="#Step-4:-Inspect-mutations-(pt-2)">¶</a></h3><p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command.</p>
+<p>For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
+<p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
+<div class="highlight"><pre><span></span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6646aa16-bf23-4094-b3e3-c34fd9f8b8d4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Inspect the VCF file columns using the Unix command chain:</p>
+<div class="highlight"><pre><span></span><span class="c1"># note that this command is also interactive - run it in the terminal</span>
+grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">"^#"</span><span class="w">  </span>results/exercise2/varicella_variants.vcf<span class="w"> </span><span class="p">|</span><span class="w"> </span>column<span class="w"> </span>-t<span class="w"> </span><span class="p">|</span><span class="w"> </span>less<span class="w"> </span>-S
+</pre></div>
+<p>(Chain: Filter out header | align columns | show on screen)</p>
+<p>How can you interpret the <a href="https://en.wikipedia.org/wiki/Phred_quality_score">PHRED</a> score values in the last column? See <a href="https://gatkforums.broadinstitute.org/gatk/discussion/1268/how-should-i-interpret-vcf-files-produced-by-the-gatk">What is a VCF and how should I interpret it?</a> (Section 5)</p>
+<p>Are all mutations homozygous? Should you expect any heterozygous mutations in this case?</p>
+<h3 id="Q2">Q2<a class="anchor-link" href="#Q2">¶</a></h3><p>What assumption does <code>samtools mpileup</code> make about the model of genetic mutations? (Try running <code>bcftools mpileup</code> for help and scroll down.)</p>
+<p>Is this model appropriate for a virus?</p>
+<p>Answer:
+<font color="white">
+samtools mpileup assumes the data originates from a diploid organism
+and models mutations based on the existence of two similar copies of the same sequence.
+Since viruses only have one copy of the genome, this model is not correct and
+it is not possible for a single genomic position to have two different bases.
+</font></p>
+<h3 id="Q3">Q3<a class="anchor-link" href="#Q3">¶</a></h3><p>Use <code>samtools mpileup</code> to inspect the site 73233. What is the frequency of each base on this site?</p>
+<p>Run the command below and see <a href="https://en.wikipedia.org/wiki/Pileup_format">Pileup format</a></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ffeefaff-78aa-4dc2-88a2-f0909f1248f4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>samtools<span class="w"> </span>mpileup<span class="w"> </span>-r<span class="w"> </span>NC_001348:73233-73233<span class="w"> </span>-f<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0e987887-ac7b-46eb-91ac-602a1ba56e15">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Answer:</p>
+<p><font color="white"> 170 T, 1 A, 2 G </font></p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6c142317-6054-4bae-8329-59177fc31afc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Exercise-3:-Finding-Mutations-with-breseq">Exercise 3: Finding Mutations with breseq<a class="anchor-link" href="#Exercise-3:-Finding-Mutations-with-breseq">¶</a></h2><p>Using the <code>breseq</code> pipeline to compute the mutations present in the mutant strain in comparison to the reference sequence provided for the varicella virus.</p>
+<h2 id="Protocol">Protocol<a class="anchor-link" href="#Protocol">¶</a></h2><h3 id="Step-1:-Init">Step 1: Init<a class="anchor-link" href="#Step-1:-Init">¶</a></h3><p>Create the results directory for this exercise:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=07e5c2c8-897e-4cf8-8eb6-0ac75b53a76d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise3
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2f8eaf5f-26b2-4833-9b38-af653f9ddaa7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-2:-Run">Step 2: Run<a class="anchor-link" href="#Step-2:-Run">¶</a></h3><blockquote>
+<p>(Computation time: 5 minutes)</p>
+</blockquote>
+<p>Run <code>breseq</code></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3880ffda-de3f-4842-8c0a-74737737bfef">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>breseq<span class="w"> </span>-j<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span>results/exercise3<span class="w"> </span>-r<span class="w"> </span>data/ref/varicella.gb<span class="w"> </span>data/seq/varicella_mut*.fastq
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=624fddde-50ed-46ff-b572-896846ca6ef6">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>Open the <code>index.html</code> file in the <code>results/exercise3/output</code> folder. (Using the File tab in RStudio, navigate to the file, click on it, and choose "Open in browser") and compare the mutations detected, in comparison to exercise 2.</p>
+<p>Answer:</p>
+<font color="white">
+One mutation is missing in breseq
+</font>
+<h3 id="Q2">Q2<a class="anchor-link" href="#Q2">¶</a></h3><p>Use the <code>breseq bam2aln</code> command to investigate the missing mutations</p>
+<p>Answer:</p>
+<font color="white">
+`breseq bam2aln -f data/ref/varicella.fasta -b results/exercise2/alignment/varicella_mut.sorted.bam -r NC_001348:117699-117699 -o results/exercise3/missing_mutations.html`
+</font>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=274cd4e7-80f4-4cbb-9f17-77d78895f3a9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Now open the output <code>results/exercise3/missing_mutations.html</code> with Jupyter Lab.</p>
+<p>Breseq missed this mutation in the output table.</p>
+<h3 id="Q3">Q3<a class="anchor-link" href="#Q3">¶</a></h3><p>Open the <code>results/exercise3/output/summary.html</code> file and find the mean coverage of the alignment.</p>
+<p>Find also the coverage plot.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d45536af-616f-4f7c-9b66-9e030c6c36fd">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Exercise-4:-De-novo-genome-assembly">Exercise 4: De novo genome assembly<a class="anchor-link" href="#Exercise-4:-De-novo-genome-assembly">¶</a></h1><p>So far we've been using a reference genome to align reads to it.
+When one is not available, the genome has to be assembled <em>de novo</em> from the reads.
+Here, we'll be using the <code>abyss</code> assembler with reads from the <em>dumas</em> strain of the varicella virus.</p>
+<p><img alt="" src="img/assembly.png"/></p>
+<p>Sequencing files from <em>dumas</em> strain: <code>data/varicella_l1.fastq</code>, <code>data/varicella_l2.fastq</code></p>
+<h2 id="Protocol">Protocol<a class="anchor-link" href="#Protocol">¶</a></h2><h3 id="Step-1:-Init">Step 1: Init<a class="anchor-link" href="#Step-1:-Init">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=791eb1ac-fc7c-49ec-a42b-f2d181bfd024">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>mkdir<span class="w"> </span>results/exercise4
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=72ddc6ac-386d-4b12-ba61-96cae83f3ca4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-1:-Assembly">Step 1: Assembly<a class="anchor-link" href="#Step-1:-Assembly">¶</a></h3><p>Assemble the reads provided into a genome using <code>abyss-pe</code> for <code>k=128</code></p>
+<blockquote>
+<p>(Computation time: 5 minutes)</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=651aba26-9d81-4aa3-adfb-5014e67338d4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="w"> </span>abyss-pe<span class="w"> </span><span class="nv">name</span><span class="o">=</span>varicella<span class="w"> </span><span class="nv">k</span><span class="o">=</span><span class="m">128</span><span class="w"> </span><span class="nv">B</span><span class="o">=</span>8K<span class="w"> </span>--directory<span class="o">=</span>results/exercise4<span class="w"> </span><span class="k">in</span><span class="o">=</span><span class="s1">'../../data/seq/varicella_l1.fastq ../../data/seq/varicella_l2.fastq'</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=78473663-ae9f-4c5a-92ee-f9bcbefbff4b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>How many unitigs, contigs and scaffolds were assembled?</p>
+<p>Hint: <code>less varicella-stats.md</code></p>
+<p>Answer: <font color="white">14, 12, 6</font></p>
+<h3 id="Q2">Q2<a class="anchor-link" href="#Q2">¶</a></h3><p>How big is the largest scaffold?</p>
+<p>Answer: <font color="white">107578</font></p>
+<h3 id="Q3">Q3<a class="anchor-link" href="#Q3">¶</a></h3><p>Use NCBI nucleotide blast (<a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">https://blast.ncbi.nlm.nih.gov/Blast.cgi</a>) to find similar sequences to the scaffolds obtained.</p>
+<p>What is the most similar sequence obtained?</p>
 </div>
 </div>
 </div>
