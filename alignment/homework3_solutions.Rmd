@@ -1,0 +1,750 @@
+---
+title: "Homework 3: Alignment"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    df_print: paged
+  pdf_document: default
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
+# Instructions
+
+- Download [this](homework.Rmd) notebook and write your solutions inside it
+
+- Upload the notebook with your solutions to your allocated repo.
+
+- To solve the tasks, finish the code skeletons provided.
+  **The code must be runnable to get full points**.
+  If you're having trouble, try to explain in your own words 
+  what you were trying to do. Proper understanding is half of the points.
+
+- Each task is independent but subtasks are linked.
+
+- Remember to run the tests for each function you'll be completing.
+And feel free to add some of your own.
+By testing code in small modular parts (e.g. functions),
+you can trust these parts in "downstream" (more complex) applications.
+
+The terms "cost", "distance", and "penalty" are used interchangeably since 
+in this context they represent equivalent ways of looking at the same concepts. 
+It also helps illustrate that these algorithms are quite general and can be applied to many different problems.
+
+## Advice
+
+* Always restart R (*Session* > *Restart R*) and rerun the notebook
+from the top to double-check (i.e. reproduce) your solutions.
+
+* Remember that R starts indexing vectors at position `1`. 
+Many other languages in which these algorithms are implemented start at `0`.
+
+* If the code doesn't behave the way you want or you get errors,
+try checking out the chapter on [debugging](https://adv-r.hadley.nz/debugging.html) 
+from *Advanced R* for different approaches to deal with this.
+
+
+# Task 1: Global Alignment
+
+Complete the Needleman–Wunsch implementation.
+
+## Part a: The distance between two letters [1 pt]
+
+Fill in the "blanks" in the code below (replace the # WRITE CONDITION HERE) 
+with the appropriate logical checks such that this distance function gives
+the correct distance between two letters.
+
+Remember to run the code chunk so the notebook starts using your function.
+
+```{r}
+dist_global <- function(char1, char2) {
+    #############################
+    # Function that computes the distance between two characters in a sequence,
+    # used for global alignment.
+    # 
+    # Input arguments:
+    #    char1, char2 = Values of 2 characters, either nucleobases or gaps, 
+    #                   as 1-character strings.
+    # 
+    #    E.g. char1 = 'A', char2 = 'G'
+    #         char1 = 'A', char2 = '-'
+    # 
+    # Returns:
+    #    The distance (or cost of change) between char1 and char2, 
+    #    using the DIST_... values
+    #############################
+    
+    DIST_MATCH  <- 0
+    DIST_GAP <- 8
+    DIST_TRANSITION <- 2
+    DIST_TRANSVERSION <- 4
+    
+    if (char1 == char2)
+        return(DIST_MATCH)
+
+    if # WRITE CONDITION HERE
+        return(DIST_GAP)
+
+    if # WRITE CONDITION HERE
+        return(DIST_TRANSITION)
+
+    if # WRITE CONDITION HERE
+        return(DIST_TRANSITION)
+
+    else
+        return(DIST_TRANSVERSION)
+}
+```
+
+
+### Tests
+
+Check your code with the test below, assuming you use the same values as in the lecture.
+If you want to experiment with different distance values, 
+then naturally the test will have to be adapted.
+
+```{r}
+print(dist_global('A', 'G') == 2)
+print(dist_global('A', '-') == 8)
+```
+
+
+## Part b: Computing the global alignment [1 pt]
+
+Here you are provided with skeleton code to compute the global alignment
+between two sequences using the Needleman–Wunsch algorithm algorithm.
+The same notation is used as in the course.
+
+```{r}
+global_alignment_matrix <- function(seq1, seq2) {
+    ##############################################################
+    # Computes the global alignment matrix D between 
+    # sequences seq1 and seq2
+    # 
+    # Input:
+    #     seq1, seq2 = nucleobase sequences as strings
+    # 
+    #     E.g. seq1 = 'TATACCTGAAGGGCCT', seq2 = 'TATACGAGACCGTTT'
+    # 
+    # Returns:
+    #     D = global alignment matrix
+    ###############################################################
+    
+    # Convert to character vectors to easily work letter by letter
+    # E.g. seq1 = "ABC" becomes c("A", "B", "C") and seq1[2] == "B"
+    seq1 <- strsplit(seq1, split = "")[[1]]
+    seq2 <- strsplit(seq2, split = "")[[1]]
+    
+    # Initialize the matrix with all zero values
+    D <- matrix(0L, nrow = length(seq1) + 1, ncol = length(seq2) + 1)
+    
+    # Initialize horizontal (top) boundary of D using seq1
+    for (i in seq(from = 2, to = length(seq1) + 1))
+        D[i, 1] <-  ### WRITE CODE HERE ###
+    
+    # Initialize vertical (left) boundary of D using seq2
+    for (j in seq(from = 2, to = length(seq2) + 1))
+        D[1, j] <-  ### WRITE CODE HERE ###
+    
+    # Walk through all cells of the matrix,
+    # updating the current cell by considering a step from 3 possible directions,
+    # and taking the least "costly" of these 3 directions (shortest distance).
+    for (i in seq(from = 2, to = length(seq1) + 1)) {
+        for (j in seq(from = 2, to = length(seq2) + 1)) {
+            dist_from_upper_left <- dist_global(seq1[i-1], seq2[j-1])
+            dist_from_above      <- dist_global(seq1[i-1], "-")
+            dist_from_left       <- dist_global("-",       seq2[j-1])
+            
+            D[i, j] <-  min(c(
+                                D[i-1, j-1] +  ### WRITE CODE HERE ###  ,
+                                D[i-1, j  ] +  ### WRITE CODE HERE ###  ,
+                                D[i  , j-1] +  ### WRITE CODE HERE ###
+                            ))
+        }
+    }
+    return(D)
+}
+
+# This one's complete. Just a convenience function to fetch the overall value.
+global_alignment_value <- function(global_alignment_matrix) {
+    # Input:
+    # global_alignment_matrix = a computed global alignment matrix
+    # 
+    # Returns:
+    # The lower-right corner of the matrix, since we know that holds
+    # the global alignment value
+    return(global_alignment_matrix[nrow(global_alignment_matrix),
+                                   ncol(global_alignment_matrix)])
+}
+```
+
+
+### Tests
+
+Check your code with these. The last 2 lines compare expected and actual values.
+
+```{r}
+seq1 <- "TACGTCAGC"
+seq2 <- "TATGTCATGC"
+
+expected_distance <- 10
+
+expected_dist_matrix <-
+    t(matrix(c(
+        c( 0,  8, 16, 24, 32, 40, 48, 56, 64, 72, 80),
+        c( 8,  0,  8, 16, 24, 32, 40, 48, 56, 64, 72),
+        c(16,  8,  0,  8, 16, 24, 32, 40, 48, 56, 64),
+        c(24, 16,  8,  2, 10, 18, 24, 32, 40, 48, 56),
+        c(32, 24, 16, 10,  2, 10, 18, 26, 34, 40, 48),
+        c(40, 32, 24, 16, 10,  2, 10, 18, 26, 34, 42),
+        c(48, 40, 32, 24, 18, 10,  2, 10, 18, 26, 34),
+        c(56, 48, 40, 32, 26, 18, 10,  2, 10, 18, 26),
+        c(64, 56, 48, 40, 32, 26, 18, 10,  6, 10, 18),
+        c(72, 64, 56, 48, 40, 34, 26, 18, 12, 10, 10)
+    ), nrow = nchar(seq2) + 1, 
+       ncol = nchar(seq1) + 1))
+
+
+D <- global_alignment_matrix(seq1, seq2)
+
+
+print(identical(D, expected_dist_matrix))
+print(global_alignment_value(D) == expected_distance)
+```
+
+## ======= Solution =====
+
+
+```{r}
+dist_global <- function(char1, char2) {
+    DIST_MATCH = 0
+    DIST_GAP = 8
+    DIST_TRANSITION = 2
+    DIST_TRANSVERSION = 4
+
+    if (char1 == char2)
+        return(DIST_MATCH)
+    
+    if (char1 == '-' || char2 == '-')
+        return(DIST_GAP)
+
+    if ((char1 == 'A' && char2 == 'G') || (char1 == 'G' && char2 == 'A'))
+        return(DIST_TRANSITION)
+
+    if ((char1 == 'T' && char2 == 'C') || (char1 == 'C' && char2 == 'T'))
+        return(DIST_TRANSITION)
+
+    else
+        return(DIST_TRANSVERSION)
+}
+
+
+global_alignment_matrix <- function(seq1, seq2) {
+    # Convert to character vectors to easily work letter by letter
+    # E.g. seq1 = "ABC" becomes c("A", "B", "C") and seq1[2] == "B"
+    seq1 <- strsplit(seq1, split = "")[[1]]
+    seq2 <- strsplit(seq2, split = "")[[1]]
+    
+    D <- matrix(0L, nrow = length(seq1) + 1, ncol = length(seq2) + 1)
+    
+    for (i in seq(from = 2, to = length(seq1)))
+        D[i, 1] <- D[i - 1, 1] + dist_global(seq1[i - 1], "-")
+        
+    for (j in seq(from = 2, to = length(seq2)))
+        D[1, j] <- D[1, j - 1] + dist_global("-", seq2[j - 1])
+    
+    for (i in seq(from = 2, to = length(seq1) + 1)) {
+        for (j in seq(from = 2, to = length(seq2) + 1)) {
+            dist_from_upper_left <- dist_global(seq1[i-1], seq2[j-1])
+            dist_from_above      <- dist_global(seq1[i-1], "-")
+            dist_from_left       <- dist_global("-",       seq2[j-1])
+            
+            D[i, j] <-  min(c(
+                                D[i-1, j-1] + dist_from_upper_left,
+                                D[i-1, j  ] + dist_from_above,
+                                D[i  , j-1] + dist_from_left
+                            ))
+        }
+    }
+    return(D)
+}
+
+global_alignment_value <- function(global_alignment_matrix) {
+    # Input:
+    # global_alignment_matrix = a computed global alignment matrix
+    # 
+    # Returns:
+    # The lower-right corner of the matrix, since we know that holds
+    # the global alignment value
+    return(global_alignment_matrix[nrow(global_alignment_matrix),
+                                   ncol(global_alignment_matrix)])
+}
+```
+
+
+# Task 2: Local Alignment
+
+Complete the Smith-Waterman implementation
+
+## Part a: The distance between two letters  [1 pt]
+
+Finish the provided code and check yourself with the tests provided.
+
+```{r}
+dist_local <- function(char1, char2) {
+    ##########################################
+    # Function that computes the distance between two characters in a sequence,
+    # used for local alignment.
+    # 
+    # Input arguments:
+    #     char1, char2 = Values of 2 characters, either nucleobases or gaps,
+    #                    as 1-character strings.
+    # 
+    #     E.g. char1 = 'A', char2 = 'G'
+    #          char1 = 'A', char2 = '-'
+    # 
+    # Returns:
+    #     The distance (or cost of change) between char1 and char2, 
+    #     using the DIST_... values
+    ##########################################
+
+    DIST_MATCH <- 2
+    DIST_GAP <- -6
+    DIST_MISMATCH <- -4
+    
+    if # WRITE CONDITION HERE
+        return(DIST_MATCH)
+    
+    if # WRITE CONDITION HERE
+        return(DIST_GAP)
+    
+    else
+        return(DIST_MISMATCH)
+}
+```
+
+### Tests
+
+```{r}
+print(dist_local_example('A', '-') + dist_local_example('A', 'T') == -10)
+print(dist_local_example('A', 'C') + dist_local_example('G', 'T') == -8)
+```
+
+
+## Part b: Computing the local alignment  [1 pt]
+
+Finish the provided code.
+
+Since it is a variation of the global alignment algorithm, 
+the Smith-Waterman algorithm has a similar structure. 
+
+A *big difference* is that one takes the *maximum* of different possibilities, 
+since once keeps track of an optimum score.
+
+```{r}
+local_alignment_matrix <- function(seq1, seq2) {
+    #######################################################
+    # Computes the local alignment matrix D between 
+    # sequences seq1 and seq2
+    # 
+    # Input:
+    #    seq1, seq2 = nucleobase sequences as strings
+    # 
+    #    E.g. seq1 = 'TATACCTGA', seq2 = 'TATACGAGACCGTTT'
+    # 
+    # Returns:
+    #    D = local alignment matrix
+    ########################################################
+    # Convert to character vectors to easily work letter by letter
+    # E.g. seq1 = "ABC" becomes c("A", "B", "C") and seq1[2] == "B"
+    seq1 <- strsplit(seq1, split = "")[[1]]
+    seq2 <- strsplit(seq2, split = "")[[1]]    
+
+    # Initialize the matrix with all zero values
+    D <- matrix(0L, nrow = length(seq1) + 1, ncol = length(seq2) + 1)
+    
+    # Walk through all cells of the matrix,
+    # updating the current cell by considering a step from 3 possible directions,
+    # and taking the max of scores corresponding 3 directions.
+    for (i in seq(from = 2, to = length(seq1))) {
+        for (j in seq(from = 2, to = length(seq2))) {
+            
+            dist_from_upper_left <- ### WRITE CODE HERE ###
+            dist_from_above      <- ### WRITE CODE HERE ###
+            dist_from_left       <- ### WRITE CODE HERE ###
+            
+            D[i, j] = max(c(  ### WRITE CODE HERE ###  ,
+                              ### WRITE CODE HERE ###  ,
+                              ### WRITE CODE HERE ###  ,
+                          0)) # make sure to have a non-negative value since this is a distance
+        }
+    }
+    return(D)
+}
+
+
+local_alignment_value <- function(alignment_matrix) {
+    max(alignment_matrix)
+}
+```
+
+### Tests
+
+Check your code with these. The last 2 lines compare expected and actual values.
+
+```{r}
+seq1 <- "GGTATGCTGGCGCTA"
+seq2 <- "TATATGCGGCGTTT"
+
+expected_distance <- 12
+
+expected_dist_matrix <- 
+    t(matrix(c(
+       c( 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  2,  0,  2,  0,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  4,  0,  2,  0,  0,  0),
+       c( 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  4,  2,  2),
+       c( 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+       c( 0,  2,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  2,  2,  2),
+       c( 0,  0,  0,  0,  2,  0,  8,  2,  2,  2,  0,  2,  0,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  2, 10,  4,  0,  4,  0,  0,  0,  0),
+       c( 0,  2,  0,  2,  0,  2,  0,  4,  6,  0,  0,  0,  2,  2,  2),
+       c( 0,  0,  0,  0,  0,  0,  4,  0,  6,  8,  2,  2,  0,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  8,  4,  4,  0,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  0,  4,  0,  2, 10,  4,  0,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  2,  0,  6,  2,  4, 12,  6,  0,  0),
+       c( 0,  0,  0,  0,  0,  0,  0,  4,  0,  2,  4,  6,  8,  2,  0),
+       c( 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  8, 10,  4),
+       c( 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  2,  4,  6)
+    ), nrow = nchar(seq2) + 1, 
+       ncol = nchar(seq1) + 1))
+
+
+D <- local_alignment_matrix(seq1, seq2)
+
+
+print(identical(D, expected_dist_matrix))
+print(local_alignment_value(D) == expected_distance)
+```
+
+
+## ======= Solution =====
+
+```{r}
+dist_local <- function(char1, char2) {
+    DIST_MATCH <- 2
+    DIST_GAP <- -6
+    DIST_MISMATCH <- -4
+    
+    if (char1 == char2)
+        return(DIST_MATCH)
+    
+    if (char1 == '-' || char2 == '-')
+        return(DIST_GAP)
+    
+    else
+        return(DIST_MISMATCH)
+}
+
+local_alignment_matrix <- function(seq1, seq2) {
+    seq1 <- strsplit(seq1, split = "")[[1]]
+    seq2 <- strsplit(seq2, split = "")[[1]]    
+
+    D <- matrix(0L, nrow = length(seq1) + 1, ncol = length(seq2) + 1)
+    
+    for (i in seq(from = 2, to = length(seq1) + 1)) {
+        for (j in seq(from = 2, to = length(seq2) + 1)) {
+            
+            dist_from_upper_left <- dist_local(seq1[i - 1], seq2[j - 1])
+            dist_from_above      <- dist_local(seq1[i - 1], '-')
+            dist_from_left       <- dist_local('-', seq2[j - 1])
+            
+            D[i, j] = max(c(D[i - 1, j - 1] + dist_from_upper_left,
+                            D[i - 1, j] + dist_from_above,
+                            D[i, j - 1] + dist_from_left,
+                          0)) # make sure to have a non-negative value since this is a distance
+        }
+    }
+    return(D)
+}
+
+
+local_alignment_value <- function(alignment_matrix) {
+    max(alignment_matrix)
+}
+```
+
+
+
+# Task 3: Assembly
+
+Finish the code below to compute the **shortest common superstring** (SCS)
+using the **greedy algorithm**.
+
+
+## Part a: Max overlap of two sequences  [1 pt]
+
+To assemble reads, we need a function to compute the length of the overlap
+of two given sequences
+
+For example:
+
+```
+seq1: abc123
+seq2:    123xyz
+
+len_overlap('abc123', '123xyz') == 3
+```
+
+The skeleton for this function is given below. Finish the code and use the tests
+below to check yourself.
+
+Note that this time we're not converting the strings `seq1` and `seq2` to character vectors, 
+because R has some functions which we can use, but these work on strings 
+(e.g. "hello" instead of c("h", "e", "l", "l", "o")).
+Read about these functions: `substr()`, `startsWith()`, `endsWith()` and think
+about how to use them to solve this tasks. 
+Also, recall `nchar()` counts the number of characters in a string, while `length()`
+counts the elements in a vector. A string is a single element, so `length("hello") == 1`
+and `nchar("hello") == 5`.
+
+You are of course free to expand the function if you feel constrained by the given
+"blanks". You can even rewrite it entirely as you wish, just please explain what you're doing.
+
+**! Careful !**
+
+The R `while(CONDITION)` loop command simply repeats until CONDITION is no longer true. 
+If there is a mistake in the code and CONDITION never changes,
+the code will run forever. If you see your code running for very long 
+(like when running the tests), press the red stop button in the corner of the code chunk. 
+Sometimes RStudio doesn't like this.
+If it starts misbehaving (like not running your code chunks), try restarting R
+(Session > Restart R) or getting a new RStudio session (Session > New Session).
+
+```{r}
+len_overlap <- function(seq1, seq2) {
+    ##############################################    
+    # Find the longest overlap between a suffix of seq1 and a prefix of seq2
+    # and return its length.
+    # E.g. len_overlap('abc123', '123xyz') == 3
+    ##############################################
+
+    # We take shorter and shorter suffixes of seq1
+    # and test whether they overlap with a prefix of seq2.
+    # We start at index 1 in seq1 (i.e. thus including seq1 entirely)
+    overlap_start_index <- 1
+    while(overlap_start_index <= ## WRITE CODE HERE ##  ) {
+          
+        current_prefix <- ## WRITE CODE HERE ##
+        
+        if (## WRITE CODE HERE ##   ) {
+            return(nchar(seq1) - overlap_start_index + 1)
+        }
+        else
+            overlap_start_index = overlap_start_index + 1
+    }
+    return(0)  # no overlap
+)
+```
+
+### Tests
+
+You can add your own of course. Think of edge cases and negative examples.
+
+```{r}
+print(len_overlap('abc123', '123xyz') == 3)
+print(len_overlap('abc1234', '1234xyz') == 4)
+print(len_overlap('abc124', '123xyz') == 0)
+```
+
+
+### ======== Solution =========
+
+```{r}
+len_overlap <- function(seq1, seq2) {
+    overlap_start_index <- 1
+    while(overlap_start_index <= nchar(seq1)) {
+        current_prefix <- substr(seq1, start = overlap_start_index, stop = nchar(seq1))
+        if (startsWith(x = seq2, prefix = current_prefix)) {
+            return(nchar(seq1) - overlap_start_index + 1)
+        }
+        else
+            overlap_start_index = overlap_start_index + 1
+    }
+    return(0)
+}
+
+print(len_overlap('abc122', '22xyz') == 2)
+print(len_overlap('abc124', '123xyz') == 0)
+print(len_overlap('abc1234', '1234xyz') == 4)
+print(len_overlap('abc1234', '1234xyzuvw') == 4)
+print(len_overlap('1234', '1234xyz') == 4)
+print(len_overlap('abc1234', '1234') == 4)
+print(len_overlap('abc1234', '4123xyz') == 1)
+```
+
+
+## Part b: Greedy Shortest Common Superstring  [1 pt]
+
+This approach requires generating all permutations of a vector of strings.
+To make our lives easier, we're going to use the `permn()` function
+from the `combinat` package. So first install this package:
+
+```{r}
+if (!require("combinat"))
+    install.packages("combinat")
+```
+
+To see how it works, run the chunk below:
+
+```{r}
+library(combinat)
+
+test_permutations <- combinat::permn(c("I", "prefer", "Python"))
+test_permutations
+```
+
+Remember there are `n!` (n factorial) permutations of `n` elements, so we should
+refrain from long vectors (e.g. `factorial(10)` is already `3628800`).
+
+```{r}
+library(combinat)
+
+greedy_shortest_common_superstring <- function(strings) {
+    #############################################################    
+    # Takes a list of strings and computes
+    # an approximation of the shortest common supperstring (SCS),
+    # using a greedy algorithm.
+    # 
+    # Input:
+    #       strings = list of strings e.g. c('ABCD', 'CDBC', 'BCDA')
+    # 
+    # Returns:
+    #       shortest_superstring = the approximation of the SCS 
+    #                              of the input list of strings
+    # E.g. 'ABCDBCDA'
+    ###############################################################
+    
+    # Start off with no SCS (empty string)
+    shortest_superstring <- ""
+    all_permutations_of_the_strings <- combinat::permn(strings)
+    
+    # Consider all permutations of the input list of stings
+    for (current_permutation in all_permutations_of_the_strings) {
+
+        # For the current permutation,
+        # start growing a superstring using the first string in the permutation
+        superstring_candidate <- current_permutation[1]
+        
+        # Go over all strings in this permutation and overlap consecutive strings i and i + 1
+        # So e.g. i: ABB   i+1: BBA  ->  ABBA
+        for (i in seq(from = 1, to = length(strings) - 1)) {
+            # determine length of the overlap ...
+            overlap_length <- len_overlap(#### WRITE CODE HERE ####  )
+
+            # ... and use this to get the non-overlapping part of string i + 1
+            non_overlapping_portion <- #### WRITE CODE HERE ####
+
+            # The non-overlapping part of string i + 1 is then pasted 
+            # to the end of the superstring we are growing for this permutation
+            superstring_candidate <- paste0(superstring_candidate, non_overlapping_portion)
+        }
+    
+        # If this is the first permutation we're considering,
+        # of it turns out that the superstring candidate we grew for this permutation of input strings
+        # is shorter than our current SCS candidate, 
+        # make the current superstring candidate the new SCS
+        if (shortest_superstring == "" || nchar(superstring_candidate) < #### WRITE CODE HERE ####  )
+            shortest_superstring <- superstring_candidate
+    }
+    return(shortest_superstring)
+}
+```
+
+
+### Tests
+
+The second case will be a bit slow, because of the many permutations that are considered.
+You can add your own tests of course. Think of edge cases.
+
+Note that there may be multiple SCS and the procedure will choose only the first one,
+and the order is determined by how the permutations are generated. 
+So if you add your own test, check the output of `permn(my_test_vector)` to see the order
+in which each SCS candidate is constructed.
+
+```{r}
+print(greedy_shortest_common_superstring(c('ABCD', 'CDBC', 'BCDA')) == 'ABCDBCDA')
+print(greedy_shortest_common_superstring(c('BAA', 'AAB', 'BBA', 'ABA', 'ABB', 'BBB', 'AAA', 'BAB') == 'BAAABABBBA'))
+```
+
+
+
+## ======= Solution ======
+
+```{r}
+library(combinat)
+
+greedy_shortest_common_superstring <- function(strings) {
+    #############################################################    
+    # Takes a list of strings and computes
+    # an approximation of the shortest common supperstring (SCS),
+    # using a greedy algorithm.
+    # 
+    # Input:
+    #       strings = list of strings e.g. c('ABCD', 'CDBC', 'BCDA')
+    # 
+    # Returns:
+    #       shortest_superstring = the approximation of the SCS 
+    #                              of the input list of strings
+    # E.g. 'ABCDBCDA'
+    ###############################################################
+    
+    # Start off with no SCS (empty string)
+    shortest_superstring <- ""
+    all_permutations_of_the_strings <- combinat::permn(strings)
+    
+    # Consider all permutations of the input list of stings
+    for (current_permutation in all_permutations_of_the_strings) {
+
+        # For the current permutation,
+        # start growing a superstring using the first string in the permutation
+        superstring_candidate <- current_permutation[1]
+        
+        # Go over all strings in this permutation and overlap consecutive strings i and i + 1
+        # So e.g. i: ABB   i+1: BBA  ->  ABBA
+        for (i in seq(from = 1, to = length(strings) - 1)) {
+            # determine length of the overlap ...
+            overlap_length <- len_overlap(current_permutation[i], 
+                                          current_permutation[i + 1])
+
+            # ... and use this to get the non-overlapping part of string i + 1
+            non_overlapping_portion <- substr(current_permutation[i + 1],
+                                              start = overlap_length + 1,
+                                              stop = nchar(current_permutation[i + 1]))
+
+            # The non-overlapping part of string i + 1 is then pasted 
+            # to the end of the superstring we are growing for this permutation
+            superstring_candidate <- paste0(superstring_candidate, non_overlapping_portion)
+        }
+    
+        # If this is the first permutation we're considering,
+        # of it turns out that the superstring candidate we grew for this permutation of input strings
+        # is shorter than our current SCS candidate, 
+        # make the current superstring candidate the new SCS
+        if (shortest_superstring == "" || nchar(superstring_candidate) < nchar(shortest_superstring))
+            shortest_superstring <- superstring_candidate
+    }
+    return(shortest_superstring)
+}
+
+print(greedy_shortest_common_superstring(c('ABCD', 'CDBC', 'BCDA')) == 'ABCDBCDA')
+print(greedy_shortest_common_superstring(c('BAA', 'AAB', 'BBA', 'ABA', 'ABB', 'BBB', 'AAA', 'BAB')) == 'BAAABBBABA')
+```
+
+
