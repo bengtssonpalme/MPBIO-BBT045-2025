@@ -318,38 +318,34 @@ def local_alignment_value(alignment_matrix):
 
 Check your code with these. The last 2 lines compare expected and actual values.
 
-```{r}
-seq1 <- "GGTATGCTGGCGCTA"
-seq2 <- "TATATGCGGCGTTT"
+```{python}
+seq1 = "GGTATGCTGGCGCTA"
+seq2 = "TATATGCGGCGTTT"
 
-expected_distance <- 12
+expected_distance = 12
 
-expected_dist_matrix <- 
-    t(matrix(c(
-       c( 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  2,  0,  2,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  4,  0,  2,  0,  0,  0),
-       c( 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  4,  2,  2),
-       c( 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
-       c( 0,  2,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  2,  2,  2),
-       c( 0,  0,  0,  0,  2,  0,  8,  2,  2,  2,  0,  2,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2, 10,  4,  0,  4,  0,  0,  0,  0),
-       c( 0,  2,  0,  2,  0,  2,  0,  4,  6,  0,  0,  0,  2,  2,  2),
-       c( 0,  0,  0,  0,  0,  0,  4,  0,  6,  8,  2,  2,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  8,  4,  4,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  0,  4,  0,  2, 10,  4,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  6,  2,  4, 12,  6,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  0,  4,  0,  2,  4,  6,  8,  2,  0),
-       c( 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  8, 10,  4),
-       c( 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  2,  4,  6)
-    ), nrow = nchar(seq2) + 1, 
-       ncol = nchar(seq1) + 1))
+expected_dist_matrix = np.array([[ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  2,  2,  0,  2,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  2,  4,  0,  2,  0,  0,  0],
+                                   [ 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  4,  2,  2],
+                                   [ 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+                                   [ 0,  2,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  2,  2,  2],
+                                   [ 0,  0,  0,  0,  2,  0,  8,  2,  2,  2,  0,  2,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2, 10,  4,  0,  4,  0,  0,  0,  0],
+                                   [ 0,  2,  0,  2,  0,  2,  0,  4,  6,  0,  0,  0,  2,  2,  2],
+                                   [ 0,  0,  0,  0,  0,  0,  4,  0,  6,  8,  2,  2,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  2,  8,  4,  4,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  0,  4,  0,  2, 10,  4,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  6,  2,  4, 12,  6,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  0,  4,  0,  2,  4,  6,  8,  2,  0],
+                                   [ 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  8, 10,  4],
+                                   [ 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  2,  4,  6]])
 
 
-D <- local_alignment_matrix(seq1, seq2)
+D = local_alignment_matrix(seq1, seq2)
 
 
-print(identical(D, expected_dist_matrix))
+print(np.all(np.equal(D, expected_dist_matrix)))
 print(local_alignment_value(D) == expected_distance)
 ```
 
@@ -379,9 +375,9 @@ below to check yourself.
 
 Note that this time we're not converting the strings `seq1` and `seq2` to character vectors, 
 because R has some functions which we can use, but these work on strings 
-(e.g. we use `"hello"` instead of `c("h", "e", "l", "l", "o")` as before).
+(e.g. we use `"hello"` instead of `["h", "e", "l", "l", "o"]` as before).
 
-**Read about these functions**: `substr()`, `startswith()`, `endswith()` and think
+**Read about these functions**:  `startswith()`, `endswith()` and think
 about how to use them to solve this tasks. 
 Also, recall `len()` counts the number of characters in a string or list.
 `len("hello") == 5`

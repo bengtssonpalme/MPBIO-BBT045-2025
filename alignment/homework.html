@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2024-02-02" />
+<meta name="date" content="2024-02-05" />
 
 <title>Homework 3: Alignment</title>
 
@@ -246,7 +246,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Homework 3: Alignment</h1>
-<h4 class="date">2024-02-02</h4>
+<h4 class="date">2024-02-05</h4>
 
 </div>
 
@@ -492,37 +492,33 @@ def local_alignment_value(alignment_matrix):
 <div id="tests-3" class="section level3">
 <h3>Tests</h3>
 <p>Check your code with these. The last 2 lines compare expected and actual values.</p>
-<pre class="r"><code>seq1 &lt;- &quot;GGTATGCTGGCGCTA&quot;
-seq2 &lt;- &quot;TATATGCGGCGTTT&quot;
+<pre class="python"><code>seq1 = &quot;GGTATGCTGGCGCTA&quot;
+seq2 = &quot;TATATGCGGCGTTT&quot;
 
-expected_distance &lt;- 12
+expected_distance = 12
 
-expected_dist_matrix &lt;- 
-    t(matrix(c(
-       c( 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  2,  0,  2,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  4,  0,  2,  0,  0,  0),
-       c( 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  4,  2,  2),
-       c( 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
-       c( 0,  2,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  2,  2,  2),
-       c( 0,  0,  0,  0,  2,  0,  8,  2,  2,  2,  0,  2,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2, 10,  4,  0,  4,  0,  0,  0,  0),
-       c( 0,  2,  0,  2,  0,  2,  0,  4,  6,  0,  0,  0,  2,  2,  2),
-       c( 0,  0,  0,  0,  0,  0,  4,  0,  6,  8,  2,  2,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  2,  8,  4,  4,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  0,  4,  0,  2, 10,  4,  0,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  2,  0,  6,  2,  4, 12,  6,  0,  0),
-       c( 0,  0,  0,  0,  0,  0,  0,  4,  0,  2,  4,  6,  8,  2,  0),
-       c( 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  8, 10,  4),
-       c( 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  2,  4,  6)
-    ), nrow = nchar(seq2) + 1, 
-       ncol = nchar(seq1) + 1))
+expected_dist_matrix = np.array([[ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  2,  2,  0,  2,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  2,  4,  0,  2,  0,  0,  0],
+                                   [ 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  4,  2,  2],
+                                   [ 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+                                   [ 0,  2,  0,  6,  0,  6,  0,  0,  0,  0,  0,  0,  2,  2,  2],
+                                   [ 0,  0,  0,  0,  2,  0,  8,  2,  2,  2,  0,  2,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2, 10,  4,  0,  4,  0,  0,  0,  0],
+                                   [ 0,  2,  0,  2,  0,  2,  0,  4,  6,  0,  0,  0,  2,  2,  2],
+                                   [ 0,  0,  0,  0,  0,  0,  4,  0,  6,  8,  2,  2,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  2,  8,  4,  4,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  0,  4,  0,  2, 10,  4,  0,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  2,  0,  6,  2,  4, 12,  6,  0,  0],
+                                   [ 0,  0,  0,  0,  0,  0,  0,  4,  0,  2,  4,  6,  8,  2,  0],
+                                   [ 0,  2,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  8, 10,  4],
+                                   [ 0,  0,  4,  0,  4,  0,  0,  0,  0,  0,  0,  0,  2,  4,  6]])
 
 
-D &lt;- local_alignment_matrix(seq1, seq2)
+D = local_alignment_matrix(seq1, seq2)
 
 
-print(identical(D, expected_dist_matrix))
+print(np.all(np.equal(D, expected_dist_matrix)))
 print(local_alignment_value(D) == expected_distance)</code></pre>
 </div>
 </div>
@@ -539,8 +535,8 @@ seq2:    123xyz
 
 len_overlap('abc123', '123xyz') == 3</code></pre>
 <p>The skeleton for this function is given below. Finish the code and use the tests below to check yourself.</p>
-<p>Note that this time we're not converting the strings <code>seq1</code> and <code>seq2</code> to character vectors, because R has some functions which we can use, but these work on strings (e.g. we use <code>&quot;hello&quot;</code> instead of <code>c(&quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;)</code> as before).</p>
-<p><strong>Read about these functions</strong>: <code>substr()</code>, <code>startswith()</code>, <code>endswith()</code> and think about how to use them to solve this tasks. Also, recall <code>len()</code> counts the number of characters in a string or list. <code>len(&quot;hello&quot;) == 5</code> and <code>nchar([&quot;hello&quot;]) == 1</code>.</p>
+<p>Note that this time we're not converting the strings <code>seq1</code> and <code>seq2</code> to character vectors, because R has some functions which we can use, but these work on strings (e.g. we use <code>&quot;hello&quot;</code> instead of <code>[&quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;]</code> as before).</p>
+<p><strong>Read about these functions</strong>: <code>startswith()</code>, <code>endswith()</code> and think about how to use them to solve this tasks. Also, recall <code>len()</code> counts the number of characters in a string or list. <code>len(&quot;hello&quot;) == 5</code> and <code>nchar([&quot;hello&quot;]) == 1</code>.</p>
 <p>You are of course free to expand the function if you feel constrained by the given &quot;blanks&quot;. You can even rewrite it entirely as you wish, just please explain what you're doing.</p>
 <p><strong>! Careful !</strong></p>
 <p>The python <code>while(CONDITION)</code> loop command simply repeats until CONDITION is no longer true. If there is a mistake in the code and the logical value of CONDITION never changes, the code will run forever. If you see your code running for very long (like when running the tests), press the stop button at the top of the notebook session.</p>
