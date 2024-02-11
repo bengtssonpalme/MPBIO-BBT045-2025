@@ -12,7 +12,11 @@ output:
 
 # Instructions
 
+
 For this homework, your task is to build an HMM model for annotating S. cerevisiae. Please read through the instructions before you start, to best plan your work.
+
+This notebook can be downloaded from [link](HMM_notebook.Rmd)
+The python version of the notebook can be downloaded from [link](HMM_notebook.ipynb)
 
 The work is split up in four sections:
 
@@ -28,7 +32,7 @@ The work is split up in four sections:
 
 **To complete this homework you need to:**
 
-    1. Initiate your own HMM model
+    1. Initiate your own HMM model (DO NOT USE THE SIMPLE 2 STATE EXAMPLE!!!)
         * Explain the architecture of your model states emmissions etc.
         * Explain what initial parameters you chose and why.
         * Explain if you use any of the references provided or you found your own.
@@ -51,9 +55,7 @@ This homework together with the project is meant for you to feel a little of how
 Start by making a HW4 directory. In your HW4 directory you will create a results directory and you will create a data directory. In your data directory you'll place a copy of the file S288C_reference_sequence_R64-2-1_20150113.fsa that we used in the Unix HW. This notebook should be placed in the HW4 directory. After that we should be god to go.  
 
 # 1. Baseline Results
-Note This step can take some time (~30 min if the server isn't under heavy load).
-For this part, you will need to run Augustus on the server, where it's already installed (you used it in one of the previuos tutorials, just activate the corresponding environment or install freshly if missing).
-Grab a copy of the S. cerevisiae reference genome as described in section 0. Then run Augustus as below (adjust if you've named your directories differently)
+The Augustus base line annotated can be found at /cephyr/NOBACKUP/groups/bbt045_2024/data/ref_annot_augustus.aa. Don't run the augustus commands just proceed to the next step.
 
 ```{bash, eval=F}
 augustus data/S288C_reference_sequence_R64-2-1_20150113.fsa \
