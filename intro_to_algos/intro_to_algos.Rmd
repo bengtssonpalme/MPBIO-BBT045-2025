@@ -225,6 +225,13 @@ given vectors `gene_start = [100, 200, ...]` and
 `gene_name = ["gene_a", "gene_b", ...] `, how would you fetch the start position
 of a query gene?
 
+<details>
+  <summary>Click to reveal solution</summary>
+  
+  To locate a specific gene, you would initially search the vector gene_name for the desired gene to obtain its index. Subsequently, you would fetch the starting position of the gene by indexing the vector gene_start. Assuming the vector gene_name is sorted, this process would have a time complexity of O(log n). However, if gene_name were unsorted, the time complexity would instead be O(n).
+Alternatively, if you would have used a hashmap to store gene start positions with gene names as associated keys, the lookup of a single gene would have a time complexity of O(1)
+</details>
+
 
 ## Sets
 
@@ -322,7 +329,11 @@ print(protein_log_counts_across_samples)
 
 **What is the time cost of the matrix transformation above?** Try to phrase your answer as a formula, not actual numbers.
 
-
+<details>
+  <summary>Click to reveal solution</summary>
+The size of the matrix grows proportionally to the product of the number of proteins (N_PROTEINS) and the number of samples (N_SAMPLES). Consequently, any operation or transformation applied to all elements within the matrix will exhibit the same growth pattern. Therefore, the time complexity of such transformations is O(N_PROTEINS * N_SAMPLES).
+</details>
+<br>
 Now, the above is only for illustration.
 Since numpy is suporting vectorized operations,
 you don't need to do any of that in actual code. You'd simply write:
@@ -477,10 +488,34 @@ print(query_values[list(map(is_interesting, query_values))])
 
 > **What's the time cost of the example filter function?** Try to express it as a formula.
 
+<details>
+  <summary>Click to reveal solution</summary>
+The computation is dependant on the number in query_values baseline_values and interesting_values. The max finction is linear in the case of an unsorted vector. Thus the filtering would have a time complexity of O(query_values*baseline_values*interesting_values) 
+<details>
+
 #### Question 4
 
 > **How can you speed up this example filtering?** Hint: There are 2 ways and they involve `baseline_values` and `interesting_values`
 
+<details>
+  <summary>Click to reveal solution</summary>
+We can first recognise that baseline_values are not needed since none of the interesting_values are below any baseline values. In general we could exclude any interesting values that is contained by baseline_values with the use of sets as 
+`
+baseline_values = set(baseline_values)
+interesting_values = set(interesting_values)
+interesting_values = interesting_values - interesting_values.intersection(baseline values)
+`
+With the interesting_values expressed as a set we can also speed up this comparison as well by querying directly if the value is in the set.
+The new filter function thus becomes
+`
+def is_interesting (value):
+  if value in interesting_values:
+    return True
+  else:
+    return False
+`
+This new filter function would have a time complexity of O(query_values)
+</details>
 
 ### Reduce
 
@@ -494,6 +529,10 @@ Pretty straightforward, but good to be aware of it formally when designing your 
 
 **What's the time cost of reduce functions?** Try to express it as a formula.
 
+<details>
+  <summary>Click to reveal solution</summary>
+The time complexity of the reduce function is typically linear, O(n), where n is the number of elements in the iterable being reduced. This is because reduce iterates over each element of the iterable exactly once, performing the specified binary operation on pairs of elements until only a single result remains.
+</details>
 
 ### Map-Reduce
 
@@ -528,6 +567,11 @@ print(result)
 #### Question 6
 
 **What is the time cost of the above calculation?** Try to express it as a formula.
+
+<details>
+  <summary>Click to reveal solution</summary>
+Time complexity is proportional to the number of rows in the data frame as we need to performe one multiplication per row. Thus O(n)
+</details>
 
 Using such patterns often makes code easier to understand and faster to write, 
 and may even lead to faster execution if the system is optimized for functional 
