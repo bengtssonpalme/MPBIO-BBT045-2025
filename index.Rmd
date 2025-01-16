@@ -1,6 +1,6 @@
 ---
 title: MPBIO-BBT045 Course page
-date: "`r Sys.Date()`"
+date: "2025"
 theme: "simplex"
 output:
   html_document:
