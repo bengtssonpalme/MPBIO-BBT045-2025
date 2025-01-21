@@ -1,15 +1,24 @@
 # Basic Unix operations for bioinformatics
 
-## 0.1. How to connect to remote accounts
+## How to connect to Vera
 
-See [here](remote-hosts.md).
+### Linux or macOS:
+* Open Terminal
+* Run: `ssh CID@vera1.c3se.chalmers.se`  
+  * Your have to replace `CID` with your presonal CID username.
+  * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press Enter.
+* Enter your CID password (the password will not appear as you type for security reasons), then press `[Enter]`
 
-## 0.2. Keep track of what you're doing
+### Windows
+* Open PoweShell or Command Prompt 
+* Run: `ssh CID@vera1.c3se.chalmers.se`  
+  * Your have to replace `CID` with your presonal CID username.
+  * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press Enter.
+* Enter your CID password (the password will not appear as you type for security reasons), then press `[Enter]`
 
-Create a text file called `unix_exercises_FIRSTNAME_LASTNAME.txt`
-on your own computer or directly on the server (replacing first and second name with yours)
-and keep it open in a text editor (not Word).
-In there, paste the commands you use for the tasks below, e.g.
+## Keep track of what you're doing
+It is a good idea to keep track of the commands you run since they might be usefult in the fututre to understand how you got your results or you might need to re-run some steps of your analyses. The easiest way to do it is to copy-paste the commands you run (and that work the intended way) to a text file on your own computer or directly on Vera.   
+It should look something like this:
 
 ```markdown
 # Contents of current directory
@@ -18,188 +27,209 @@ In there, paste the commands you use for the tasks below, e.g.
 Output:
 file1 file2 ...
 ```
+Save the list of commands you use, **along with comments** about what you were doing and what results you got. This will help you trace your steps. The terminal does keep a history, but it's limited and you may want to reproduce results on a different computer.
+Later on, you can rerun commands by pasting them into the terminal or can change this file into a acript that runs all the commands.
 
-Use whatever format you like, but try to be consistent.
-
-### Why
-It's a good idea to save the list of commands you use, along with comments
-about what you were doing and what results you got. This will help trace your steps.
-The terminal does keep a history, but it's limited and you may want to reproduce results on a different computer.
-
-Later on, you can rerun commands by pasting them into the terminal.
-Even later on, you can change this file into a command script
-(similar to a program in R, MATLAB, etc) that runs all the commands inside.
-
-
-Use whatever text editor you prefer. If you're not sure,
-some good ones are [Atom](https://atom.io/),
-[Sublime](https://www.sublimetext.com/),
-or [Notepad++](https://notepad-plus-plus.org/), and gedit (on Linux).
-You can even use Notepad or TextEdit,
-but these are a pain for any non-trivial editing.
-
-**Avoid Word** though. It insists on replacing some characters
-with visually similar versions that are not understood by the Unix commands.
-
-If you want to work directly on the server, you can connect from a second terminal window.
-In one terminal window you can keep an open `nano`, where you write down your solutions. 
-And in the other you would test out your commands.
-Alternatively, you can write everyting on your laptop, then later paste the text into nano on the server.
-
-Keep in mind that the *homework should be handed in from the server* however 
-(more on this in the Git tutorial).
-
-
-## 0.3. Quick note on command syntax for beginners
-
-Keep in mind that spelling
-and spacing is crucially important. Generally, commands have the structure
-
-```bash
-command -option --option-with-long-name ARGUMENTS
-```
-
-Note the spaces separating the different elements.
-Generally it's not important how many spaces there are.
-
-Compare this with how you would write a command in a language like R or MATLAB:
-
-```c
-command(option, option_with_long_name, ARGUMENTS)
-```
-
-* *Arguments* are the things on which you issue the command on (e.g. files, directories). E.g. `fix all_problems.txt` (not a real command :) )
-* *Options* or *"flags"* are parameters that control the command's behaviour.
-  Multiple options can usually be written together if they don't require
-  values. E.g. `command -abcd -e 3` (`-e` is not chained since it takes the numerical value).
-  Going back to our comparison with other languages, something like this would look like `command(a, b, c, d, e = 3)` in e.g. R or Python.
-* *Long options names* are often alternatives for one-letter options, to ease
-  remembering/readability. Some options only have long names (usually the infrequently used).
-
-You can get information on the various options by running `command --help`
-(will print info in the terminal)  or `man command`
-(will load the manual page - move up/down with arrow keys, exit by pressing `q`)
-
-To issue a previous command, press the up arrow key to scroll
-back through the command history until you reach it.
-Press down to get back to the "present"
-
-**Some words of caution**
-
-* Unix environments (including macOS) are *case sensitive*, meaning
-  `command` and `Command` are different things. Most commands have lower case names.
-* Careful not to separate an option from its `-` sign. The command will understand
-  it got 2 separate options.
-* Also be careful that you actually use a minus sign (like you have on the keyboard).
-  Some text processors like Word replace minus with a hyphen (a longer horizontal bar).
-  While they look the same, programs ultimately only care about
-  the numerical encoding of these symbols, so they will complain.
-
-## 0.4. Managing directories
-
-As you may have noticed there is no specific directories other then your home directory when you first log on to your server account.
-You thus need to create the directories that you want to structure your projects in.
-
-You can create a new directory with the command mkdir [Directory-name]
-
-If you for example is in your home directory and want to create the Documents directory you would run the command `mkdir Documents`
-
-If you at some point make a mistake or for other reasons want to rename either a file or a directory you can do that with the
-command mv [Origin-File] [Target-File]. Thus, if you want to rename File1.txt to File2.txt you would type `mv File1.txt File2.txt
-
-The mv command can also be used to move files or directories to new locations, mv [Original-location] [Target-location].
-For instance, if file1.txt is located in your home directory and you want to move it to your newly created directory Documents
-You would use the command `mv file1.txt Documents/file1.txt`
-
-If you want to delete files or directories you can use the command rm [File].
-If you want to delete a directory you need to include the option -r.
-the -r option will make rm delete all the files and other directories recursively in the specified directory.
-
-**Note**
-There is no "bin" directory that deleted files will go to as a first deletion like in windows and MacOS when using rm.
-  
-## 1. Managing files
-
-**Note**
-Here, we'll use ALL_CAPS words to mean placeholders for the actual things to write.
-
-0. Start off by fetching a copy of the data we'll be working with.
-
-Run these commands one at a time (i.e. a line at a time).
-Just paste these at the command prompt (the `$` sign).
-Everything following `#` on a line is a comment to the user and has no effect.
-You don't need to actually run those.
-
-```bash
-# Download a reference yeast genome as compressed archive to the current directory
-wget https://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
-
-# Decompress the archive (will create a new diretory)
-tar -xzvf S288C_reference_genome_Current_Release.tgz
-```
-
-This will download and extract the data to a directory called
-`S288C_reference_genome_R64-2-1_20150113`
-
-1. List the contents of the current directory.
-   Command: `ls`
-
-2. List the files in the newly created directory.
-  Command: `ls DIRECTORY`. Try also using the `ls -l DIRECTORY`.
-  It will give a detailed vertical list of directory contents.
-
-3. Rename the `S288C_reference_genome_R64-2-1_20150113` to `data`.
-  Command: `mv SOURCE DESTINATION`
-  One "moves" the directory to the same place but with a new name.
-
-4. See where you are on the system by running `pwd` ("print working directory").
-  The tilde `~` you see next to the `$` sign is shorthand for your home directory.
-
-5. Move your location to the `data` directory with `cd data` (*Hint*: as you start typing the name, press `[Tab]` to make the terminal complete the name for you; if multiple files share the first letters, only the common first part will be suggested and you need to continue typing). Confirm where you are by running `pwd`.
-
-6. Inspect the contents of file `rna_coding_R64-2-1_20150113.fasta`. It's quite large, so you should use `less FILENAME` to view it. Press the arrow keys to move up/down and `q` to exit.
-
-7. Move back outside of `data` with `cd .. ` and make a directory called `results` 
-
-8. Create an empty file inside it called `counts.txt`. One quick (and safe) way is `touch results/counts.txt` This command normally just changes the time the file was last accessed ("touched") but will crate an empty file if it doesn't exist.
-
-9. Actually, let's timestamp the `results` directory for posterity. Rename it to `results_2020_01_28`
-
-
-## 2. Analyzing files
-
-1. Count the lines in `orf_coding_all_R64-2-1_20150113.fasta` and `orf_trans_all_R64-2-1_20150113.fasta`  (Hint: the `wc` command, run `man wc`)
-
-2. Count how many genes are in `orf_coding_all_R64-2-1_20150113.fasta`. Note that this counting relies on the structure of the file only (i.e. no biological interpretation of the data is needed). Use `grep` and/or `wc`, see `man grep` and `man wc` (or Google). `grep` is a standard (and very powerful) text search tool. The general usage is `grep "TEXT_PATTERN" FILE`. **Note!** Be very *careful* to use the quotation marks, to make sure `grep` interprets the pattern as text only, not as another command. 
-
-3. Save the number of genes in `results_2020_01_28/counts.txt` Use either `nano` to manually edit (see section below) or use the redirect symbol `>` to save the output of the previous command to the file, like `count_genes_command > results_2019_01_22/counts.txt` If you do the latter, you'll no longer also get output to the screen (this is on purpose).
-
-4. Count how many `tRNA` genes are in `rna_coding_R64-2-1_20150113.fasta` (Hint: `grep`)
-
-5. Save the results of command 4 to `counts.txt` by appending to the file using the `>>` (double `>`) redirect symbol, similar to before. Make sure to not replace existing content. Or use `nano`
-
-6. Inspect that `counts.txt` has the content you expect.
-  It's a small file so run `cat results_2020_01_28/counts.txt`.
-
-7. Make a copy of `counts.txt` called `counts.txt.orig`
-  (it should also be placed in the `results_2020_01_28` directory)
-
-### How to use the `nano` editor
+Notepad (windows) and TextEdit (Mac) come pre-installed but if you want a tool with more advanced functionalities, some good options are [Sublime Text](https://www.sublimetext.com/),
+or [Notepad++](https://notepad-plus-plus.org/).
+To work directly on the server, you can open a second terminal window
+with the [nano](https://www.nano-editor.org/dist/latest/nano.html) text editor.
 
 `nano` is a very simple text editor, available on most Unix distributions.
-To open a file with it simply run `nano the_file.txt`.
-If the file does not exist, an empty one will be created.
-
-The editor will run "full screen", hiding the command line.
+To open a new empty text file, simply run `nano my_new_text_file.txt`.
+The editor will run "full screen", hiding the command line, so open it in a separate window. 
 * To save, press `Ctrl-o`, then `[Enter]`.
 * To exit, press `Ctrl-x`
 
+Use whatever text editor you prefer but avoid using Word: it insists on replacing some characters
+with visually similar versions that are not understood by the Unix commands. This means that pasting your saved commands into the terminal to re-run some steps of your analyses mught not work.
+
+## Quick note on commands and syntax
+
+```bash
+command -option x --option-with-long-name ARGUMENTS
+```
+* **Spacing** is important, note the spaces separating the different elements. 
+* **Arguments** are the things on which you issue the command on (e.g. files, directories). 
+* **Options** (also called **flags**) are parameters that control the command's behaviour.
+  * Multiple options can usually be written together if they don't require
+  values.   
+  Example: `command -abcd -e 3` in this command the `-e` is not chained since it takes the numerical value 3.
+  * Careful not to separate an `option` from its `-` sign, the command will interpret it as 2 separate options.
+  * Also be careful that you actually use a minus sign. Some text processors like Word replace minus with a hyphen (a longer horizontal bar). While they look the same, programs ultimately only care about
+  the numerical encoding of these symbols, so they will complain.
+* **Long options names** are often alternatives for one-letter options, to ease
+  remembering/readability. Some options only have long names (usually the infrequently used).
+* Unix environments are *case sensitive*, meaning
+  `command` and `Command` are different things. Most commands have lower case names.
+
+You can get information on the various options by running `command --help` which will print the info in the terminal or `man command` which will load the manual page. You can move up/down with arrow keys and exit by pressing `q`.
+
+You can use the the up arrow key to scroll
+back through your **command history**. If you want to re-run a comman you ran proviously, press the arrow up key until you reach it. Press the arrow down key to get back to the "present".
+
+## Files and directories
+The Unix file system has a hierarchical structure and it is organized as an inverted tree: 
+* The root directory is at the top of the tree
+* Files and directories (containing files and/or subdirectories) branch out from the root. 
+
+Files and directories can be accessed through their: 
+* Absolute path = full path from the root directory.  
+`/home/user/documents/bioinformatics/some_sequences.fasta`
+
+* Relative Path = path relative to the current directory.  
+`/bioinformatics/some_sequences.fasta` if I am currently in the `documents` directory
+
+### Some commands to navigate the file system
+* To print the full path to the current **working directory** you use the command
+  ```bash
+  pwd
+  ```
+  Especially at the beginning, it can be easy to "get lost" in the file system, `pwd` is an easy way to check where you are.
+
+
+* To **list** files and directories in the current directory run
+  ```bash
+  ls
+  ```
+
+* To **change** the current directory you need to provide the path to the new directory.
+  ```bash
+  cd path/to/directory
+  ```
+  If you just want to move one step up in the file system you can type:
+  ```bash
+  cd ..
+  ```
+
+* To **create a new directory** you use the command: 
+  ```bash
+  mkdir DIRECTORY_NAME
+  ```
+  and to **create a new empty file** the command:
+  ```bash
+  touch FILE_NAME
+  ```
+  If for example you are in your home directory and want to create a *documents* directory, you would run the command `mkdir documents`. Then, to create an empty text file called *my_file.txt* in the *documents* directory, you would run the command `touch documents/my_file.txt`
+
+* To **move** a file (or a directory) to a new location, you use the `mv` command: 
+  ```bash
+  mv PATH/TO/ORIGINAL/LOCATION PATH/TO/NEW/LOCATION
+  ```
+  For example, if you want to move  *my_file.txt* from the *documents* diretory to the *homework* directory, you would use the command `mv documents/my_file.txt homework/`
+
+* The mv command can also be used to **rename** a file:
+  ```bash
+  mv ORIGINAL_FILE_NAME NEW_FILE_NAME
+  ```
+* To **delete** files can use the `rm` command
+  ```bash
+  rm my_file.txt
+  ```
+  If you want to delete a directory you need to add the -r flag.
+  ```bash
+  rm -d homework/
+  ```
+  The `-r` option will make `rm` delete all the files and other directories recursively in the specified directory. 
+
+  **The `rm` command removes a files and directories without any additional warning!**
+
+# Tutorial
+* In this tutorial ALL_CAPS words are used as placeholders for things you need to write, you should therefore replace them with your text.
+* Connect to Vera (if you haven't already).
+* Open a text editor to save your commands (this is not compulsory but your future self will be thankful you did)
+
+After connecting to Vera, make sure you are in the right place by running `pwd`. You should see: 
+```bash
+/cephyr/users/your_username/Vera
+```
+Make a directory for this tutorial and move into it:
+```bash
+mkdir unix_tutorial
+cd unix_tutorial
+```
+If you run `pwd` you should see that the path has changed to `/cephyr/users/your_username/Vera/unix_tutorial`
+
+Now you are ready to download a copy of the data we'll be working with. Run these commands one at a time (i.e. one line at a time) by pasting them after the command prompt (the `$` sign).
+Everything following `#` on a line is a comment to the user and has no effect, so you don't need to run those.
+
+```bash
+# Download a reference yeast genome as compressed archive to the current directory
+wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
+
+# Decompress the archive (will create a new diretory)
+tar -xzvf S288C_reference_genome_Current_Release.tgz
+
+# Remove the compressed archive
+rm S288C_reference_genome_Current_Release.tgz
+```
+
+The two commands you just ran downloaded and extracted the data to a directory called
+`S288C_reference_genome_R64-5-1_20240529`.
+
+1. List the content of the current directory using `ls`
+
+2. List the files in the newly created directory with `ls DIRECTORY`. Replace `DIRECTORY` with the actual name of the directory. It is quite a long name but if you start to type it and then press `[TAB]`, the terminal will complete the name for you.  
+*If multiple files or directories share the first letters, only the common first part will be suggested. Continue typing and then press `[Tab]` again.*
+3. Try also using the `ls -l DIRECTORY`, it will give a detailed vertical list of directory contents which is easier to read.
+
+4. Rename the `S288C_reference_genome_R64-5-1_20240529` diretory to `data` using the `mv` command.  
+  It will *"move"* the directory to the same place but with a new name: `mv OLD_NAME NEW_NAME`  
+  *Don't forget to use `[TAB]`!*  
+  
+5. Check that the directory has been correctly renamed using `ls`
+
+6. Move into the `data` directory with `cd data` and confirm where you are by running `pwd`.
+
+Now we want to inspect the content of file ` rna_coding_R64-5-1_20240529.fasta.gz`. Before we can do that, we need to unzip it using the command `gzip -d rna_coding_R64-5-1_20240529.fasta.gz`.   
+What does the -d flag mean? See if you can find out with  `gzip --help`.  
+
+Now that the file is decompressed (check with `ls`) we can finally view its content. 
+1. Use `head rna_coding_R64-5-1_20240529.fasta` to print the first 10 lines.
+2. Then use `less FILENAME` to show the file's content one screen at a time. Use the arrow keys to move up/down and `q` to exit.
+
+Move one step back in the files system (outside of `data`) with `cd .. ` (note the space between cd and ..) and check where you are using the `pwd` and `ls` commands. 
+
+You should now be back in the `unix tutorial` directory. In here, create a new directory called `results` using the `mkdir` command and a new empty file by running `touch counts.txt`. The `touch` command normally just changes the time the file was last accessed (*"touched"*), but will crate an empty file if it doesn't exist.
+
+Finally, move the `counts.txt` file into the `results` directory using `mv`.
+
+## 2. Analyzing files
+Move into the `data` directory (use `pwd` and `ls` if you are unsure of where you are) and unzip the `orf_coding_all_R64-5-1_20240529.fasta.gz` and 
+`orf_trans_all_R64-5-1_20240529.fasta.gz` files.  
+Use `ls -l` to check that the files names changed from `.fasta.gz` to `.fasta`.
+
+Now we are gonna count the lines in the two files using the `wc` command. Which flag should you use to print only the number of lines? (*Hint: `wc --help`*)
+
+We have counted how many lines are in the `orf_coding_all_R64-5-1_20240529.fasta` file, but the number of lines in a FASTA file does not correspond to the number of genes are in the file.  
+A sequence in FASTA format consists of:
+* One line starting with a ">" sign followed by a sequence identification code and, opionally, a description of the sequence.
+* One or more lines containing the sequence itself.
+
+Therefore, to count how many genes are in the `orf_coding_all_R64-5-1_20240529.fasta` file we need to count how many ">" are present in the file. To do this we can use `grep`, a very powerful text search tool.  
+The general usage is `grep "TEXT_PATTERN" FILE` to search for the text pattern in the specified file so try run `grep ">" orf_coding_all_R64-5-1_20240529.fasta`. What is the output of this command? 
+
+Look at the manual page of `grep` to find out which flag you need to add to your command to get a count of the selected lines.
+
+Instead of printig the number of genes to the screen (*standard output*), we want to save the number of genes to a file. You can use the the symbol `>` to **redirect** the output of the `grep command` to the `counts.txt` file you created before.
+```bash
+`YOUR_GREP_COMMAND > ../results/counts.txt`
+```
+The `..` in the file's path are used to take us one step back in the file system, where the results directory is located.
+You can take a look at the `counts.txt` file using `cat ../results/counts.txt `
+
+Using a similar approach as before, count how many tRNA genes are in `orf_coding_all_R64-5-1_20240529.fasta`. This time the text pattern we are looking for in the file is *"tRNA"*.  
+Save the results of the tRNA count to the same `counts.txt` file as before. Since the `counts.txt` file is not empty, you need to *append* the count to the file using `>>`.  
+If you mistakenly use `>` the original content of `counts.txt` will be overwritten by the new output, so make sure you use `>>` and not `>`. 
+
+Check that `counts.txt` has the content you expect using `cat`.
+
+Move back to your home directory by running `cd` with no argument.  
 
 ## 3. Working with text columns
 
-We'll be using another data set with gene expression data.
-Move back to your home directory (`cd` with no argument).
-Make a new directory for this exercise and change location to it.
+For this part of the tutorial we'll be using another data set with gene expression data.
+Check where you are (`pwd` and `ls`), then move into the `data` directory we created earlier and download the new datasets using the follwing commands:
 
 ```bash
 # gene experssion data (fold change)
@@ -209,165 +239,160 @@ wget https://web.archive.org/web/20130211035221/http://www.cbs.dtu.dk/courses/27
 wget https://web.archive.org/web/20170706124217/http://www.cbs.dtu.dk/courses/27619/ex1.acc
 ```
 
-The idea is to merge experimental result `ex1.dat` with the annotations from
-`ex1.acc`  Do this with the paste command:
+You should now have two new files: the experimental result `ex1.dat` and the annotations `ex1.acc`. 
+Take a quick look at them using `head`. 
+
+What we want to do is to merge the two files using the `paste` command:
 
 ```bash
-paste ex1.acc ex1.dat
+# Merge the two files and save the output to a new file
+paste ex1.acc ex1.dat > ../results/merged_files.txt
+
+# Look at the first ten lines of the new file
+head ../results/merged_files.txt
 ```
 
-What did the command do? 
-Inspect both files and compare with the output you got from `paste`
+What did the command do? Look at the manual page `paste --help` and compare with the output you got from `paste` with the original files.
 
 
 ## 4. Counting yeast-human orthologs
-
-First, move back to your home directory (`cd` with no argument), then
-make a new directory for this exercise and change location to it.
-Then download and decompress the EggNOG list of orthologous groups across Eukaryotes,
-as well as a table of taxonomic IDs:
+Check that you are in the `data` directory (if you are not, move there) and then download and decompress the EggNOG list of orthologous groups across Eukaryotes, as well as a table of taxonomic IDs:
 
 ```bash
 wget http://eggnog5.embl.de/download/eggnog_5.0/per_tax_level/2759/2759_members.tsv.gz
-gunzip 2759_members.tsv.gz
+gzip -d 2759_members.tsv.gz
 wget http://eggnog5.embl.de/download/eggnog_5.0/e5.taxid_info.tsv
 ```
 
-The file `2759_members.tsv` contains 6 columns (you can view it with `less -S`).
-Each row is an orthologous group.
-The 2nd column is the group ID and the 5th column contains the list of protein IDs contained in that group.
-The format of each protein ID is `Taxon_ID.Sequence_ID` (note the dot).
+In the file `2759_members.tsv`:
+* Each row is an orthologous group 
+* The 2nd column is the group ID
+* The 5th column contains the list of protein IDs contained in that group
+* The format of each protein ID is `Taxon_ID.Sequence_ID` (note the dot)
 
-We want to find all the groups that contain genes in both humans and yeast.
-There are multiple ways to do this. One way is to separately search for yeast and then human
+You can view the file with  `less -S 2759_members.tsv` (press `q` to exit).
+
+We want to find all the orthologous groups that contain genes in both humans and yeast.
+One way to do this is to separately search for yeast and then human
 and intersect the results.
 
-The TaxonID for *H. sapiens* == `9606` and for *Saccharomyces cerevisiae* == `4932`.
-We find this out by grepping in the taxonomic information table `e5.taxid_info.tsv` for "cerevisiae" and "sapiens".
+The first thing we need to do is to find the TaxonID for *H. sapiens* and *Saccharomyces cerevisiae*. We can do this by using `grep` to look for "cerevisiae" and "sapiens" in the taxonomic information table `e5.taxid_info.tsv`.
 
-For each of the two organisms, the process consists of:
-1. filtering in the lines that contain proteins found in the organism
-2. take that result and extract the orthologous group IDs for each of those lines
-3. sort this list (relevant later)
-4. save it to a file
+You should see that the TaxonID for *Homo sapiens* is 9606 and for *Saccharomyces cerevisiae* is 4932.
 
-To achieve this micropipeline, we shall chain a few commands using
-the pipe (`|`) redirector, which simply takes the output of one command and feeds
-it as input to the next.
+Then, for each of the two organisms, we need to:
+1. Extract the lines that contain proteins found in the organism using `grep`
+2. Take that result and extract the orthologous group IDs for each of those lines using `cut`
+3. Sort this list (relevant later) using `sort`
+4. Save it to a file using `>`
 
-The structure is `filter "TaxonID." | cut out column 2 | sort > RESULTS_FILE`.
-The actual commands for this are:
+To avoid creating intermediate files, we can chain the commands using
+the pipe `|` redirector to create a pipeline. The pipe simply takes the output of one command and feeds it directly as input to the next command. 
 
+The general structure of the pipeline will be: `GREP_COMMAND | CUT_COMMAND | SORT_COMMAND > RESULTS_FILE`
+
+### Step by step implementation 
+We start by taking all the lines that contain proteins found in *S. cerevisiae* by grepping for its TaxonID in the `2759_members.tsv` file. Run the following command, you can pipe (`|`) the output of the grep command into `less -S` for more user-friendly visualization.
 ```bash
-grep "4932." 2759_members.tsv | cut -f 2 | sort > groups_scerevisiae.txt
-grep "9606." 2759_members.tsv | cut -f 2 | sort > groups_hsapiens.txt
+grep "4932." 2759_members.tsv 
+```
+Why do we use the dot in the filtering?  
+The output is a list of all the orthologous groups that contain proteins found in *Saccharomyces cerevisiae*
+
+The next step is to extract the orthologous group IDs (second column) for each of those lines. To do this we use `cut` and with the `-f` flag we select the second column.  
+Since the output is quite long, we pipe it to `head`.
+```bash
+grep "4932." 2759_members.tsv | cut -f 2 | head
 ```
 
-Quickly inspect what a result file looks like: `less -S groups_hsapiens.txt`
-(the `-S` option disables word wrap - press left/right arrow keys to scroll horizontally).
+The only thing that is left to do now is to sort the list of orthologous group IDs and save it to a file.
+```bash
+grep "4932." 2759_members.tsv | cut -f 2 | sort > ../results/groups_scerevisiae.txt
+```
 
-**Question** Why did we use the dot in the filtering?
+Use the same approach for *Homo sapiens* (TaxonID: 9606) and create the `groups_hsapiens.txt` file.  
 
-Now time to produce the intersection of these two lists, since we want the groups
-that contain both human and yeast.
+Move to the `results` directory and take a look at the files using `head` or `less`.
 
-The `comm` command returns:
-- the elements only present in list 1
-- the elements only present in list 2
-- the *common* part of two *sorted* lists
+Since we want the groups that contain both human and yeast, we need to produce the intersection of these two lists. To archive this we use the `comm` command (have a look at the man page) which reads two files and returns: 
+- The elements only present in file 1
+- The elements only present in file 2
+- The *common* part of two *sorted* files
 
-We only care about the size of the intersectin, so we run
+We only care about the size of the intersection, so we run:
 
 ```bash
 comm -12 groups_hsapiens.txt groups_scerevisiae.txt | wc -l
 ```
 
-where `-12` inhibits the first 2 results and we pipe to `wc -l` (only counts lines).
+where `-12` suppresses the printing of column 1 and column 2 and `wc -l` only counts lines.
 
-**Bonus** One can get fancier, avoid intermediate files, and do all of the above in one go:
-
+***Bonus:** One can do all of the above in one go by feeding `comm` with two ad-hoc data streams as if they were files*
 ```bash
 comm -12 <(grep "4932." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_members.tsv | cut -f 2 | sort) | wc -l
 ```
-
-Here we're feeding `comm` with two ad-hoc data streams as if they were files.
-The pattern here is `<(command that yields text output)` which replaces the result files.
+*The pattern here is `<(command that yields text output)` which replaces the result files.*
 
 ## 5. Sequence Processing
+In the last part of this tutorial we will produce the complementary RNA sequence of a DNA string.
 
-### Produce the complementary RNA sequence of a DNA string
-
-For replacing single characters, one could use the `tr` (translate) tool like:
+For replacing single characters, one could use the `tr` (translate) command like:
 
 ```bash
 tr "A" "C" < FILE.fasta | less
 ```
-
-This will replace all occruences of "A" with "C" in *FILE.fasta* and shows
-contents on screen with `less`.
-We add the `<` before the file name since `tr` expects the actual contents, not
+This would replace all occruences of "A" with "C" in `FILE.fasta` and use `less` to show
+the content of the FASTA file on the screen.
+We use the `<` before the file name since `tr` expects the actual content of the file, not
 the file name. The `<` redirector feeds the content as a stream to `tr`.
-Normally, `tr` will print results to screen. So we redirect that output and
-pipe it (`|`) to `less` which will only show you a screen at a time. (exit by pressing `q`)
+Normally, `tr` will print results to screen so we can pipe the output to `less` which will only show you a screen at a time. 
 
 While useful for one-shot substitutions, this tool is a bit limited.
 If we were to use multiple `tr` runs for each nucleotide, given the complementary nature
-of the pairs, we would revert previous substitutions. We can't do it in one go with `tr` either.
+of the pairs, we would revert previous substitutions. Additionally we can't do it all in one go with `tr`.
 
-We're instead going to use a standard Unix tool called `sed` (stream editor).
-Like the name implies, it takes either a file or the output of another command
+For these reasons we're instead going to use another standard Unix tool called `sed` (stream editor).
+`sed` takes either a file or the output of another command
 and processes the text according to various rules.
-These rules can be very complex (it's a full programming language),
-but here's a simple use for it:
+
+For our purpose, we need something like this: 
 
 ```bash
-sed 'y/ACGT/UGCA/' FILE > FILE_RNA
+sed 'y/ACGT/UGCA/' FILE_DNA.fasta > FILE_RNA.fasta
 ```
-
-The sed command (between quotes) substitutes (`/y`)
-each letter in the first list (`ACGT`)
-with each corresponding letter in the second (`UGCA`), 
-individually (so `A` -> `U`, `C` -> `G`, etc.).
-This command is applied on FILE and, since `sed` outputs to screen by default,
+The *"y"* command in sed is used to map characters. It replaces each character in the first set (ACGT) with the corresponding character in the second set (UGCA), one-to-one. So in this case A becomes U, C becomes G, G becomes C and T becomes A.
+This command is applied on FILE_DNA.fasts and, since `sed` outputs to screen by default,
 we redirect the result to a new file.
 
-We can also make sed skip FASTA header lines with a slightly more complex
-(and less understandable) command:
+We can also make sed skip FASTA header lines with a slightly more complex command:
 
 ```bash
 sed '/^>/!y/ACGT/UGCA/' FILE.fasta > FILE_RNA.fasta
 ```
+The added part `/^>/!` is used to apply a condition to lines in the file:
+- `/^>/` matches lines starting with the > character (FASTA header lines).
 
-The first part (`/^>/!`) selects locations in the file. The exclamation mark
-makes it a negative, in the sense "please de-select these lines and don't process them".
-The hat `^` means beginning of line, so the inner part simply says lines starting with `>` which is how the FASTA header is marked.
+- `!` negates the match, meaning this command applies to all lines that *do not* start with >.
 
-**Task** Try this out on
-`S288C_reference_genome_R64-2-1_20150113/orf_coding_all_R64-2-1_20150113.fasta`
+Let's try this out on the fatsa file
+`orf_coding_all_R64-5-1_20240529.fasta` in the `data` directory and save the output in the `results` directory.
 
 
 ## 6. Bonus: Useful Commands
 
-These are not required for the homework but it's highly advised to be aware of them.
+These are not required for the homework but it's good to be aware of them.
 You can read about them online or by reading their documentation.
 
-* `man` (manual) gives the documentation for a given command (e.g. `man ls`)
-* most commands accept a `--help` and/or `-h` flag that gives brief instructions on using it
-
+* `man` (manual) gives the documentation for a given command (e.g. `man ls`).
+* most commands accept a `--help` and/or `-h` flag that gives brief instructions on their usage.
 * `scp` and `rsync` are commands that allow you to transfer files between computers. The second one is recommended (more flexible and generally has better performance)
-* `pushd` and `popd` are handy alternatives to `cd`. They manage a list of visited locations: `pushd DIR` takes you to that directory and `popd` (no argument) brings you back to your original location. You can use `pushd` however many times and `popd` will always be a "step back"
-* `find` is the command to use if searching for files by name. The syntax is a bit different than other tools: `find DIR -name PATTERN`
-* `ls -larth` is a useful way to use the list command: `-l` gives a detailed list, `-a` shows all files, even hidden ones, `-h` shows file sizes in human-readable format (i.e. 'KB', 'MB' instead of bytes), `-t` sorts by file modification time, `-r` is reveresed order, so that the most recent files are at the bottom, closest to your prompt (useful for long file lists)
+* `pushd` and `popd` are handy alternatives to `cd`.  
+They manage a list of visited locations: `pushd DIR` takes you to that directory and `popd` (no argument) brings you back to your original location. You can use `pushd` however many times and `popd` will always be a "step back".
+* `find` is the command to use if searching for files by name. 
+* `ls -larth` is a useful way to use the list command: `-l` gives a detailed list, `-a` shows all files, even hidden ones, `-h` shows file sizes in human-readable format (i.e. 'KB', 'MB' instead of bytes), `-t` sorts by file modification time, `-r` is reveresed order, so that the most recent files are at the bottom, closest to your prompt (useful for long file lists).
 
-* `column` allows displaying tablular files in nice, aligned columns, regardless of how columns are separated in the file (i.e. by `,`, `;`, tab). It's however slower than using processing commands like `cut`, `sed` etc. so it's recommended for small files or on `head`/`tail` of files
-
-* `[Ctrl]-R` enters reverse history search mode. Just start typing something close to a command you remember using before. The search will fuzzy match in the command history. Press `[Ctrl]-R` again to go to the next match (previously in time). Arrow keys allow you to edit the command and `[Enter]` to run it, like usual.
-
-It's also recommended to start using a more advanced text editor, either `vi` or `emacs`, and get reasonably comfortable with it. These have a steeper learning curve than `nano` but have high productivity gains, as they allow for advanced text processing commands and scripting. There are plenty of online tutorials for these, so try both out and see what makes more sense for you. `vi` is more likely to be installed on any given system, but its modal way of working (view mode/edit mode) can be confusing. 
-
-You can use these quick command references:
-* http://cheatsheetworld.com/programming/unix-linux-cheat-sheet/
-* https://www.git-tower.com/blog/command-line-cheat-sheet/
+* `column` allows displaying tablular files in nice, aligned columns, regardless of how columns are separated in the file (i.e. by `,`, `;`, tab).  
+It's however slower than using processing commands like `cut`, `sed` etc. so it's recommended for small files or on `head`/`tail` of files.
 
 
 ## 7. Homework
@@ -375,11 +400,10 @@ You can use these quick command references:
 The homework is posted [here](homework1.md)
 
 
-## Recommended Reading
+## Additional recommended Reading
 
-1. [The Unix Shell](https://swcarpentry.github.io/shell-novice/) from Software Carpentry Foundation
-2. [The Philosophy of UNIX Tools](unix-philosophy.md) - some motivation for command line work
-3. [Perl and Unix for Bioinformaticians](http://www.cbs.dtu.dk/courses/27619/) course from DTU (initial inspiration for this exercise)
+[The Unix Shell](https://swcarpentry.github.io/shell-novice/) from Software Carpentry Foundation  
+[The Philosophy of UNIX Tools](unix-philosophy.md) - some motivation for command line work
 
 
 
