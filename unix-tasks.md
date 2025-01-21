@@ -6,18 +6,18 @@
 * Open Terminal
 * Run: `ssh CID@vera1.c3se.chalmers.se`  
   * Your have to replace `CID` with your presonal CID username.
-  * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press Enter.
+  * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press `[Enter]`.
 * Enter your CID password (the password will not appear as you type for security reasons), then press `[Enter]`
 
 ### Windows
 * Open PoweShell or Command Prompt 
 * Run: `ssh CID@vera1.c3se.chalmers.se`  
   * Your have to replace `CID` with your presonal CID username.
-  * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press Enter.
+  * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press `[Enter]`.
 * Enter your CID password (the password will not appear as you type for security reasons), then press `[Enter]`
 
 ## Keep track of what you're doing
-It is a good idea to keep track of the commands you run since they might be usefult in the fututre to understand how you got your results or you might need to re-run some steps of your analyses. The easiest way to do it is to copy-paste the commands you run (and that work the intended way) to a text file on your own computer or directly on Vera.   
+It is a good idea to keep track of the commands you run since they might be usefult in the fututre to understand how you got your results or you might need to re-run some steps of your analyses. The easiest way to do it is to copy-paste the commands you run (and that work the intended way) to a text file on your own computer.   
 It should look something like this:
 
 ```markdown
@@ -30,11 +30,11 @@ file1 file2 ...
 Save the list of commands you use, **along with comments** about what you were doing and what results you got. This will help you trace your steps. The terminal does keep a history, but it's limited and you may want to reproduce results on a different computer.
 Later on, you can rerun commands by pasting them into the terminal or can change this file into a acript that runs all the commands.
 
-Notepad (windows) and TextEdit (Mac) come pre-installed but if you want a tool with more advanced functionalities, some good options are [Sublime Text](https://www.sublimetext.com/),
+Notepad (windows) and TextEdit (mac) come pre-installed, but if you want a tool with more advanced functionalities some good options are [Sublime Text](https://www.sublimetext.com/),
 or [Notepad++](https://notepad-plus-plus.org/).
-To work directly on the server, you can open a second terminal window
-with the [nano](https://www.nano-editor.org/dist/latest/nano.html) text editor.
 
+If you want work directly on the server, you can open a second terminal window
+with the [nano](https://www.nano-editor.org/dist/latest/nano.html) text editor.  
 `nano` is a very simple text editor, available on most Unix distributions.
 To open a new empty text file, simply run `nano my_new_text_file.txt`.
 The editor will run "full screen", hiding the command line, so open it in a separate window. 
@@ -66,7 +66,7 @@ command -option x --option-with-long-name ARGUMENTS
 You can get information on the various options by running `command --help` which will print the info in the terminal or `man command` which will load the manual page. You can move up/down with arrow keys and exit by pressing `q`.
 
 You can use the the up arrow key to scroll
-back through your **command history**. If you want to re-run a comman you ran proviously, press the arrow up key until you reach it. Press the arrow down key to get back to the "present".
+back through your command history. If you want to re-run a comman you ran proviously, press the arrow up key until you reach it. Press the arrow down key to get back to the "present".
 
 ## Files and directories
 The Unix file system has a hierarchical structure and it is organized as an inverted tree: 
@@ -78,17 +78,17 @@ Files and directories can be accessed through their:
 `/home/user/documents/bioinformatics/some_sequences.fasta`
 
 * Relative Path = path relative to the current directory.  
-`/bioinformatics/some_sequences.fasta` if I am currently in the `documents` directory
+`/bioinformatics/some_sequences.fasta` if you are in the `documents` directory.
 
 ### Some commands to navigate the file system
-* To print the full path to the current **working directory** you use the command
+* Print the full path to the current **working directory** 
   ```bash
   pwd
   ```
   Especially at the beginning, it can be easy to "get lost" in the file system, `pwd` is an easy way to check where you are.
 
 
-* To **list** files and directories in the current directory run
+* **List** files and directories in the current directory
   ```bash
   ls
   ```
@@ -102,25 +102,25 @@ Files and directories can be accessed through their:
   cd ..
   ```
 
-* To **create a new directory** you use the command: 
+* To **Create a new directory** you use the command: 
   ```bash
-  mkdir DIRECTORY_NAME
+  mkdir directory_name
   ```
   and to **create a new empty file** the command:
   ```bash
-  touch FILE_NAME
+  touch file_name
   ```
-  If for example you are in your home directory and want to create a *documents* directory, you would run the command `mkdir documents`. Then, to create an empty text file called *my_file.txt* in the *documents* directory, you would run the command `touch documents/my_file.txt`
+  If you are in your home directory and want to create a *documents* directory, you would run the command `mkdir documents`. Then, to create an empty text file called *my_file.txt* in the *documents* directory, you would run the command `touch documents/my_file.txt`
 
 * To **move** a file (or a directory) to a new location, you use the `mv` command: 
   ```bash
-  mv PATH/TO/ORIGINAL/LOCATION PATH/TO/NEW/LOCATION
+  mv path/to/original/location path/to/new/location
   ```
   For example, if you want to move  *my_file.txt* from the *documents* diretory to the *homework* directory, you would use the command `mv documents/my_file.txt homework/`
 
 * The mv command can also be used to **rename** a file:
   ```bash
-  mv ORIGINAL_FILE_NAME NEW_FILE_NAME
+  mv old_file_name new_file_name
   ```
 * To **delete** files can use the `rm` command
   ```bash
@@ -132,12 +132,13 @@ Files and directories can be accessed through their:
   ```
   The `-r` option will make `rm` delete all the files and other directories recursively in the specified directory. 
 
-  **The `rm` command removes a files and directories without any additional warning!**
+  The `rm` command removes files and directories **without any additional warning!**
 
 # Tutorial
+Before you start:
 * In this tutorial ALL_CAPS words are used as placeholders for things you need to write, you should therefore replace them with your text.
 * Connect to Vera (if you haven't already).
-* Open a text editor to save your commands (this is not compulsory but your future self will be thankful you did)
+* Open a text editor to save your commands (not compulsory but recommended)
 
 After connecting to Vera, make sure you are in the right place by running `pwd`. You should see: 
 ```bash
@@ -150,7 +151,7 @@ cd unix_tutorial
 ```
 If you run `pwd` you should see that the path has changed to `/cephyr/users/your_username/Vera/unix_tutorial`
 
-Now you are ready to download a copy of the data we'll be working with. Run these commands one at a time (i.e. one line at a time) by pasting them after the command prompt (the `$` sign).
+Now you are ready to download a copy of the data we'll be working with. Run these commands one at a time (i.e. one line at a time) by pasting them after the command prompt (the `$` sign).  
 Everything following `#` on a line is a comment to the user and has no effect, so you don't need to run those.
 
 ```bash
@@ -167,7 +168,7 @@ rm S288C_reference_genome_Current_Release.tgz
 The two commands you just ran downloaded and extracted the data to a directory called
 `S288C_reference_genome_R64-5-1_20240529`.
 
-1. List the content of the current directory using `ls`
+1. List the content of the current directory using `ls`.
 
 2. List the files in the newly created directory with `ls DIRECTORY`. Replace `DIRECTORY` with the actual name of the directory. It is quite a long name but if you start to type it and then press `[TAB]`, the terminal will complete the name for you.  
 *If multiple files or directories share the first letters, only the common first part will be suggested. Continue typing and then press `[Tab]` again.*
@@ -177,12 +178,12 @@ The two commands you just ran downloaded and extracted the data to a directory c
   It will *"move"* the directory to the same place but with a new name: `mv OLD_NAME NEW_NAME`  
   *Don't forget to use `[TAB]`!*  
   
-5. Check that the directory has been correctly renamed using `ls`
+5. Check that the directory has been correctly renamed using `ls`.
 
 6. Move into the `data` directory with `cd data` and confirm where you are by running `pwd`.
 
-Now we want to inspect the content of file ` rna_coding_R64-5-1_20240529.fasta.gz`. Before we can do that, we need to unzip it using the command `gzip -d rna_coding_R64-5-1_20240529.fasta.gz`.   
-What does the -d flag mean? See if you can find out with  `gzip --help`.  
+Now we want to inspect the content of file `rna_coding_R64-5-1_20240529.fasta.gz`. Before we can do that, we need to unzip it using the command `gzip -d rna_coding_R64-5-1_20240529.fasta.gz`.   
+What does the -d flag mean? See if you can find out with `gzip --help`.  
 
 Now that the file is decompressed (check with `ls`) we can finally view its content. 
 1. Use `head rna_coding_R64-5-1_20240529.fasta` to print the first 10 lines.
@@ -190,7 +191,7 @@ Now that the file is decompressed (check with `ls`) we can finally view its cont
 
 Move one step back in the files system (outside of `data`) with `cd .. ` (note the space between cd and ..) and check where you are using the `pwd` and `ls` commands. 
 
-You should now be back in the `unix tutorial` directory. In here, create a new directory called `results` using the `mkdir` command and a new empty file by running `touch counts.txt`. The `touch` command normally just changes the time the file was last accessed (*"touched"*), but will crate an empty file if it doesn't exist.
+You should now be back in the `unix tutorial` directory. In here, create a new directory called `results` using the `mkdir` command and a new empty file with the command `touch counts.txt`. The `touch` command normally just changes the time the file was last accessed (*"touched"*), but will crate an empty file if it doesn't exist.
 
 Finally, move the `counts.txt` file into the `results` directory using `mv`.
 
@@ -219,8 +220,8 @@ The `..` in the file's path are used to take us one step back in the file system
 You can take a look at the `counts.txt` file using `cat ../results/counts.txt `
 
 Using a similar approach as before, count how many tRNA genes are in `orf_coding_all_R64-5-1_20240529.fasta`. This time the text pattern we are looking for in the file is *"tRNA"*.  
-Save the results of the tRNA count to the same `counts.txt` file as before. Since the `counts.txt` file is not empty, you need to *append* the count to the file using `>>`.  
-If you mistakenly use `>` the original content of `counts.txt` will be overwritten by the new output, so make sure you use `>>` and not `>`. 
+Save the results of the tRNA count to the same `counts.txt` file as before. Since the `counts.txt` file is not empty, you need to **append** the count to the file using `>>`.  
+If you mistakenly use `>`, the original content of `counts.txt` will be overwritten by the new output so make sure you use `>>` and not `>`. 
 
 Check that `counts.txt` has the content you expect using `cat`.
 
@@ -265,10 +266,10 @@ wget http://eggnog5.embl.de/download/eggnog_5.0/e5.taxid_info.tsv
 ```
 
 In the file `2759_members.tsv`:
-* Each row is an orthologous group 
-* The 2nd column is the group ID
-* The 5th column contains the list of protein IDs contained in that group
-* The format of each protein ID is `Taxon_ID.Sequence_ID` (note the dot)
+* Each row is an orthologous group. 
+* The 2nd column is the group ID.
+* The 5th column contains the list of protein IDs contained in that group.
+* The format of each protein ID is `Taxon_ID.Sequence_ID` (note the dot).
 
 You can view the file with  `less -S 2759_members.tsv` (press `q` to exit).
 
@@ -289,15 +290,17 @@ Then, for each of the two organisms, we need to:
 To avoid creating intermediate files, we can chain the commands using
 the pipe `|` redirector to create a pipeline. The pipe simply takes the output of one command and feeds it directly as input to the next command. 
 
-The general structure of the pipeline will be: `GREP_COMMAND | CUT_COMMAND | SORT_COMMAND > RESULTS_FILE`
+The general structure of the pipeline will be:  
+`GREP_COMMAND | CUT_COMMAND | SORT_COMMAND > RESULTS_FILE`
 
 ### Step by step implementation 
-We start by taking all the lines that contain proteins found in *S. cerevisiae* by grepping for its TaxonID in the `2759_members.tsv` file. Run the following command, you can pipe (`|`) the output of the grep command into `less -S` for more user-friendly visualization.
+We start by taking all the lines that contain proteins found in *S. cerevisiae* by grepping for its TaxonID in the `2759_members.tsv` file. Run the following command: 
 ```bash
 grep "4932." 2759_members.tsv 
 ```
-Why do we use the dot in the filtering?  
-The output is a list of all the orthologous groups that contain proteins found in *Saccharomyces cerevisiae*
+You can pipe (`|`) the output of the grep command into `less -S` for more user-friendly visualization. The output is a list of all the orthologous groups that contain proteins found in *Saccharomyces cerevisiae*
+
+**Question:** Why do we use the dot in the filtering?  
 
 The next step is to extract the orthologous group IDs (second column) for each of those lines. To do this we use `cut` and with the `-f` flag we select the second column.  
 Since the output is quite long, we pipe it to `head`.
@@ -310,7 +313,7 @@ The only thing that is left to do now is to sort the list of orthologous group I
 grep "4932." 2759_members.tsv | cut -f 2 | sort > ../results/groups_scerevisiae.txt
 ```
 
-Use the same approach for *Homo sapiens* (TaxonID: 9606) and create the `groups_hsapiens.txt` file.  
+**Task:** Use the same approach for *Homo sapiens* (TaxonID: 9606) and create the `groups_hsapiens.txt` file.  
 
 Move to the `results` directory and take a look at the files using `head` or `less`.
 
@@ -325,8 +328,8 @@ We only care about the size of the intersection, so we run:
 comm -12 groups_hsapiens.txt groups_scerevisiae.txt | wc -l
 ```
 
-where `-12` suppresses the printing of column 1 and column 2 and `wc -l` only counts lines.
-
+In this command `-12` suppresses the printing of column 1 and column 2 and `wc -l` only counts lines.
+___
 ***Bonus:** One can do all of the above in one go by feeding `comm` with two ad-hoc data streams as if they were files*
 ```bash
 comm -12 <(grep "4932." 2759_members.tsv | cut -f 2 | sort) <(grep "9606." 2759_members.tsv | cut -f 2 | sort) | wc -l
@@ -360,7 +363,7 @@ For our purpose, we need something like this:
 ```bash
 sed 'y/ACGT/UGCA/' FILE_DNA.fasta > FILE_RNA.fasta
 ```
-The *"y"* command in sed is used to map characters. It replaces each character in the first set (ACGT) with the corresponding character in the second set (UGCA), one-to-one. So in this case A becomes U, C becomes G, G becomes C and T becomes A.
+The *"y"* is used to map characters. It replaces each character in the first set (ACGT) with the corresponding character in the second set (UGCA), one-to-one. So in this case A becomes U, C becomes G, G becomes C and T becomes A.  
 This command is applied on FILE_DNA.fasts and, since `sed` outputs to screen by default,
 we redirect the result to a new file.
 
