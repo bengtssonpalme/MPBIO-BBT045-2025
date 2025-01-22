@@ -30,7 +30,7 @@ output:
 **Preliminaries**
 
 * Official documentation for the Vera cluster at C3SE can be found [here](https://www.c3se.chalmers.se/documentation/for_users/getting_started/how_to_login_to_vera/).
-* Introduction slides can be found [here](unix-intro.pdf).
+* Introduction slides can be found [here](Unix_intro.pdf).
 
 **Tutorial**
 
