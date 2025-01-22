@@ -37,7 +37,8 @@ output:
 * [Introduction to Unix](unix-tasks)
 
 **Homework**
-* [HW 1: Unix](homework1)
+
+* [HW 1: Unix](homework1)  
 * To be submitted on Canvas by January 29th.
 
 **Recommended Reading**
