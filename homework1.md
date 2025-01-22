@@ -1,44 +1,46 @@
-# Homework 1: Basic Unix operations for bioinformatics
+# Homework 1: Introduction to Unix for bioinformatics
+* Submission deadline: January 29th (on Canvas).
+* Write your **commands** and their **output** to a text file.
+* For each command make sure to add a **comment line** (starting with #) to shortly explain what it does.
+* Write your answers to the questions as comment lines.
 
-* Write your answers in the text file you've used to keep track of commands and output so far.
-* Use the repo you were assigned to and commit your file in there. Remember to also push.
-* For the homework tasks, make sure to explain shortly what each command and option in your solution does.
+**Notes:** 
+* Make sure to **save your work often** on the server and/or on your laptop. SSH connections to remote computers can be interrupted for many reasons (loss of Wi-Fi connection, computer going to sleep, network issues, server overload) and whatever has not been saved will be lost.
 
-**Note** Make sure to save your work often on the server and/or on your laptop. 
-SSH connections to remote computers like our exercise server can be interrupted for many reasons: 
-e.g. loss of Wi-Fi connection, computer going to sleep, network issues, server overload.
+* It's always a good idea to spend some time **inspecting your data**: 
+   * What is the structure of the data? 
+   * What are the possible values for a given variable of interest?
+   * What type of unique identifiers or numerical codes does the data use? 
+   * Is the formatting consistent?
 
-*Advice*: It's always a good idea to spend some time inspecting your data.
-What are the possible values for a given variable of interest?
-Is data represented in a uniform way? 
-What type of unique identifiers or numerical codes does the data use? 
-Is the formatting consistent?
-etc.
+   You don't need to answer these questions for the homework, they are just intended to be used as guidelines when working with new data. 
 
-**Testing your answers before hand-in** You should test your answers before handing in your solutions. You do this by writing your answers down in a separate file and running the command:
-`/cephyr/NOBACKUP/groups/bbt045_2024/test/test_unix.sh <your_results_file>`
-Configure your results file so that you have the answers on separate lines. Only put the numerical answers on the lines and when answers are fractions round to 2 significant digits. Solutions for Task 3 a, b and c go on separate lines.  
+
+* If the files are in the compressed format (`.gz`), remember to **decompress** them (`gzip -d`) before starting the exercises. 
+* *Task 1* and *task 2* will use the same data that you downloaded for the tutorial. 
+* You can do this homework in the same directory where you did the tutorial or you can create a new directory in `/cephyr/users/your_username/Vera/`.
 
 ## Tasks:
 
-1. How many genes are on chromosome II in `saccharomyces_cerevisiae_R64-2-1_20150113.gff` ?
-   Note that the chromosome column is followed by a TAB charachter, which is encoded as `\t`. Here we're primarily concerned with protein-coding genes (just "gene") so you can ignore other things like "tRNA_gene" (though either count is fine).
+1. How many protein-coding genes are on chromosome II in `saccharomyces_cerevisiae_R64-5-1_20240529.gff`?  
+   * Here we're interested in protein-coding genes, which are recorded as just "gene". You can ignore other things like "tRNA_gene" etc.  
 
-2. Count GC content in `S288C_reference_sequence_R64-2-1_20150113.fsa`. You can do the final part (i.e. calculating a percentage) by hand or using Unix tools like `expr` or `bc`. The important thing is to get the base counts. **Note** that the sequence files may contain characters like `N` ("nucleobase" - basically unknown) or lowercase letters in the sequence. The `N`s you can ignore and the lowercase letters you can either convert to uppercase or ignore (they're not that many)
+2. Calculate the GC-content in yeast strain S288C. The fasta file is  `S288C_reference_sequence_R64-5-1_20240529.fsa`.   
+   * The GC-content is the percentage of nitrogenous bases in a DNA or RNA molecule that are either G or C.
+   * You can calculate the percentage by hand or using Unix tools like `expr` or `bc`. The important thing is to get the base counts.   
+   * Note that sequence files may contain characters like "N" ("nucleobase" - basically unknown) or lowercase letters. Ignore the "N"s and convert the lowercase letters to uppercase.
 
-3. Download and decompress the ORFs of another strain (Y55) from
+3. Download and decompress the file containing the ORFs of the yeast strain Y55 from:  
    http://sgd-archive.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/archive/Y55_JRIF00000000_SGD_cds.fsa.gz
    
-   (Careful to use the right program to decompress - see in the exercises above which to use for the `.gz` format)
-
    Then:
 
-   a) compare GC content in this file with the value in task 7.2. above
-      (make sure you're not also counting letters in the headers)
+   1. Compare the GC content of the Y55 strain with the GC content of the of the S288C strain you calculated before.  
+   Which strain has the highest GC content?  
 
-   b) compare number of ORFs in this Y55 strain (basically all the enties in the Y55 file you downloaded since it only contains ORFs) 
-      with the number in the S288C reference genome (file `orf_coding_all_R64-2-1_20150113.fasta` we worked with in the exercises, When testing with the automated script return S288C-Y55)
+   2. Compare number of ORFs in the Y55 strain (all the enties in the `Y55_JRIF00000000_SGD_cds.fsa` file since it only contains ORFs) with the number of ORFs in the S288C reference genome (you should have downloaded the file `orf_coding_all_R64-5-1_20240529.fasta` during the tutorial).
 
-   c) count the common ORFs between this Y55 yeast strain and the S288C reference we
-      worked with in the exercises.
-      *Note*: Remove strain suffixes from names in the Y55 strain.
+   3. Count the common ORFs between the Y55 and the S288C strains.  
+      * You can download this file http://sgd-archive.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/Y55.README to take a look at which information is included in the header of the Y55 ORFs and its format. 
+      * *Hint 1:  You will need to extract the ORFs names for both strains. The ORF name is usually the first field in the FASTA header.* 
+      * *Hint 2: As you can see in the Y55.README file, the ORFs names in the `Y55_JRIF00000000_SGD_cds.fsa` file contain the strain name, it might be a good idea to remove it.*
