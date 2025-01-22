@@ -29,24 +29,21 @@ output:
 
 **Preliminaries**
 
-* If you are a Windows user download and install [Git-Bash](https://gitforwindows.org)
-* Please read this **first**: [How to connect to remote accounts](remote-hosts)
-* [Conda installation instructions](unix/conda_install)
+* Official documentation for the Vera cluster at C3SE can be found [here](https://www.c3se.chalmers.se/documentation/for_users/getting_started/how_to_login_to_vera/).
+* Introduction slides can be found [here](unix-intro.pdf).
 
-**Exercises**
+**Tutorial**
 
-* [Basic Unix operations for bioinformatics](unix-tasks)
+* [Introduction to Unix](unix-tasks)
 
-**Reading**
-
-* [Intro slides](unix-intro.pdf)
+**Homework**
+* [HW 1: Unix](homework1)
+* To be submitted on Canvas by January 29th.
 
 **Recommended Reading**
 
-* [The Unix Shell](https://swcarpentry.github.io/shell-novice/) tutorial from the Software Carpentry Foundation
-* Unix commands cheat sheets:
-  * https://www.git-tower.com/blog/command-line-cheat-sheet/
-  * http://cheatsheetworld.com/programming/unix-linux-cheat-sheet/
+* The Unix Shell tutorial from the Software Carpentry Foundation: https://swcarpentry.github.io/shell-novice/
+* Unix commands [cheat sheet](https://www.git-tower.com/blog/command-line-cheat-sheet/)
 * [Unix philosophy](unix-philosophy)
 * [Regular expression learning resources](regex)
 
