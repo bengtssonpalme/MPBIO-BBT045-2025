@@ -10,7 +10,7 @@
 * Enter your CID password (the password will not appear as you type for security reasons), then press `[Enter]`
 
 ### Windows
-* Open PowerShell 
+* Open Windows Terminal or PowerShell 
 * Run: `ssh CID@vera1.c3se.chalmers.se`  
   * Your have to replace `CID` with your presonal CID username.
   * If it’s your first time connecting, you’ll be prompted to accept the server’s fingerprint. Type yes and press `[Enter]`.
@@ -132,6 +132,9 @@ Files and directories can be accessed through their:
 
   The `rm` command removes files and directories **without any additional warning!**
 
+## Downloading the datasets
+To download the datasets we need for this tutorial we will use `wget`, a command-line utility used to download files and datasets from the web. If `wget` is not working, you can copy the files from `/cephyr/NOBACKUP/groups/bbt045_2025/Resoursec/Unix/`.
+
 # Tutorial
 Before you start:
 * In this tutorial ALL_CAPS words are used as placeholders for things you need to write, you should therefore replace them with your text.
@@ -150,15 +153,11 @@ cd unix_tutorial
 ```
 If you run `pwd` you should see that the path has changed to `/cephyr/users/your_username/Vera/unix_tutorial`
 
-Now you are ready to get a copy of the data we'll be working with. Normally you would have to download the data using `wget`, but we have already done it for you, so all you need to do is copy them from `/cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix`. 
-
-Run the following command one at a time (one line at the time) by pasting them after the command prompt (the `$` sign). Everything following `#` on a line is a comment and has no effect, so you don't need to run those. 
+Now you are ready to **download the dataset** we'll be working with. Run the following commands one at a time (i.e. one line at a time) by pasting them after the command prompt (the `$` sign) and pressing `[ENTER]`. Everything following the `#` on a line is a comment and has no effect, so you don't need to run those. 
 
 ```bash 
-# Copy the data
-# Note the dot (.) after the file path. It means that the file will be 
-# copied to the current working directory (the directory where you are now)
-cp /cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix/S288C_reference_genome_Current_Release.tgz .
+# Download the data
+wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
 
 # Decompress the archive (will create a new diretory)
 tar -xzvf S288C_reference_genome_Current_Release.tgz
@@ -232,15 +231,15 @@ Check that `counts.txt` has the content you expect using `cat`.
 
 ## 3. Working with text columns
 
-For this part of the tutorial we'll be using another data set with gene expression data.
+For this part of the tutorial we'll be using another data set with gene expression data. Check where you are (`pwd` and `ls`), then move into the `data` directory we created earlier and download the new datasets.
+
 ```bash
-# Copy the dataset to your data directory 
-cp /cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix/ex1.* unix_tutorial/data/
+# gene experssion data (fold change)
+wget https://web.archive.org/web/20130211035221/http://www.cbs.dtu.dk/courses/27619/ex1.dat
+
+# annotation
+wget https://web.archive.org/web/20170706124217/http://www.cbs.dtu.dk/courses/27619/ex1.acc
 ```
-
-The `*` we used in the file path is a **wildcard character** that matches zero or more characters in file or directory names. This means that `ex1.*` matches any file whose name starts with `ex1.` followed by any extension (or no extension).
-
-Check where you are (`pwd` and `ls`), then move into the `data` directory we created earlier and check how many files that start with `ex1.` you have copied. 
 
 You should now have two new files: the experimental result `ex1.dat` and the annotations `ex1.acc`. 
 Take a quick look at them using `head`. 
@@ -259,12 +258,12 @@ What did the command do? Look at the manual page `paste --help` and compare the 
 
 
 ## 4. Counting yeast-human orthologs
-Check that you are in the `data` directory (if you are not, move there) and then copy the EggNOG list of orthologous groups across Eukaryotes, as well as a table of taxonomic IDs:
+Check that you are in the `data` directory (if you are not, move there) and then download the EggNOG list of orthologous groups across Eukaryotes, as well as a table of taxonomic IDs:
 
 ```bash
-cp /cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix/2759_members.tsv.gz .
+wget http://eggnog5.embl.de/download/eggnog_5.0/per_tax_level/2759/2759_members.tsv.gz
 gzip -d 2759_members.tsv.gz
-cp /cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix/e5.taxid_info.tsv .
+wget http://eggnog5.embl.de/download/eggnog_5.0/e5.taxid_info.tsv
 ```
 
 In the file `2759_members.tsv`:

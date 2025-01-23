@@ -18,6 +18,7 @@
 
 * If the files are in the compressed format (`.gz`), remember to **decompress** them (`gzip -d`) before starting the exercises. 
 * *Task 1* and *task 2* will use the same data as the tutorial. 
+* For *task 3* you will download a new dataset. If wget isn’t working, you can copy the file from `/cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix/`
 * You can do this homework in the same directory where you did the tutorial or you can create a new directory in `/cephyr/users/your_username/Vera/`.
 
 ## Tasks:
@@ -30,7 +31,9 @@
    * You can calculate the percentage by hand or using Unix tools like `expr` or `bc`. The important thing is to get the base counts.   
    * Note that sequence files may contain characters like "N" ("nucleobase" - basically unknown) or lowercase letters. Ignore the "N"s and convert the lowercase letters to uppercase.
 
-3. Copy the file `/cephyr/NOBACKUP/groups/bbt045_2025/Resources/Unix/Y55_JRIF00000000_SGD_cds.fsa.gz` and decompress it. This file contains the ORFs of the yeast strain Y55.
+3. Download and decompress the ORFs of another yeast strain (Y55) from:
+ http://sgd-archive.yeastgenome.org/sequence/strains/Y55/Y55_SGD_2015_JRIF00000000/archive/Y55_JRIF00000000_SGD_cds.fsa.gz
+
    Then:
 
    1. Compare the GC content of the Y55 strain with the GC content of the of the S288C strain you calculated before.  
