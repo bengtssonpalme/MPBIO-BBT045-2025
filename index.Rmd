@@ -79,7 +79,14 @@ output:
 
 ## Tutorial: Intro to Python programming for data analysis
 
-[Self-study notebook](python_for_data_analysis/intro_python_data_analysis.html)
+**Tutorial**
+
+[Python Intro Tutorial](python_for_data_analysis/intro_python_data_analysis.html)
+
+**Homework**
+
+* [HW 2: Python for Data Analysis](python_for_data_analysis/homework_python_intro.html)
+* To be submitted on Canvas by February 5th.
 
 **Reading**
 
