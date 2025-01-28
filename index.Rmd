@@ -23,9 +23,9 @@ output:
 <hr />
 
 
-# Study Material and Exercises
+# Study Material, Tutorials and Exercises
 
-## Tutorial: Unix
+## Tutorial 1: Introduction to Unix
 
 **Preliminaries**
 
@@ -50,34 +50,7 @@ output:
 
 <hr />
 
-
-## Tutorial: Git
-
-**Preliminaries**
-
-* [Set up a github account](Git/github_account)
-* [Set up a ssh key on the server](Git/github_SSH_key)
-
-**Exercises**
-
-* [Exercise 1](git-exercise-1)
-* [Exercise 2](git-exercise-2)
-* (Optional: [Exercise 3](git-exercise-3))  Suggested instead to read about [uploading your repos to GitHub](https://help.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line)
-
-* [GitHub Homework](Git/github_for_homework)
-
-**Reading**
-
-* [Slides](git-tutorial-chalmers.pdf)
-
-**Recommended Reading**
-
-* [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
-
-<hr />
-
-
-## Tutorial: Intro to Python programming for data analysis
+## Tutorial 2: Intro to Python programming for data analysis
 
 **Tutorial**
 
@@ -113,6 +86,24 @@ A selection of small chapters and sections that explain concepts we cover in the
     - Biopython: https://biopython.org/
 
 - Miscellaneous :) There are many good resource on the web. We'll point out some when relevant.
+
+<hr />
+
+## Tutorial 3: Version control with Git
+
+Do Step 1 and Step 2 this **before** you start with the tutorial.
+
+* Step 1: [Set up a github account](Git/github_account)
+* Step 2: [Set up a ssh key on the server](Git/github_SSH_key)
+
+**Tutorial**
+
+* [Introduction to Git tutorial](git-exercise-1)
+
+**Recommended Reading**
+* [Interactive Git cheatsheet](https://ndpsoftware.com/git-cheatsheet.html#loc=workspace;)
+* [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
+* [Slides](git-tutorial-chalmers.pdf)
 
 <hr />
 
