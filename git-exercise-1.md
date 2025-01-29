@@ -124,15 +124,6 @@ git log -n K
 ```
 *Sometimes this output can be very long and Git will display this text through a program that allows scrolling vertically through the whole output (using up/down keys). You will notice when this happens since at the bottom of the screen you will see a `:` prompt, not the bash terminal. Press `q` to quit this scrollable display and return to the command line.*
 
-### Summary
-> `git init` &rarr; creates an empty repository.
-> `git status`  &rarr; shows the current status of your project.
-> `git add`  &rarr; adds the file to the staging area.
-> `git commit -m`  &rarr; creates a commit with the staged changes.
-> `git log` &rarr; shows the project's history
-
-
-
 ___
 
 # Part 2 - Making changes
@@ -351,6 +342,18 @@ git push -u origin master
 You have now pushed your local repository to GitHub!
 
 *The `-u` flag stands for `--set-upstream`. It links your local branch to the remote branch. Git will remember the upstream branch, so in the future, you can simply run `git push` and `git pull`.*
+
+___
+
+### Summary
+> `git init` &rarr; create an empty repository.  
+> `git status`  &rarr; show the current status of your project.  
+> `git add`  &rarr; add the file to the staging area.  
+> `git commit -m`  &rarr; create a commit with the staged changes.    
+> `git log` &rarr; show the project's history.  
+> `git diff` &rarr; display the difference between current status and latest commit.  
+> `git checkout` &rarr; explore and retrieve any committed version of a file.  
+
 ___
 
 # Extras
@@ -400,13 +403,6 @@ In this state:
 If you just check out a commit, it does not undo changes in the repository’s history. Instead, it allows you to inspect or temporarily work with the state of the repository at that commit. If you create commits in this detached HEAD state, you must create a branch or lose those commits when switching back to a branch.
  
 See the *Reset,Checkout, and Revert* page under *Further Reading* below for more details.
-
-
-## Take-aways
-* To displays differences between commits use `git diff`
-* You can see unique commit IDs with `git log`
-* You can  explore and retrieve any committed version of a file with `git checkout`
-* Make small commits
 
 ## Further reading
 * A very good [Git tutorial by software carpentry](https://swcarpentry.github.io/git-novice/index.html) (inspiration for this tutorial)
