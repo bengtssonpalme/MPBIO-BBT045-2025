@@ -105,7 +105,7 @@ Do this **before** you start with the tutorial.
 
 * [Interactive Git cheatsheet](https://ndpsoftware.com/git-cheatsheet.html#loc=workspace;)
 * [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
-* [Slides](git-tutorial-chalmers.pdf)
+* [Slides](Git_intro_presentation.pdf)
 
 
 <hr />
