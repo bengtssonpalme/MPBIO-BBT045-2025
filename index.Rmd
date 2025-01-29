@@ -91,19 +91,22 @@ A selection of small chapters and sections that explain concepts we cover in the
 
 ## Tutorial 3: Version control with Git
 
-Do Step 1 and Step 2 this **before** you start with the tutorial.
+**Preparation**  
+Do this **before** you start with the tutorial.
 
 * Step 1: [Set up a github account](Git/github_account)
 * Step 2: [Set up a ssh key on the server](Git/github_SSH_key)
 
 **Tutorial**
 
-* [Introduction to Git tutorial](git-exercise-1)
+* [Introduction to Git](git-exercise-1)
 
 **Recommended Reading**
+
 * [Interactive Git cheatsheet](https://ndpsoftware.com/git-cheatsheet.html#loc=workspace;)
 * [Git Cheat Sheet (PDF)](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
 * [Slides](git-tutorial-chalmers.pdf)
+
 
 <hr />
 
