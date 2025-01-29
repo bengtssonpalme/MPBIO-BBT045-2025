@@ -28,7 +28,7 @@ Make sure you are in `/cephyr/users/YOUR_USERNAME/Vera/YOUR_GIT_TUTORIAL_DIRECTO
 ```bash
 git init
 ```
-You will see a confirmation message telling you that a repo has been created. Now **run the `ls -a` command** to list all the files in the current directory, including the hidden ones.
+You will see some information about branch names (don't worry about it) and a confirmation message telling you that an empty Git repo has been created. Now run `ls -a` to list all the files in the current directory, including the hidden ones.
 
 You will see a hidden `.git` directory (you will not see it if you only run `ls`) that is used to store all the information about the project. Every time you save the state of your project (*commit*), Git basically takes a picture of what all your files look like at that moment and stores a reference to that snapshot.
 If you delete the `.git` directory (don't do it) you will lose the entire project's history!
@@ -38,9 +38,11 @@ To **check the current status** of your project run:
 ```bash 
 git status
 ```
-The output of this command shows you a list of changes in the project and options on what to do with those changes. This command is very useful to understand what is going on so use it as oftern as you want.
+This command is very useful to understand what is going on (use it as often as you want).
+The output normally shows you a list of changes in the project and suggests you what to do with those changes.
+Right now the repo is empty so the output won't tell you much.  
 
-Now let's **create a file** in which you will list the things you need for the ski trip. 
+Let's **create a file** in which you will list the things you need for the ski trip. 
 
 ```bash
 nano equipment.txt
@@ -56,18 +58,19 @@ Adding a few items to the file, for example:
 
 Then save `[Ctrl]-s` and close `[Ctrl]-x` the file.
 
-
 How is this file handled by git? Take a look at the current status of the repo:
 
 ```bash
 git status
 ```
-Git detects the new file as *untracked*, this means that that Git isn’t keeping track of this file yet. You can tell Git to start tracking it with the **`git add`** command.
+
+Git detects the new file as *untracked*, this means that that it is not keeping track of this file yet. You can tell Git to start tracking it with the **`git add`** command.
 
 ```bash
 git add equipment.txt
 ```
 Check what happened with `git status`.
+
 The file has been added to the *staging area*, to actually record a snapshot of the file you need to **commit** what's in the staging area:
 
 ```bash
@@ -97,7 +100,7 @@ If your default text editor is `Vim` and you find yourself trapped in the text e
 >- You can quickly make sense of what has been changed in any revision.
 
 
-The staging area is now cleared and if you run `git status` again it should tell you that everything is up to date. 
+The staging area is now cleared and if you run `git status` again it should tell you that there is nothing to commit. 
 
 Now that the current state of the project is saved, you can always compare future states to this one or come back to it.
 
@@ -108,20 +111,25 @@ git log
 ```
 For each commit it will show the **commit’s unique identifier**, the commit’s author, when it was created, and the log message Git was given when the commit was created.
 
-*Sometimes output like this from git can be very long and Git will display this text through a program that allows scrolling vertically through the whole output (using up/down keys). You will notice when this happens since at the bottom of the screen you will see a `:` prompt, not the bash terminal. Press `q` to quit this scrollable display and return to the command line.*
 
-If you only want the last `K` commits, run:
 
+You can print a shorter version using:
+```bash
+git log --oneline
+```
+
+And if you only want the last `K` commits, run:
 ```bash
 git log -n K
 ```
+*Sometimes this output can be very long and Git will display this text through a program that allows scrolling vertically through the whole output (using up/down keys). You will notice when this happens since at the bottom of the screen you will see a `:` prompt, not the bash terminal. Press `q` to quit this scrollable display and return to the command line.*
 
-### Sumary
+### Summary
 > `git init` &rarr; creates an empty repository.
 > `git status`  &rarr; shows the current status of your project.
 > `git add`  &rarr; adds the file to the staging area.
 > `git commit -m`  &rarr; creates a commit with the staged changes.
-> `git log` &rarr; shows the project history
+> `git log` &rarr; shows the project's history
 
 
 
@@ -191,6 +199,10 @@ Now look at the differences between the current version of the `equipment.txt` f
 ```bash
 git diff
 ```
+or 
+```bash
+git diff equipment.txt
+```
 
 After reviewing the changes, it's time to record them. Add the file to the staging area and then commit along with a commit message:
 
@@ -209,12 +221,12 @@ To **compare any current file to its state in a specific commit**, give that rev
 *Note that your IDs will be different.*
 
 ```bash
-git diff 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c equipment.txt
+git diff cba07232cbdb53fd8d707aa79d56e2e0a340a71b equipment.txt
 ```
-You can also use only the first 6 letters:
+You can also use only the shorter version showed by `git log --oneline`
 
 ```bash
-git diff 0ecfb8 equipment.txt
+git diff cba0723 equipment.txt
 ```
 ___
 
@@ -255,8 +267,9 @@ o  Commit 1
 git checkout <commit-2> <file>
 ```
 1.	*The working directory version of `<file>` is replaced with its state from *Commit 2*.*
-2.	*`git status` will show that the `<file>`file has been modified.*
-3.	*The commit history remains unchanged.*
+2.  *The file is automatically staged*
+3.	*`git status` will show that the `<file>`file has been modified.*
+4.	*The commit history remains unchanged.*
     ```bash
     o  Commit 3 (HEAD -> main)  <-- Current commit
     |
@@ -264,9 +277,8 @@ git checkout <commit-2> <file>
     |
     o  Commit 1
     ```
-*To save the change, the file needs to be added and commited:*
+*To save the change, the file needs to be commited:*
 ```bash 
-git add <file>
 git commit -m "Revert <file> to its state in Commit 2"
 ```
 
@@ -293,13 +305,52 @@ Careful that you **write the name of the file**, `checkout` does something quite
 git checkout 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c equipment.txt
 ```
 Git modifies the working directory version of the file to match the specified commit (0ecfb8).
-If you run `git status` you will see that `equipment.txt` is marked as modified, you can now stage and commit the changes. 
+If you run `git status` you will see that `equipment.txt` is marked as modified and automatically staged. Now the only thong that is left to do is to commit the change. 
 
 ```bash
-git add THE_FILE_NAME
 git commit -m "YOUR COMMIT MESSAGE"
 ```
 
+## Part 3 - Push to GitHub
+You want to make sure that all your frinds have access to the packing list for the ski trip so you decide to push it to GitHub. 
+Here is how you do it:
+
+
+#### Step 1
+Sign in to [GitHub](https://github.com/) and create a new repository. Give it a name, leave all the other options as they are (do not add a README) then click on `Create repository`. 
+
+#### Step 2
+At the top of your newly created repository you should see GitHub's Quick Setup box. 
+Select the SSH option by clicking on it and copy the SSH address `git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git`
+
+#### Step 3
+Go back to your local `ski_trip` project folder on Vera.
+Add the remote repo to your local repo.
+```bash
+git remote add origin git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git
+```
+To verify that everything worked run: 
+```bash
+git remote -v
+```
+You shoud see something like this:
+```bash
+origin git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git (fetch)
+origin git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git (push)
+```
+
+#### Step 4
+Check the name of the branch you are on.
+```bash
+git branch
+```
+This will show *master* (old default name) or *main* (new default name). It doesn't matter which name your branch has (you can always rename it) but make sure you use the correct name in the next command. 
+```bash
+git push -u origin master
+```
+You have now pushed your local repository to GitHub!
+
+*The `-u` flag stands for `--set-upstream`. It links your local branch to the remote branch. Git will remember the upstream branch, so in the future, you can simply run `git push` and `git pull`.*
 ___
 
 # Extras
