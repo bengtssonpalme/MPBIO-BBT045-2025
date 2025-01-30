@@ -1,12 +1,13 @@
 ---
 title: Git Tutorial
 ---
-Log in to Vera using `ssh`, create a new directory for this tutorial (you can name it however you want but make it something informative like `git_tutorial`) and make it your working directory by moving into it. 
+Log in to Vera using `ssh` and create a new directory for this tutorial (you can name it however you want but make it something informative like `git_tutorial`). Then make it your working directory by moving into it. 
 
 **Before you start:**
 * Make sure you are in `/cephyr/users/YOUR_USERNAME/Vera/YOUR_GIT_TUTORIAL_DIRECTORY`
 * Text that is in ALL_CAPS is meant to be replaced by your own text.
-* If you are unsure about any command or want to explore the many possible options, run **`git help <command>`** (scroll with arrow keys and exit with `q`).
+* Text within `< >` is just meant as an example. 
+* If you are unsure about any command or want to explore the many possible options, run *`git help <command>`* (scroll with arrow keys and exit with `q`).
 * You can also keep this [Git cheat sheet](https://training.github.com/downloads/github-git-cheat-sheet.pdf) or this  [Git interactive cheat sheet](https://ndpsoftware.com/git-cheatsheet.html#loc=workspace;) open in your browser to quickly lookup commands. 
 
 ___
@@ -84,8 +85,7 @@ If your default text editor is `Vim` and you find yourself trapped in the text e
   - Type your commit message in the first line after the comment lines.
   - To save and exit press `[Esc]` to ensure you are in normal mode, then type `:qw` and press `[Enter]` 
 
-> **Notes**: 
->
+> **Note**
 > Everything that is to be tracked needs to pass through the **staging area** before being committed. While this seems tedious, it allows you to choose which changes to commit at any given point.
 > If you think of Git as taking snapshots of changes over the life of a project, **`git add`** specifies what will go in a snapshot (putting things in the staging area), and **`git commit`** then actually takes the snapshot, and makes a permanent record of it (as a commit) inside the special `.git` directory.
 > This allows us to commit our changes in stages and capture changes in logical portions rather than only large batches. 
@@ -118,12 +118,15 @@ You can print a shorter version using:
 git log --oneline
 ```
 
-And if you only want the last `K` commits, run:
+And if you only want to see the last `k` commits, run:
 ```bash
-git log -n K
+# Replace <k> with how many recent commits you want to see.
+git log -n <k>
 ```
 *Sometimes this output can be very long and Git will display this text through a program that allows scrolling vertically through the whole output (using up/down keys). You will notice when this happens since at the bottom of the screen you will see a `:` prompt, not the bash terminal. Press `q` to quit this scrollable display and return to the command line.*
 
+> We are not gonna cover it in this tutorial, but if you will work with branches you can use the > `--graph` flag to visualize the commit history as a branching tree. 
+> You can still try running `git log --graph` but the output is gonna be very similar to the simple `git log` for this tutorial (if needed, press `q` to exit).
 ___
 
 # Part 2 - Making changes
@@ -284,8 +287,7 @@ o  Commit 2
 |
 o  Commit 1
 ```
-**Commit 4* contains only the reverted `<file>` from *Commit 2*, while the rest of the files remained as they were in *Commit 3*.*
-
+*Commit 4 contains only the reverted `<file>` from Commit 2, while the rest of the files remained as they were in Commit 3.*
 
 Now you are ready to **checkout the `equipment.txt`file** so that it matches the version in which the swimsuit was not present in the list. 
 You need to tell git which commit to get by giving its ID. Run `git log` to find the commit message that you know was set to the commit you're looking for. Then copy its ID (*note that your ID will be different from the one in the command below*) and use it to checkout the `equipment.txt` file to that commit. 
@@ -296,26 +298,32 @@ Careful that you **write the name of the file**, `checkout` does something quite
 git checkout 0ecfb80ba19e5ede972ed3e6dc22c82f2015812c equipment.txt
 ```
 Git modifies the working directory version of the file to match the specified commit (0ecfb8).
-If you run `git status` you will see that `equipment.txt` is marked as modified and automatically staged. Now the only thong that is left to do is to commit the change. 
+If you run `git status` you will see that `equipment.txt` is marked as modified and automatically staged. Now the only thing that is left to do is to commit the change. 
 
 ```bash
 git commit -m "YOUR COMMIT MESSAGE"
 ```
 
+
+> **`git restore`** is a command introduced in Git 2.23 that provides a clearer way to undo changes. To archive the same result as above, you would run:
+> ```bash
+> git restore --source=<commit ID> <file>
+> ```
+> This command modifies the working directory but does not stage the changes automatically.
+
 ## Part 3 - Push to GitHub
-You want to make sure that all your frinds have access to the packing list for the ski trip so you decide to push it to GitHub. 
-Here is how you do it:
+You want to make sure that all your friends have access to the packing list for the ski trip so you decide to push it to GitHub. 
 
-
+**Here is how you do it:**
 #### Step 1
 Sign in to [GitHub](https://github.com/) and create a new repository. Give it a name, leave all the other options as they are (do not add a README) then click on `Create repository`. 
 
 #### Step 2
 At the top of your newly created repository you should see GitHub's Quick Setup box. 
-Select the SSH option by clicking on it and copy the SSH address `git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git`
+Select the SSH option by clicking on it and copy the SSH address. It looks something like:  `git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git`
 
 #### Step 3
-Go back to your local `ski_trip` project folder on Vera.
+Go back to your `ski_trip` project folder on Vera.
 Add the remote repo to your local repo.
 ```bash
 git remote add origin git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git
@@ -361,9 +369,15 @@ The information in this section is just for your own knowledge and understanding
 
 ## Undoing all uncommited changes
 The `HEAD`tag refers to the latest commit on the current branch. It represents the current state of the repository.
-If we run **`git checkout HEAD equipment.txt`** we replace the version of the file in our working directory with the version in the latest commit &rarr; This command **undoes any uncommitted changes** to the file, restoring it to its last committed state.
+If we run `git checkout HEAD equipment.txt` we replace the version of the file in our working directory with the version in the latest commit &rarr; This command undoes any uncommitted changesto the file, restoring it to its last committed state.
   * *Unstaged changes are overwritten* &rarr; If you’ve modified the file in your working directory but haven’t staged or committed those changes, this command will discard them.
   * *Staged changes are not affected* &rarr; If the file has changes staged for commit, running the command does not affect the staged changes, it only updates the working copy.
+> You can archive the same with the `git restore` command.
+> ```bash
+> git restore <file>
+> ```
+> This command will discard all the local changes and revert the file to its last commited state. 
+
 
 ## Undoing changes made by a specific commit
 In this tutorial we have looked at how to go back to a *previous verion of a file* . You can also perform similar operations to undo all the changes done by a specific commit using `git revert <commit ID>`. This command is a safe and history-preserving way to undo a specific commit: it creates a new commit that undoes the changes made by the specified commit.
@@ -395,23 +409,22 @@ o  Commit 2
 o  Commit 1
 ```
 ## Detached HEAD state
-**Do not use `git checkout <commit ID>` to undo changes** that were committed since then. This command allows you to inspect or temporarily work with the state of the repository at a specific commit. However, IT moves you to a detached HEAD state, meaning that the HEAD is no longer attached to a branch. Instead, it points directly to the specified commit.
+Do not use `git checkout <commit ID>` without a file name to undo changes that were committed since then. This command allows you to inspect or temporarily work with the state of the repository at a specific commit. However, it moves you to a detached HEAD state, meaning that the HEAD tag is no longer attached to a branch. Instead, it points directly to the specified commit.
 In this state:
   * You are not on a branch.
   * Any changes you make and commit will not be associated with the current branch unless you explicitly create a new branch to hold those changes.
 
-If you just check out a commit, it does not undo changes in the repository’s history. Instead, it allows you to inspect or temporarily work with the state of the repository at that commit. If you create commits in this detached HEAD state, you must create a branch or lose those commits when switching back to a branch.
- 
-See the *Reset,Checkout, and Revert* page under *Further Reading* below for more details.
+If you just check out a commit, it does not undo changes in the repository’s history. 
+For more details, see the *Reset,Checkout, and Revert* page under the *Further Reading* section below.
 
 ## Further reading
+
 * A very good [Git tutorial by software carpentry](https://swcarpentry.github.io/git-novice/index.html) (inspiration for this tutorial)
 * [Good commit messages](https://chris.beams.io/posts/git-commit/)
 * [Reset, Checkout, and Revert](https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting)
-* The many ways you can [diff](https://git-scm.com/docs/git-diff) between revisions (including ranges and across branches)
-* The many ways to [refer to revisions](https://git-scm.com/docs/gitrevisions) (including things like "5 revisions before X")
-* Book chapter: [Git basics](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository)
-
+* The many ways you can [diff](https://git-scm.com/docs/git-diff) between commits (including ranges and across branches)
+* The many ways to [refer to commits](https://git-scm.com/docs/gitrevisions) (including things like "5 revisions before X")
+* [Git basics](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository)
 
 <hr />
 
