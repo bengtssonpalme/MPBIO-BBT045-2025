@@ -8082,7 +8082,10 @@ samtools<span class="w"> </span>index<span class="w"> </span><span class="nv">$A
 <h3 id="Step-4:-Inspect-mutations-(pt-2)">Step 4: Inspect mutations (pt 2)<a class="anchor-link" href="#Step-4:-Inspect-mutations-(pt-2)">¶</a></h3><p>Visualize the mutation detected on site <code>77985</code> using the <code>samtools tview</code> command.</p>
 <p>For this, you only need the BAM file. Remember that this files stores mutant-to-reference alignment information. VCF (and BCF) contain only the information needed for some downstream tasks.</p>
 <p>This is an interactive command so <strong>run it in the terminal</strong>:</p>
-<div class="highlight"><pre><span></span>samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
+<div class="highlight"><pre><span></span><span class="c1"># note that when opening a terminal in Jupyter on Vera, you may not be located in your working directory</span>
+<span class="c1"># run `pwd` and then navigate to your NGS_Tutorial/ working directory</span>
+<span class="c1"># only then run the following command:</span>
+samtools<span class="w"> </span>tview<span class="w"> </span>results/exercise2/alignment/varicella_mut.sorted.bam<span class="w"> </span>data/ref/varicella.fasta<span class="w"> </span>-p<span class="w"> </span>NC_001348:77985
 </pre></div>
 </div>
 </div>
@@ -8310,7 +8313,7 @@ Here, we'll be using the <code>abyss</code> assembler with reads from the <em>du
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a></h2><h3 id="Q1">Q1<a class="anchor-link" href="#Q1">¶</a></h3><p>How many unitigs, contigs and scaffolds were assembled?</p>
 <p>Hint: <code>less varicella-stats.md</code></p>
-<p>Answer: <font color="white">86, 90, 62</font></p>
+<p>Answer: <font color="white">Should be around: 87, 90, 62</font></p>
 <h3 id="Q2">Q2<a class="anchor-link" href="#Q2">¶</a></h3><p>How big is the largest scaffold?</p>
 <p>Answer: <font color="white">1000</font></p>
 <h3 id="Q3">Q3<a class="anchor-link" href="#Q3">¶</a></h3><p>What do you think, is this a good quality assembly? Hint: take a look through the messages printed to your screen!</p>
