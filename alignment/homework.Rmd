@@ -17,9 +17,9 @@ knitr::opts_chunk$set(eval = FALSE)
 
 # Instructions
 
-- Download [this](Homework3.ipynb) notebook and write your solutions inside it.
+- To turn it in, upload the .ipynb Jupyter Notebook file to Canvas. The deadline is 2025-02-12. You can download the Notebook from [here](https://bengtssonpalme.github.io/MPBIO-BBT045-2025/alignment/Homework_align2025.ipynb).
 
-- Add the notebook with your solutions to your allocated GitHub repo. (Remember to commit and push.)
+- To run this Jupyter Notebook on Vera, use the `alignment-hw.sh` runtime file provided in the `/cephyr/NOBACKUP/groups/bbt045_2025/Resources/SeqTech/` directory.
 
 - To solve the tasks, finish the code skeletons provided.
   **The code must be runnable to get full points**.
