@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>intro_to_alogs_2025</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="intro_to_alogs_2025_files/libs/clipboard/clipboard.min.js"></script>
+<script src="intro_to_alogs_2025_files/libs/quarto-html/quarto.js"></script>
+<script src="intro_to_alogs_2025_files/libs/quarto-html/popper.min.js"></script>
+<script src="intro_to_alogs_2025_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="intro_to_alogs_2025_files/libs/quarto-html/anchor.min.js"></script>
+<link href="intro_to_alogs_2025_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="intro_to_alogs_2025_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="intro_to_alogs_2025_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="intro_to_alogs_2025_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="intro_to_alogs_2025_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="the-basic-data-types" class="level2">
+<h2 class="anchored" data-anchor-id="the-basic-data-types">The basic data types</h2>
+<p>This is sort of a code along tutorial so you need to download this notebook from <a href="">here</a></p>
+<p>Let’s examine the fundamental data types in Python that are essential for bioinformatics data analysis. These correspond to the various types of data you encounter in research:</p>
+<p>When quantifying biological elements - such as gene counts or chromosome numbers - you work with whole numbers. In Python, these are represented as integers (int). Just as you perform mathematical operations manually, Python enables numerical computations with integers. We’ll explore how to count genetic elements and perform basic mathematical operations.</p>
+<p>However, biological measurements aren’t always discrete. Gene expression measurements and statistical analyses like p-values require decimal numbers. These are implemented as floating-point numbers (float) in Python. We’ll examine how to handle expression values and perform the statistical calculations that are fundamental to bioinformatics.</p>
+<p>Text data is equally crucial in bioinformatics - from gene identifiers to DNA sequences and protein codes. Python represents this data type as strings (str). Strings are versatile, enabling numerous useful operations such as calculating nucleotide frequencies in DNA sequences or standardizing gene nomenclature through case conversion.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Integers (int) - Whole numbers</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>gene_count <span class="op">=</span> <span class="dv">42</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>chromosome_number <span class="op">=</span> <span class="dv">23</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's see what happens when we do operations with integers</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of genes: </span><span class="sc">{</span>gene_count<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"If we sequence twice as many genes: </span><span class="sc">{</span>gene_count <span class="op">*</span> <span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Floating Point Numbers (float) - Numbers with decimals</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>gene_expression <span class="op">=</span> <span class="fl">1.45</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>p_value <span class="op">=</span> <span class="fl">0.001</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fold_change <span class="op">=</span> <span class="fl">2.5</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Common operations in expression analysis</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Expression value: </span><span class="sc">{</span>gene_expression<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Expression after fold change: </span><span class="sc">{</span>gene_expression <span class="op">*</span> fold_change<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Is this p-value significant? </span><span class="sc">{</span>p_value <span class="op">&lt;</span> <span class="fl">0.05</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Strings (str) - Text data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>gene_name <span class="op">=</span> <span class="st">"BRCA1"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dna_sequence <span class="op">=</span> <span class="st">"ATGCGT"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># String operations that are useful in bioinformatics</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gene name: </span><span class="sc">{</span>gene_name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Gene name in lowercase: </span><span class="sc">{</span>gene_name<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DNA sequence length: </span><span class="sc">{</span><span class="bu">len</span>(dna_sequence)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of G bases: </span><span class="sc">{</span>dna_sequence<span class="sc">.</span>count(<span class="st">'G'</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Type conversion (casting)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sequence_length <span class="op">=</span> <span class="bu">len</span>(dna_sequence)  <span class="co"># This is an integer</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>gc_content <span class="op">=</span> (dna_sequence.count(<span class="st">'G'</span>) <span class="op">+</span> dna_sequence.count(<span class="st">'C'</span>)) <span class="op">/</span> <span class="bu">len</span>(dna_sequence)  <span class="co"># This is a float</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"GC content: </span><span class="sc">{</span>gc_content<span class="sc">:.2f}</span><span class="ss">"</span>)  <span class="co"># .2f formats to 2 decimal places</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lists-and-for-loops" class="level2">
+<h2 class="anchored" data-anchor-id="lists-and-for-loops">Lists and for loops</h2>
+<p>Now that we understand basic data types, let’s explore how to work with collections of biological data. In bioinformatics research, you rarely analyze a single p-value or gene name - typical datasets contain hundreds or thousands of entries. This is where lists become essential. A list in Python serves as an ordered container for multiple values, comparable to a column in a spreadsheet where each cell holds a distinct value.</p>
+<p>However, storing data in lists is just the foundation. You’ll frequently need to apply identical operations across all items - whether that’s evaluating the significance of each p-value or processing every gene in your dataset. Rather than repeating code, a for loop allows you to automate these repetitive tasks efficiently. Lists and for loops work in tandem: the list stores your biological data (such as p-values or gene names), while the for loop processes each item sequentially and automatically. It’s equivalent to instructing Python to ‘Evaluate the significance of each p-value in my experimental results’ or ’Calculate the length of each gene in my sequence list.</p>
+<p>Here is a <a href="https://realpython.com/python-list/">link</a> to a tutorial about lists in Python and one for <a href="https://realpython.com/python-for-loop/">for loops</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: Working with p-values from a differential expression analysis</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p_values <span class="op">=</span> [<span class="fl">0.042</span>, <span class="fl">0.127</span>, <span class="fl">0.031</span>, <span class="fl">0.982</span>, <span class="fl">0.001</span>, <span class="fl">0.067</span>, <span class="fl">0.015</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>significant_count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Count how many p-values are significant (&lt; 0.05)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p_value <span class="kw">in</span> p_values:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> p_value <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        significant_count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of significant p-values: </span><span class="sc">{</span>significant_count<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can do the same thing more elegantly with a list comprehension</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>significant_count <span class="op">=</span> <span class="bu">len</span>([p <span class="cf">for</span> p <span class="kw">in</span> p_values <span class="cf">if</span> p <span class="op">&lt;</span> <span class="fl">0.05</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of significant p-values (using list comprehension): </span><span class="sc">{</span>significant_count<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: Checking if a gene is present in our dataset</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>antibiotic_resistance_genes <span class="op">=</span> [<span class="st">"gyrA"</span>, <span class="st">"parC"</span>, <span class="st">"qnrS"</span>, <span class="st">"tetM"</span>, <span class="st">"blaTEM"</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>gene_of_interest <span class="op">=</span> <span class="st">"gyrA"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> gene_of_interest <span class="kw">in</span> antibiotic_resistance_genes:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gene_of_interest<span class="sc">}</span><span class="ss"> is in our list of resistance genes"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gene_of_interest<span class="sc">}</span><span class="ss"> is not in our list of resistance genes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's try another gene</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gene_of_interest <span class="op">=</span> <span class="st">"mecA"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> gene_of_interest <span class="kw">in</span> antibiotic_resistance_genes:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gene_of_interest<span class="sc">}</span><span class="ss"> is in our list of resistance genes"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gene_of_interest<span class="sc">}</span><span class="ss"> is not in our list of resistance genes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: Working with gene names and their expression values together</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gene_names <span class="op">=</span> [<span class="st">"gyrA"</span>, <span class="st">"parC"</span>, <span class="st">"qnrS"</span>, <span class="st">"tetM"</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>expression_values <span class="op">=</span> [<span class="fl">1.5</span>, <span class="fl">0.8</span>, <span class="fl">2.1</span>, <span class="fl">0.3</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print genes and their expression values</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene, expression <span class="kw">in</span> <span class="bu">zip</span>(gene_names, expression_values):</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Gene </span><span class="sc">{</span>gene<span class="sc">}</span><span class="ss"> has expression value: </span><span class="sc">{</span>expression<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find highly expressed genes (expression &gt; 1.0)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>highly_expressed <span class="op">=</span> [gene <span class="cf">for</span> gene, expr <span class="kw">in</span> <span class="bu">zip</span>(gene_names, expression_values) <span class="cf">if</span> expr <span class="op">&gt;</span> <span class="fl">1.0</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Highly expressed genes: </span><span class="sc">{</span>highly_expressed<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What about when you need to access a particular value in a list? Lets say the forth value? Or the second to fifth value? Python starts counting at 0, so the first element is at position 0. Here’s how it works:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of p-values</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>p_values <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.043</span>, <span class="fl">0.028</span>, <span class="fl">0.015</span>, <span class="fl">0.062</span>, <span class="fl">0.008</span>, <span class="fl">0.051</span>, <span class="fl">0.037</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get single elements</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"First p-value (index 0): </span><span class="sc">{</span>p_values[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fifth p-value (index 4): </span><span class="sc">{</span>p_values[<span class="dv">4</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a slice (elements 3-5)</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Syntax is list[start:end] - note that end index is not included</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P-values from position 3 to 5: </span><span class="sc">{</span>p_values[<span class="dv">3</span>:<span class="dv">6</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Get last element</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Last p-value: </span><span class="sc">{</span>p_values[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Get elements from start to position 3</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"First four p-values: </span><span class="sc">{</span>p_values[:<span class="dv">4</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Get elements from position 5 to end</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"All p-values from position 5 onwards: </span><span class="sc">{</span>p_values[<span class="dv">5</span>:]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dictionaries" class="level2">
+<h2 class="anchored" data-anchor-id="dictionaries">Dictionaries</h2>
+<p>In bioinformatics data analysis, we frequently need to establish direct relationships between pieces of data - for instance, mapping gene IDs to their expression values, or linking protein names to their sequences. While we could use parallel lists for this purpose, Python dictionaries offer a more efficient and elegant solution.</p>
+<p>A dictionary is a data structure that creates explicit key-value pairs. You can think of it like a lookup table: each unique identifier (key) maps to its corresponding data (value). For example, if you have gene names as keys, you can instantly look up their corresponding expression values without having to search through a list. Unlike lists which rely on numerical positions (0, 1, 2…), dictionaries let you access values using meaningful identifiers (like ‘BRCA1’ or ‘TP53’).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a dictionary mapping gene IDs to their expression values</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>gene_expression <span class="op">=</span> {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'BRCA1'</span>: <span class="fl">2.5</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TP53'</span>: <span class="fl">1.8</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'EGFR'</span>: <span class="fl">3.2</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'KRAS'</span>: <span class="fl">0.7</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Accessing values using keys</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"BRCA1 expression level: </span><span class="sc">{</span>gene_expression[<span class="st">'BRCA1'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding new entries</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>gene_expression[<span class="st">'PTEN'</span>] <span class="op">=</span> <span class="fl">1.4</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>gene_expression</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a more complex dictionary with multiple data points per gene</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>gene_data <span class="op">=</span> {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'BRCA1'</span>: {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">'expression'</span>: <span class="fl">2.5</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'p_value'</span>: <span class="fl">0.001</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'chromosome'</span>: <span class="dv">17</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TP53'</span>: {</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'expression'</span>: <span class="fl">1.8</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'p_value'</span>: <span class="fl">0.003</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'chromosome'</span>: <span class="dv">17</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Accessing nested data</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">TP53 data:"</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Expression: </span><span class="sc">{</span>gene_data[<span class="st">'TP53'</span>][<span class="st">'expression'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Located on chromosome: </span><span class="sc">{</span>gene_data[<span class="st">'TP53'</span>][<span class="st">'chromosome'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># More complex example: Dictionary with multiple lists per gene</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gene_data_series <span class="op">=</span> {</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'BRCA1'</span>: {</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">'expression'</span>: [<span class="fl">1.2</span>, <span class="fl">2.4</span>, <span class="fl">1.8</span>, <span class="fl">2.1</span>],</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'p_values'</span>: [<span class="fl">0.001</span>, <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.005</span>],</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'sample_ids'</span>: [<span class="st">'A1'</span>, <span class="st">'A2'</span>, <span class="st">'A3'</span>, <span class="st">'A4'</span>]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TP53'</span>: {</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'expression'</span>: [<span class="fl">0.8</span>, <span class="fl">1.1</span>, <span class="fl">3.2</span>, <span class="fl">2.8</span>],</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'p_values'</span>: [<span class="fl">0.003</span>, <span class="fl">0.001</span>, <span class="fl">0.002</span>, <span class="fl">0.001</span>],</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'sample_ids'</span>: [<span class="st">'A1'</span>, <span class="st">'A2'</span>, <span class="st">'A3'</span>, <span class="st">'A4'</span>]</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyzing the complex data structure</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Detailed analysis of TP53:"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Expression values:"</span>, gene_data_series[<span class="st">'TP53'</span>][<span class="st">'expression'</span>])</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Corresponding p-values:"</span>, gene_data_series[<span class="st">'TP53'</span>][<span class="st">'p_values'</span>])</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Samples:"</span>, gene_data_series[<span class="st">'TP53'</span>][<span class="st">'sample_ids'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Practical example: Counting mutations in different genes</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mutation_counts <span class="op">=</span> {}</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>sequenced_genes <span class="op">=</span> [<span class="st">'TP53'</span>, <span class="st">'BRCA1'</span>, <span class="st">'TP53'</span>, <span class="st">'KRAS'</span>, <span class="st">'BRCA1'</span>, <span class="st">'TP53'</span>]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene <span class="kw">in</span> sequenced_genes:</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> gene <span class="kw">in</span> mutation_counts:</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        mutation_counts[gene] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        mutation_counts[gene] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Mutation frequencies:"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene, count <span class="kw">in</span> mutation_counts.items():</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gene<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss"> mutations"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dataframes-and-pandas" class="level2">
+<h2 class="anchored" data-anchor-id="dataframes-and-pandas">DataFrames and Pandas</h2>
+<p>In bioinformatics, we frequently work with large, structured datasets containing information about genes, proteins, expression levels, and experimental conditions. While Python’s built-in data structures (lists and dictionaries) are useful for simple operations, they become cumbersome when dealing with complex biological data. This is where pandas comes in.</p>
+<p>Pandas is a powerful data manipulation library that provides a data structure called DataFrame, which is particularly well-suited for bioinformatics data analysis. Think of a DataFrame as a spreadsheet in Python - it has rows and columns, can handle different data types, and comes with many built-in functions for data analysis.</p>
+<section id="structure" class="level3">
+<h3 class="anchored" data-anchor-id="structure">Structure</h3>
+<p>A pandas DataFrame is a 2-dimensional labeled data structure. In bioinformatics, we typically organize data so that:</p>
+<ul>
+<li>Each row represents an observation (e.g., a gene, sample, or experiment)</li>
+<li>Each column represents a variable or measurement (e.g., expression levels, p-values, or experimental conditions)</li>
+<li>Both rows and columns have labels (called indices and column names)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simple DataFrame from our expression data</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>expression_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'gene_name'</span>: [<span class="st">'BRCA1'</span>, <span class="st">'BRCA1'</span>, <span class="st">'BRCA1'</span>, <span class="st">'BRCA1'</span>, <span class="st">'BRCA1'</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'TP53'</span>, <span class="st">'TP53'</span>, <span class="st">'TP53'</span>, <span class="st">'TP53'</span>, <span class="st">'TP53'</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'EGFR'</span>, <span class="st">'EGFR'</span>, <span class="st">'EGFR'</span>, <span class="st">'EGFR'</span>, <span class="st">'EGFR'</span>],</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sample_site'</span>: [<span class="st">'brain'</span>, <span class="st">'liver'</span>, <span class="st">'lung'</span>, <span class="st">'kidney'</span>, <span class="st">'heart'</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'expression'</span>: [<span class="fl">245.6</span>, <span class="fl">178.9</span>, <span class="fl">334.2</span>, <span class="fl">198.7</span>, <span class="fl">267.3</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">678.9</span>, <span class="fl">589.4</span>, <span class="fl">723.1</span>, <span class="fl">645.8</span>, <span class="fl">701.2</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">1456.2</span>, <span class="fl">1234.5</span>, <span class="fl">1567.8</span>, <span class="fl">1345.6</span>, <span class="fl">1489.2</span>],</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'p_value'</span>: [<span class="fl">0.001</span>, <span class="fl">0.003</span>, <span class="fl">0.0005</span>, <span class="fl">0.002</span>, <span class="fl">0.001</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.04</span>, <span class="fl">0.02</span>, <span class="fl">0.03</span>, <span class="fl">0.01</span>, <span class="fl">0.02</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.0001</span>, <span class="fl">0.0003</span>, <span class="fl">0.0002</span>, <span class="fl">0.0001</span>, <span class="fl">0.0004</span>],</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'fold_change'</span>: [<span class="fl">2.5</span>, <span class="fl">1.8</span>, <span class="fl">3.2</span>, <span class="fl">2.1</span>, <span class="fl">2.7</span>,</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>                    <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>                    <span class="fl">4.2</span>, <span class="fl">3.8</span>, <span class="fl">4.5</span>, <span class="fl">4.0</span>, <span class="fl">4.3</span>],</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'concentration_g'</span>: [<span class="dv">10000</span>, <span class="dv">8500</span>, <span class="dv">12000</span>, <span class="dv">9500</span>, <span class="dv">11000</span>,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">2045</span>, <span class="dv">1890</span>, <span class="dv">2200</span>, <span class="dv">1950</span>, <span class="dv">2100</span>,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">15</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">14</span>, <span class="dv">16</span>]</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the gene_name column as the index</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>expression_df.set_index(<span class="st">'gene_name'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>expression_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="long-vs-wide-data-frames" class="level3">
+<h3 class="anchored" data-anchor-id="long-vs-wide-data-frames">Long vs wide data frames</h3>
+<p>In modern bioinformatics data analysis, long format dataframes have become the standard way to organize data. Imagine a spreadsheet where each row represents a single observation, and each column represents a different attribute of that observation. This format is sometimes called “tidy data” because every row is a complete data point. In a long format dataframe, you’ll typically see columns like:</p>
+<p>Sample identifiers (e.g., “patient_001”, “patient_002”) Experimental conditions (e.g., “control”, “treated”) Time points (e.g., “0h”, “24h”, “48h”) Measured values (e.g., gene expression levels) Technical details (e.g., batch number, sequencing run)</p>
+<p>For example, if you’re measuring gene expression, each row would represent a single measurement. You might have one row showing that BRCA1 expression in patient_001 under control conditions at 24 hours was 127.3 units. The next row might show the same gene in the same patient but under treated conditions. This format is particularly powerful because it makes it easy to:</p>
+<p>Filter your data (e.g., “show me all measurements from treated samples”) Group and aggregate (e.g., “calculate the average expression per condition”) Create visualizations (most plotting libraries prefer long format) Perform statistical tests (the data is already organized for most statistical functions)</p>
+<p>While this format might seem repetitive - you’ll see the same gene names or patient IDs multiple times - it’s actually more flexible and robust than alternatives. Modern tools like pandas are optimized to handle this repetition efficiently, using special data types that minimize memory usage. The alternative, wide format, is like a matrix where each condition gets its own column. While this might look neater in a spreadsheet, it’s generally less useful for analysis. That’s why most bioinformaticians work primarily with long format data, converting to wide format only when specifically needed (like for certain visualization types or matrix operations).</p>
+</section>
+<section id="basic-operations" class="level3">
+<h3 class="anchored" data-anchor-id="basic-operations">Basic Operations</h3>
+<section id="accessing-data" class="level4">
+<h4 class="anchored" data-anchor-id="accessing-data">Accessing Data</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a single column (all control values)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>p_values <span class="op">=</span> expression_df[<span class="st">'p_value'</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>p_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select multiple columns</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>condition_data <span class="op">=</span> expression_df[[<span class="st">'p_value'</span>, <span class="st">'fold_change'</span>]]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>condition_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a specific gene's data</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>brca1_data <span class="op">=</span> expression_df.loc[<span class="st">'BRCA1'</span>]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>brca1_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform calculation on columns</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>expression_df[<span class="st">"concentration_Kg"</span>] <span class="op">=</span> expression_df.concentration_g <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>expression_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="python-operators-for-data-filtering" class="level5">
+<h5 class="anchored" data-anchor-id="python-operators-for-data-filtering">Python Operators for Data Filtering</h5>
+<p><strong>Comparison Operators</strong></p>
+<p>x == y # Equal to</p>
+<p>x != y # Not equal to</p>
+<p>x &gt; y # Greater than</p>
+<p>x &lt; y # Less than</p>
+<p>x &gt;= y # Greater than or equal to</p>
+<p>x &lt;= y # Less than or equal to</p>
+<p><strong>Logical Operators</strong></p>
+<p>condition1 &amp; condition2 # AND - both must be true</p>
+<p>condition1 | condition2 # OR - at least one must be true</p>
+<p>~condition # NOT - reverses the condition</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the number of signiffincat genes in the kidney with fold_change &gt; 2 </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>high_expression <span class="op">=</span> expression_df[(expression_df[<span class="st">'p_value'</span>] <span class="op">&gt;=</span> <span class="fl">0.05</span>) <span class="op">&amp;</span> (expression_df[<span class="st">'sample_site'</span>] <span class="op">==</span> <span class="st">"gene_name"</span>)].nunique()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>high_expression</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="your-task" class="level2">
+<h2 class="anchored" data-anchor-id="your-task">Your Task</h2>
+<p>Complete the following code blocks to analyze this data using pandas operations. 1. Calculate Basic Statistics Calculate summary statistics for both conditions:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set random seed for reproducibility</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create DataFrame with expression data</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>expression_data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'expression_before'</span>: [<span class="fl">98.2</span>, <span class="fl">103.4</span>, <span class="fl">86.5</span>, <span class="fl">92.8</span>, <span class="fl">107.2</span>, <span class="fl">95.6</span>, <span class="fl">96.7</span>, <span class="fl">101.3</span>, <span class="fl">89.4</span>, </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                         <span class="fl">91.2</span>, <span class="fl">94.5</span>, <span class="fl">102.8</span>, <span class="fl">97.6</span>, <span class="fl">95.4</span>, <span class="fl">88.3</span>, <span class="fl">93.2</span>, <span class="fl">99.1</span>, <span class="fl">96.8</span>, </span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                         <span class="fl">104.5</span>, <span class="fl">98.7</span>, <span class="fl">91.4</span>, <span class="fl">94.6</span>, <span class="fl">96.2</span>, <span class="fl">97.8</span>, <span class="fl">95.5</span>, <span class="fl">93.4</span>, <span class="fl">97.1</span>, </span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>                         <span class="fl">99.3</span>, <span class="fl">92.6</span>, <span class="fl">95.8</span>],</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'expression_after'</span>:  [<span class="fl">175.4</span>, <span class="fl">182.3</span>, <span class="fl">168.7</span>, <span class="fl">188.9</span>, <span class="fl">177.2</span>, <span class="fl">165.8</span>, <span class="fl">179.4</span>, <span class="fl">173.2</span>, </span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>                         <span class="fl">181.5</span>, <span class="fl">174.6</span>, <span class="fl">169.8</span>, <span class="fl">183.4</span>, <span class="fl">176.7</span>, <span class="fl">172.3</span>, <span class="fl">178.9</span>, <span class="fl">184.5</span>, </span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>                         <span class="fl">171.2</span>, <span class="fl">177.8</span>, <span class="fl">182.1</span>, <span class="fl">175.6</span>, <span class="fl">179.8</span>, <span class="fl">173.4</span>, <span class="fl">176.5</span>, <span class="fl">180.2</span>, </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>                         <span class="fl">174.3</span>, <span class="fl">178.7</span>, <span class="fl">181.9</span>, <span class="fl">175.1</span>, <span class="fl">177.6</span>, <span class="fl">182.4</span>]</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add sample IDs as index</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>expression_data.index <span class="op">=</span> [<span class="ss">f'sample_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(expression_data))]</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview the data</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First few rows of our expression data:"</span>)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(expression_data.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="calculate-statistics-fold-change" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-statistics-fold-change">2. Calculate statistics Fold Change</h3>
+<p>Look in the <a href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">pandas cheat sheet</a> under the Summarize Data header to find out how to perform the right operation on the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate mean, standard deviation, and standard error for both conditions</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>summary_stats <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean'</span>: [expression_data[<span class="st">'expression_before'</span>].______, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>            expression_data[<span class="st">'expression_after'</span>].______],</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'std'</span>: [expression_data[<span class="st">'expression_before'</span>].______, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>           expression_data[<span class="st">'expression_after'</span>].______],</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sem'</span>: [expression_data[<span class="st">'expression_before'</span>].std() <span class="op">/</span> np.sqrt(______), </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>           expression_data[<span class="st">'expression_after'</span>].std() <span class="op">/</span> np.sqrt(______)]</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">'Before'</span>, <span class="st">'After'</span>])</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Summary Statistics:"</span>)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary_stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create column called "fold_change" based on  expression_after / expression_before</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the median cold change and print that value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="perform-statistical-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="perform-statistical-analysis">3. Perform Statistical Analysis</h3>
+<p>Perform a paired t-test since we have matched samples:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform paired t-test</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>t_stat, p_value <span class="op">=</span> stats.ttest_rel(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    expression_data[<span class="st">'_______'</span>],</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    expression_data[<span class="st">'_______'</span>] </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"t-statistic: </span><span class="sc">{</span>t_stat<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"p-value: </span><span class="sc">{</span>p_value<span class="sc">:.4e}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="plot-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="plot-the-data">4. Plot the data</h4>
+<p>There a a lot of data visualisation libraries for Python which is compatible with the data frame format. Some examples are <a href="https://seaborn.pydata.org">Seaborn</a> and <a href="https://plotly.com/python/getting-started/">Plotly</a>. Seaborn is built on Matplotlib, a very useful, but complicated plotting library. Seaborn or Plotly can often give you a better looking plot with much fewer lines of code compared to Matplotlib.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert data from wide to long format</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>expression_data_long <span class="op">=</span> pd.melt(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    expression_data, </span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    value_vars<span class="op">=</span>[<span class="st">'expression_before'</span>, <span class="st">'expression_after'</span>],</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    var_name<span class="op">=</span><span class="st">'condition'</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    value_name<span class="op">=</span><span class="st">'expression'</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>expression_data_long, x<span class="op">=</span><span class="st">'_______'</span>, y<span class="op">=</span><span class="st">'_______'</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>sns.despine()</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'BRCA1 Expression Before and After Treatment'</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Expression Level'</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="why-pandas-is-fast-a-bioinformatics-perspective" class="level2">
+<h2 class="anchored" data-anchor-id="why-pandas-is-fast-a-bioinformatics-perspective">Why Pandas is Fast: A Bioinformatics Perspective</h2>
+<p>In bioinformatics, we often work with large datasets - from gene expression matrices with thousands of genes across hundreds of samples to variant calling data with millions of rows. Let’s understand why pandas is significantly faster than base Python for these operations.</p>
+<section id="performance-comparison-example" class="level3">
+<h3 class="anchored" data-anchor-id="performance-comparison-example">Performance Comparison Example</h3>
+<p>Let’s look at a practical example comparing pandas to base Python lists for a common bioinformatics task. We will use the <code>%%timeit</code> magic to measure how long each function takes to execute.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>expression_data <span class="op">=</span> [[np.random.normal(<span class="dv">100</span>, <span class="dv">15</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_samples)] </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_genes)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate example gene expression data</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>n_genes <span class="op">=</span> <span class="dv">20000</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 1: Using Python lists and loops</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_with_python_lists():</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate mean expression per gene</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> []</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> gene <span class="kw">in</span> expression_data:</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        mean <span class="op">=</span> <span class="bu">sum</span>(gene) <span class="op">/</span> <span class="bu">len</span>(gene)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>        means.append(mean)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter high-expression genes</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    high_expr_genes <span class="op">=</span> []</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, mean <span class="kw">in</span> <span class="bu">enumerate</span>(means):</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> mean <span class="op">&gt;</span> <span class="dv">150</span>:</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>            high_expr_genes.append(i)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">len</span>(high_expr_genes)</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 2: Using pandas</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_with_pandas(df):</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate mean expression and filter</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    gene_means <span class="op">=</span> df.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    high_expr_genes <span class="op">=</span> gene_means[gene_means <span class="op">&gt;</span> <span class="dv">150</span>]</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">len</span>(high_expr_genes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="104">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate example gene expression data</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>n_genes <span class="op">=</span> <span class="dv">20000</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>expression_data_timeit <span class="op">=</span> [[np.random.normal(<span class="dv">100</span>, <span class="dv">15</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_samples)] </span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                      <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_genes)]</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>df_timeit <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">100</span>, <span class="dv">15</span>, size<span class="op">=</span>(n_genes, n_samples))</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>analyze_with_python_lists(expression_data_timeit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>analyze_with_pandas(df_timeit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="why-pandas-is-faster" class="level4">
+<h4 class="anchored" data-anchor-id="why-pandas-is-faster">Why Pandas is Faster</h4>
+<section id="vectorized-operations" class="level5">
+<h5 class="anchored" data-anchor-id="vectorized-operations">Vectorized Operations</h5>
+<ul>
+<li>Instead of using loops to process each value individually, pandas performs operations on entire columns or arrays at once</li>
+<li>In our gene expression example, calculating means across all genes happens in a single operation</li>
+<li>This is especially important in bioinformatics where we often need to normalize or transform entire datasets</li>
+</ul>
+</section>
+<section id="optimized-c-backend" class="level5">
+<h5 class="anchored" data-anchor-id="optimized-c-backend">Optimized C Backend</h5>
+<ul>
+<li><p>Pandas is built on top of NumPy, which is implemented in C</p></li>
+<li><p>Core operations are executed in compiled C code rather than interpreted Python *Particularly beneficial for bioinformatics tasks like:</p>
+<ul>
+<li>Calculating fold changes across thousands of genes</li>
+<li>Computing p-values for differential expression</li>
+<li>Normalizing large expression matrices</li>
+</ul></li>
+</ul>
+</section>
+<section id="memory-efficiency" class="level5">
+<h5 class="anchored" data-anchor-id="memory-efficiency">Memory Efficiency</h5>
+<ul>
+<li>Pandas uses optimized data structures for numerical data</li>
+<li>Data types are uniform within columns (e.g., all float64)</li>
+<li>Essential when working with large-scale genomics data</li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
+<p>Before you finish today you will have to answer these questions and discuss them to the TAs. You do not need to write an assay here. We just want to make sure you have understood all the concepts.</p>
+<ol type="1">
+<li><p>Did you work with a long or wide df in this exercise? Which would have been the best option?</p></li>
+<li><p>After having done some coding in Jupyter notebooks. Do you see any benefits of working this way in relation to using python script?</p></li>
+<li><p>Why use Pandas?</p></li>
+<li><p>When should you use data frames, vs dictionaries vs lists?</p></li>
+<li><p>What is best if you are working with paired data (ei, genes and their expression)? Two lists, one with the gene names, and the other with the corresponding expression? Or some other data structure?</p></li>
+<li><p>Finally, give at least 3 coding best practices, as well as explaining why using functions is a good idea instead of repeating code.</p></li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

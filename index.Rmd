@@ -132,7 +132,7 @@ Do this **before** you start with the tutorial.
 
 ## Tutorial: Introduction to Algorithmic Thinking
 
-[Self-study notebook](intro_to_algos/intro_to_algos.html)
+[Exercise](intro_to_algos/intro_to_algos_2025.html)
 
 <hr />
 
