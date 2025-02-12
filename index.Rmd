@@ -120,7 +120,7 @@ Do this **before** you start with the tutorial.
 
 [Tutorial](intro_to_algos/intro_to_algos_2025.html)
 
-In [this](https://github.com/bengtssonpalme/MPBIO-BBT045-2025/blob/master/python_benchmaking.ipynb) jupyter notebook you can find a comparison of the time needed by some of the methods you used to work with lists and Pandas data frames during the tutorial. 
+[Here](python_benchmarking.html) you can find a comparison of the time needed by some of the methods you used to work with lists and Pandas data frames during the tutorial. If you want to try it yourself, you can download the jupyter notebook from [here](https://github.com/bengtssonpalme/MPBIO-BBT045-2025/blob/master/python_benchmaking.ipynb)
 
 <hr />
 
