@@ -6,6 +6,8 @@ format:
     embed-resources: true
     self-contained: true
     theme: default
+    toc: true
+    toc_float: true
 ---
 
 Nextflow is a tool that helps you run complex analysis workflows efficiently and reliably. It manages how different analysis steps connect and run, making sure everything happens in the right order and with the right files. Think of it as an assistant that handles all the small details of running your analysis.
@@ -55,7 +57,7 @@ process EXAMPLE_PROCESS {
     output:
     path "output.txt"
 
-    shell:
+    script:
     """
     cat input.txt > output.txt
     """
@@ -68,7 +70,7 @@ Here are the main parts:
 
 **Output**: This tells Nextflow what files or information the process will create when it's done. In our example, the process will make a new file called 'output.txt'.
 
-**Shell**: This is where you write the commands that do the actual work. These are the same commands you might type in your terminal, but Nextflow runs them for you. The commands go between three quotation marks ("""). In our example, we're using a command that copies what's in input.txt to a new file called output.txt.
+**script**: This is where you write the commands that do the actual work. These are the same commands you might type in your terminal, but Nextflow runs them for you. The commands go between three quotation marks ("""). In our example, we're using a command that copies what's in input.txt to a new file called output.txt.
 
 ### You can use more languages than bash 
 
@@ -80,7 +82,7 @@ process NORMALIZE_DATA { // Name of the process
     output:
     path "normalized_data.csv"    // The output file from this process
 
-    shell: // What the computer is supposed to do
+    script: // What the computer is supposed to do
     """
     #!/usr/bin/env python3 # <- The shebang
     
@@ -104,17 +106,32 @@ See which files the python script takes as input and which it produces. Do they 
 
 Key points about using different languages in Nextflow:
 
-* You can use Python, R, bash, or other languages in the shell block
+* You can use Python, R, bash, or other languages in the script block
 * Just add the correct first line ([shebang](https://www.geeksforgeeks.org/using-shebang-in-linux/)) to indicate the language
 * The input/output sections stay the same regardless of which language you use
+
+::: {.column-margin}
+### Shebang (#!)
+A shebang is a special first line in scripts starting with `#!` that specifies which program should execute the script. Common examples are:
+
+* `#!/bin/bash` - run with bash
+
+* `#!/usr/bin/env python3` - run with Python 3 
+
+* `#!/usr/bin/env nextflow` - run with Nextflow
+
+* `#!/usr/bin/env Rscript` - run with R
+
+* `#!/usr/bin/env perl` - run with Perl
+:::
 
 The data flow is straightforward:
 
 * The input section defines what files the process needs
-* The shell section contains the code that processes these files
+* The script section contains the code that processes these files
 * The output section defines what files the process creates
 
-This same structure works whether you're using Python (like in this example), R for statistics, or bash for running command-line tools. You just change the shebang line and the code in the shell block.
+This same structure works whether you're using Python (like in this example), R for statistics, or bash for running command-line tools. You just change the shebang line and the code in the script block.
 
 ### Use variables, not hard coded file names for input files
 
@@ -130,9 +147,9 @@ process ANALYZE_DATA {
     output:
     path "${sample_id}_normalized_data.csv"    // Using the variable to name output file
                                                // NOTE!! The output file is not named here. This is just the file name Nextflow will look for. 
-                                               // The real name of the output file is defined in the shell section
+                                               // The real name of the output file is defined in the script section
     
-    shell:
+    script:
     """
     #!/usr/bin/env python3
     import pandas as pd
@@ -224,9 +241,8 @@ process PROCESS_PAIRED_READS {
 }
 ```
 
-["sample_1". [sample_1_r1.fq, sample_1_r2.fq]]
 
-As you can see, if you want to access the variables in the shell section you write `${variable_name}`. This works both for ``val`` and ``path``. 
+As you can see, if you want to access the variables in the script section you write `${variable_name}`. This works both for ``val`` and ``path``. 
 
 ::: {.callout-note}
 What is the difference between `val` and `path`? Can they be combined in a `tuple`?
@@ -234,12 +250,67 @@ What is the difference between `val` and `path`? Can they be combined in a `tupl
 Also note that the output can contain both variables and files. 
 :::
 
+::: {.column-margin}
+## What Nextflow Actually Executes
+
+When ``PRINT_ACCESSION`` runs:
+
+```groovy
+process PRINT_ACCESSION {
+    input:
+    "GCF_000005845.2"
+    
+    script:
+    """
+    # Download a genome from NCBI
+    datasets download genome accession GCF_000005845.2
+    """
+}
+```
+When ``COUNT_SEQUENCES`` runs:
+
+```groovy
+process COUNT_SEQUENCES {
+    input:
+    "/path/to/ecoli.fasta"
+    
+    script:
+    """
+    grep -c ">" /path/to/ecoli.fasta
+    """
+}
+```
+
+When ``PROCESS_PAIRED_READS`` runs:
+```groovy
+process PROCESS_PAIRED_READS {
+    input:
+    ["sample_1", "sample_1_R1.fastq", "sample_1_R2.fastq"]
+    
+    output:
+    ["sample_1", "sample_1_R1_trimmed.fastq", "sample_1_R2_trimmed.fastq"]
+    
+    script:
+    """
+    # Run trimming tool with paired-end reads
+    trimmomatic PE \
+        sample_1_R1.fastq \
+        sample_1_R2.fastq \
+        sample_1_R1_trimmed.fastq \
+        sample_1_R2_trimmed.fastq 
+    """
+}
+
+```
+These examples show what the processes look like when they actually run, with the variables replaced by real values. The values come from the workflow section, which we'll cover next.
+:::
+
 ## Exercise 1: Filter Gene Expression Data
 
 Your task is to create a Nextflow process that:
 
 1. Read an input csv file which contains gene expression data, and comes with a sample id
-2. Calculate fold change
+2. Calculate fold change and apply log2 using the `np.log2(10)` Numpy function
 3. Filter data
 4. Save the results and somehow include the sample id in the file name
 
@@ -260,7 +331,7 @@ process FILTER_GENES {
     output:
     // Write the output definition here: a filename which includes the sample id
 
-    shell:
+    script:
     """
     #!/usr/bin/env python3
     
@@ -277,9 +348,14 @@ process FILTER_GENES {
 This exercise will show if you understand:
 
 * How to define input and output in Nextflow
-* How to write pandas operations in the shell block
+* How to write pandas operations in the script block
 
 ## Workflows
+
+::: {.column-margin}
+### Process Order Independence
+Nextflow doesn't care about the order of items in a channel. If you have 100 samples, Nextflow will process them as resources become available, not necessarily in the order they were added to the channel. This is great for efficiency - if sample 100 can be processed before sample 1, Nextflow won't artificially wait.
+:::
 
 In Nextflow, a workflow is where you connect your processes together. Think of the workflow block as a list of instructions that tells Nextflow which process to run and in what order.
 
@@ -305,9 +381,19 @@ workflow {
 }
 ```
 
+::: {.column-margin}
+### Process Dependencies
+Nextflow automatically manages dependencies between processes. If Process B needs output from Process A, Nextflow will wait for Process A to finish that specific sample before starting Process B for that sample. Meanwhile, it can start Process B for other samples that are ready. This "smart waiting" maximizes efficiency without sacrificing correctness.
+:::
+
 Here, ``.out`` refers to the output from each process. The output from DOWNLOAD_DATA becomes the input for TRIM_READS, and so on.
 
 You can also name specific outputs using ``emit`` in your process, which gives you more control. Here's how:
+
+::: {.column-margin}
+### Process Isolation
+Each process runs in its own directory within Nextflow's work directory. This means two processes running the same tool on different samples can't interfere with each other - they have completely separate workspaces. This isolation prevents file naming conflicts and makes debugging easier since each process's files are neatly contained.
+:::
 
 ```groovy
 // In your process definition
@@ -316,7 +402,7 @@ process QUALITY_CHECK {
     path 'passed.txt', emit: passed_samples    // Name this output 'passed_samples'
     path 'failed.txt', emit: failed_samples    // Name this output 'failed_samples'
     
-    shell:
+    script:
     """
     // your code here
     """
@@ -396,6 +482,21 @@ Channel.fromPath('*.fasta')
 Channel.fromPath('*.fasta').collect()
 // Emits: [file1.fasta, file2.fasta, file3.fasta]. All at once
 ```
+3. `map()` Transforms items in a channel. Often used with tuples to extract specific elements:
+
+```groovy
+/ Starting with tuples from fromFilePairs:
+Channel.fromFilePairs('/data/*.fasta', size:1)
+// Has: ["sample1", "file1.fa"], ["sample2", "file2.fa"]
+
+// Extract just the files using map:
+.map { it[1] }
+// Now has: "file1.fa", "file2.fa"
+
+// Combine with collect to get all files in a list:
+.map { it[1] }.collect()
+// Final result: ["file1.fa", "file2.fa"]
+````
 
 Here's a practical example showing how these operators affect process execution:
 
@@ -403,12 +504,26 @@ Here's a practical example showing how these operators affect process execution:
 workflow {
     // Create a channel of genome files
     genomes = Channel.fromPath('/data/*.fasta')
+    // Has: file1.fasta, file2.fasta, file3.fasta
     
     // Without collect(): Process runs once for each genome
     ANALYZE_ONE(genomes)  // Runs 3 times if there are 3 genomes
     
     // With collect(): Process gets all genomes at once
     COMPARE_ALL(genomes.collect())  // Runs once with all genomes
+    
+    // Example with fromFilePairs and map:
+    genome_pairs = Channel.fromFilePairs('/data/*.fasta', size:1)
+    // Has: ["ecoli", "ecoli.fasta"], ["salmonella", "salmonella.fasta"]
+    
+    // Process one at a time, using just the file:
+    ANALYZE_ONE(genome_pairs.map{ it[1] })
+    // Processes: "ecoli.fasta", then "salmonella.fasta"
+    
+    // Collect all files after extracting them from tuples:
+    COMPARE_ALL(genome_pairs.map{ it[1] }.collect())
+    // Processes: ["ecoli.fasta", "salmonella.fasta"] all at once
+}
 }
 ```
 
@@ -424,15 +539,15 @@ In this exercise, we'll use two common bioinformatics tools:
 * [FastANI](https://github.com/ParBLiSS/FastANI): A tool that compares how similar bacterial genomes are to each other. It gives a score from 0-100%, where 100% means the genomes are identical.
 
 
-We'll analyze three bacterial genomes located in the course data directory:
+We'll analyze three hypothetical bacterial genomes located in a data directory:
 
-* ``/course_data/genomes/e_coli.fasta`` (E. coli - a common gut bacteria)
-* ``/course_data/genomes/s_aureus.fasta`` (S. aureus - can cause skin infections)
-* ``/course_data/genomes/k_pneumoniae.fasta`` (K. pneumoniae - can cause pneumonia)
+* ``/storage/genomes/e_coli.fasta`` (E. coli - a common gut bacteria)
+* ``/storage/genomes/s_aureus.fasta`` (S. aureus - can cause skin infections)
+* ``/storage/genomes/k_pneumoniae.fasta`` (K. pneumoniae - can cause pneumonia)
 
 A simple way to gather many files is to use built in Nextflow methods. The relevant for this use case is called [fromFilePairs()](https://www.nextflow.io/docs/latest/reference/channel.html#fromfilepairs). You provide a [glob pattern](https://www.malikbrowne.com/blog/a-beginners-guide-glob-patterns/) to where the files should be, it will find all files, and return a tuple for each file which will contain the sample name (based on the file name), as well as the files. Why is this useful?
 
-Using this glob pattern ``Channel.fromFilePairs('/course_data/genomes/*.fasta', size:1)`` will return a list of tuples:
+Using this glob pattern ``Channel.fromFilePairs('/storage/genomes/*.fasta', size:1)`` will return a list of tuples:
 
 ::: {.column-margin}
 ### Glob Patterns
@@ -447,9 +562,9 @@ For example, `data/*.fasta` would match all FASTA files in the data directory.
 
 ```groovy
 [
-    ["e_coli", /course_data/genomes/e_coli.fasta],
-    ["s_aureus",/course_data/genomes/s_aureus.fasta],
-    ["k_pneumoniae", /course_data/genomes/k_pneumoniae.fasta]
+    ["e_coli", /storage/genomes/e_coli.fasta],
+    ["s_aureus",/storage/genomes/s_aureus.fasta],
+    ["k_pneumoniae", /storage/genomes/k_pneumoniae.fasta]
 ]
 
 ```
@@ -472,10 +587,10 @@ process RUN_RGI {
     // - The main RGI results file "${species_name}_rgi.txt"
     // - A log file
 
-    shell:
+    script:
     """
     # Run RGI to find resistance genes
-    rgi main -i ${genome_file} -o ${species_name}_rgi -t contig --local
+    rgi main -i ${genome_file} -o ${species_name}_rgi 
     
     # Create a simple log
     echo "RGI analysis completed for ${species_name}" > ${species_name}_log.txt
@@ -485,20 +600,23 @@ process RUN_RGI {
 // Second process: Run FastANI
 process RUN_FASTANI {
     input:
-    // Add tuple input for 
+    // Add path input 
 
 
     output:
     // Create one output using 'emit' for the ANI results
 
-    shell:
+    script:
     """
-    # Run FastANI to compare how similar the genomes are
-    fastANI -q *.fasta -r *.fasta -o ${output_name}_ani.txt
+    # Create a file listing all genomes, one per line
+    ls -1 ${genomes} > genome_list.txt
+
+    # Run fastANI using the list file
+    fastANI --ql genome_list.txt --rl genome_list.txt -o ani_results.tsv
     """
 }
 
-// Second process: Run FastANI
+// Third process: Run FastANI
 process COMBINE_RGI_OUTPUT {
     input:
     // Add input for a singe list containing multiple files
@@ -506,7 +624,7 @@ process COMBINE_RGI_OUTPUT {
     output:
     // Capture output of process
  
-    shell:
+    script:
     """
     cat ${RGI_files} > RGI_comb.txt
     """
@@ -530,7 +648,7 @@ workflow {
 
 Nextflow can use either Docker containers or Conda environments to manage software dependencies. This ensures your pipeline runs the same way on any computer.
 
-### Docker Containers in Nextflow
+### Containers in Nextflow
 
 #### What are Containers?
 
@@ -583,6 +701,22 @@ process RUN_FASTQC {
     """
 }
 ```
+
+::: {.column-margin}
+### Using Local Containers & Environments
+Nextflow can use containers and environments that already exist on your machine:
+
+For Apptainer:
+```groovy
+container '/path/to/local/image.sif'    // Local Singularity/Apptainer image
+```
+
+For conda:
+```groovy
+Copyconda '/path/to/local/environment'      // Existing conda environment
+```
+This is very useful when you have custom containers/environments. It can however make it hard for someone else to reproduce. Depending on how you set it up. 
+::: 
 
 Nextflow will:
 
@@ -766,10 +900,10 @@ Key points about the time directive:
 
 * Use simple time units:
 
-    * 's' for seconds
-    * 'm' for minutes
-    * 'h' for hours
-    * 'd' for days
+    * ``s`` for seconds
+    * ``m`` for minutes
+    * ``h`` for hours
+    * ``d`` for days
 
 Examples:
 
@@ -805,7 +939,8 @@ Take your working solution from Exercise 2 and enhance it by adding:
 
 2. Containers
 
-* Find appropriate containers for RGI and FastANI on quay.io. Since COMBINE_RGI_OUTPUT only uses `cat` it does not need a container. 
+* Find appropriate containers for RGI and FastANI on quay.io. COMBINE_RGI_OUTPUT only needs Pandas since glob is part of base python.
+* Nextflow had a hard time downloading the RGI container. You can refer to this pre-donwloaded container instead `/cephyr/NOBACKUP/groups/bbt045_2025/Resources/Nextflow_tutorial/container/RGI.sif`.
 * Add container directives with specific version tags
 * Hint: Search for containers from biocontainers on quay.io
 * The cpu flag for fastANI is `--threads` 
@@ -816,6 +951,10 @@ Take your working solution from Exercise 2 and enhance it by adding:
 * Choose appropriate modes for publishDir
 * Hint: Think about how to structure results for easy analysis
 
+4. Real input files
+
+* Point Nextflow to the real files on Vera using the params.input_file varible in your workflow. You can read about what is so nice about the `params` [here](#nextflow-parameters).
+
 ### Understanding Nextflow Files
 
 You now have defined processes, as well as a workflow. But where do you save them? A Nextflow pipeline requires two key files to run properly: ``main.nf ``and ``nextflow.config``. Let's understand what each file does by looking back at what we've built in this tutorial.
@@ -824,15 +963,6 @@ You now have defined processes, as well as a workflow. But where do you save the
 
 Your ``main.nf`` file is where you put all the core pipeline code we've been writing. In Exercise 3 where we created processes for ``RGI``, ``FastANI`` and ``COMBINE_RGI_OUTPUT`` to analyze antibiotic resistance in bacterial genomes? That's exactly what goes in ``main.nf``. This includes:
 
-::: {.column-margin}
-### Shebang (#!)
-A shebang is a special first line in scripts starting with `#!` that specifies which program should execute the script. Common examples are:
-* `#!/bin/bash` - run with bash
-* `#!/usr/bin/env python3` - run with Python 3 
-* `#!/usr/bin/env nextflow` - run with Nextflow
-* `#!/usr/bin/env Rscript` - run with R
-* `#!/usr/bin/env perl` - run with Perl
-:::
 
 * At the very top the `#!/usr/bin/env nextflow` shebang
 * All your process definitions (like ``RUN_RGI`` and ``RUN_FASTANI``)
@@ -856,32 +986,6 @@ For example, in Exercise 2 we wrote processes to analyze bacterial genomes. All 
 ### Process Cache
 Nextflow's cache remembers the results of each process. If you rerun a pipeline, Nextflow checks if anything has changed. If a process's inputs haven't changed, it uses the cached results instead of running it again, saving time and computing resources. If you add the flag ``-resume`` when you run Nextflow it will automatically detect whihc processes it has alredy completed and avoid running them again. 
 :::
-
-```groovy
-nextflow.enable.dsl=2 // Needed to use the "newer" version of the Nextflow language
-
-// Pipeline input parameters
-// Everything in params can be changed from the comand line as you will see. 
-params {
-    // Input fasta files
-    input_files = ""
-
-    // Machine options
-    cluster_options = "" // Will be used in your account information for Vera. Basically your user name
-}
-
-apptainer {
-    enabled = true      // Enable Apptainer
-    autoMounts = true   // Make sure that the contianer will recognise your files
-}
-
-process {
-    cache = true        // Activate cahse so you can resume the run if it were to exit from some reason
-    executor = 'slurm'  // Use slurm
-    clusterOptions = cluster_options // here we will use the cluster_options varible. 
-}
-
-```
 
 ::: {.column-margin}
 ### Nextflow Parameters
@@ -933,72 +1037,473 @@ Essential SLURM commands:
 ``scancel``: Terminate a running job
 :::
 
-### main.nf
+::: {.column-margin}
 
-## Running Your Pipeline
+### Nextflow & SLURM Interaction
 
-Once you have your `main.nf` and `nextflow.config` files ready, you can run your pipeline using the `nextflow run` command:
+Nextflow runs as a single "manager" job on SLURM, but dynamically submits individual process jobs:
+
+1. The main Nextflow job:
+   - Uses 1 CPU
+   - Orchestrates the workflow
+   - Submits other jobs to SLURM
+   - Monitors job status
+
+2. Process jobs:
+   - Each process becomes a separate SLURM job
+   - Resources (CPUs, time) defined in process directives
+   - Automatically submitted/managed by Nextflow
+   - Run in parallel based on dependencies
+
+So while your SLURM script only asks for 1 CPU, Nextflow will submit additional jobs with their own resource requests based on your process definitions.
+:::
+
+## Final pipeline
+
+You should now have a functional `main.nf` file. Save it at an appropriate location on Vera. Then copy paste the `nextflow.config` file below. Read it and make sure you understand what the different parts do. 
+
+If you wanted to run the pipeline on your local machine, or on a server wiht no special sheduling mechanism. All you would have to do it to run this simple line of code. 
 
 ```bash
 nextflow run main.nf
-````
+```
+We will however run the pipeline on Vera whihc uses SLURM to shedule jobs. We therefor eneed to write an sbatch script. This script will contain thins like the amount of resourses out job needs, how long it should take, out user names, waht is supposed to be done and so on. 
 
 ::: {.column-margin}
 ## Nextflow Runtime Tips
 
 You can run pipelines directly from GitHub:
-bash```
-nextflow run username/repository
-````
 
-* NExtflow will create a work directory which contains:
+```bash
+nextflow run username/repository
+```
+
+* Nextflow will create a work directory which contains:
 
     * Intermediate files
     * Process-specific logs
     * Command scripts
 
-* Use -resume to save time by skipping successful processes when rerunning
+* Use`-resume` to save time by skipping successful processes when rerunning
 * Clean up old runs with ``nextflow clean``
 * Monitor running pipelines with nextflow log
 :::
 
+### nextflow.config
+
 ```groovy
+nextflow.enable.dsl=2 // Needed to use the "newer" version of the Nextflow language
+
+// Pipeline input parameters
+// Everything in params can be changed from the comand line using --{varible_name}. 
+params {
+    // Input fasta files
+    input_files = "/cephyr/NOBACKUP/groups/bbt045_2025/Resources/Nextflow_tutorial/genomes/*.fna"
+
+    // Machine options
+    cluster_options = "C3SE2024-2-16 -p vera" // Will be used in your account information for Vera. Basically your user name
+}
+
+apptainer {
+    enabled = true      // Enable Apptainer
+    autoMounts = true   // Make sure that the contianer will recognise your files
+}
+
+process {
+    cache = true        // Activate cahse so you can resume the run if it were to exit from some reason
+    executor = 'slurm'  // Use slurm
+    clusterOptions = params.cluster_options // here we will use the cluster_options varible. 
+}
+
+// None of the things below this comment is nessesary
+
+// Procudes a html file wiht some good metrics for resusrse requirements for each process
+report { 
+    enabled = true
+    file = "${projectDir}/reports/report.html"
+    overwrite = true
+}
+
+// Procudes a html file showing when processes were run, and if they were paralell
+timeline {
+    enabled = true
+    file = "${projectDir}/reports/timeline.html"
+    overwrite = true
+}
+
+// Like teh report file, but in a txt format instead
+trace {
+    enabled = true
+    file = "${projectDir}/reports/trace.txt"
+    overwrite = true
+}
+
+// Shows processes nad how they are connected
+dag {
+    enabled = true
+    file = "${projectDir}/reports/dag.html"
+    overwrite = true
+}
+```
+
+### Sbatch script
+
+::: {.column-margin}
+### Understanding SLURM Script Lines
+
+- `#!/usr/bin/env bash`: Tells the system to use bash to run this script
+
+- `#SBATCH -A C3SE2024-2-16 -p vera`: 
+  - `-A`: Project account ID
+  - `-p`: Which partition/cluster to use
+
+- `#SBATCH -J my_first_pipeline`: Sets job name to 'my_first_pipeline'
+
+- `#SBATCH -c 1`: Requests 1 CPU core
+
+- `#SBATCH -t 00:30:00`: Sets 30-minute time limit
+
+- `#SBATCH --error={PATH}/err/job.%J.err`: 
+  - Saves error messages to this file
+  - `%J` is replaced with job ID
+
+- `#SBATCH --output={PATH}/err/job.%J.out`:
+  - Saves standard output to this file
+  - `%J` is replaced with job ID
+
+- `module purge`: Removes all loaded modules
+
+- `module load Nextflow`: Loads Nextflow module
+
+- `nextflow run main.nf -resume`: 
+  - Runs the pipeline
+  - `-resume` continues from last successful step
+
+- The `--cluster_options` flag has a double dash (`--`) prefix instead of just an underscore because it is a `params` variable. 
+In our sbatch script, we submit our account ID using the line `#SBATCH -A C3SE2024-2-16 -p vera`. However, Nextflow doesn't directly interact with this - only the SLURM handler does. Since Nextflow works with SLURM by submitting individual jobs (one per item and process), it needs to know our account name when it creates sbatch scripts. You can look in the `nextflow.config` file to see how this variable is handled.
+:::
+
+```bash
+#!/usr/bin/env bash
+#SBATCH -A C3SE2024-2-16 -p vera 
+#SBATCH -J my_first_pipeline
+#SBATCH -c 1
+#SBATCH -t 00:30:00
+#SBATCH --error={PATH}/err/job.%J.err 
+#SBATCH --output={PATH}/err/job.%J.out 
+
+# Unload all modules and load Nextflow
+module purge
+module load Nextflow
+
+nextflow run main.nf \
+-resume \
+--cluster_options "-A C3SE2024-2-16 -p vera"
+```
+
+This the `sbatch`script is a regular bash script, with SLURM instructions (rows with `#SBATCH`), followed by instructions to the regular command line. Call this script wahtever you like, as long as you give iut the file extension `.sh`. 
+
+### Running the pipeline on SLURM
+
+To run the pipeline using SLURM make sure you have properly configured the `main.nf`,  `nextflow.config`, and `sbatch` file. If the `sbatch` script was called `submit_job.sh`:
+
+```bash
+sbatch submit_job.sh
+```
+
+## Work directory
+
+In Nextflow, each process gets its own special workspace - think of it as each process having its own room to work in. By default, these workspaces live in a directory called `work/` in your project folder. Here's why this is helpful:
+Each process workspace contains:
+
+* The exact commands that were run (in `.command.sh`)
+* Any output the process produced (in `.command.out`)
+* Any errors that occurred (in `.command.err`)
+* The actual files the process worked with
+* The SLURM submission scripts (if you're using SLURM)
+
+Instead of copying files between these workspaces (which would take up a lot of disk space), Nextflow creates symbolic links (symlinks). These symlinks work like shortcuts or pointers to the original files. This is a clever way to let processes access the files they need without duplicating data.
+
+For example, if you look in the work directory, you might see something like:
+
+```bash
+work/
+  ├── f2/df4b07_runRGI/          # Workspace for runRGI process
+  │   ├── .command.sh            # The commands that were run
+  │   ├── .command.out           # Standard output
+  │   ├── .command.err           # Error messages
+  │   ├── input_data -> ../../data/sample.fa   # Symlink to input
+  │   └── results.txt            # Output generated by the process
+  └── 2e/58df60_fastANI/         # Workspace for fastANI process
+      └── ...                    # Similar structure here
+```
+
+This organization keeps everything neat and isolated - no process can accidentally interfere with another process's work. It also makes debugging easier because you can see exactly what happened in each step of your workflow.
+
+## Nextflows runtime display
+
+When you run a Nextflow workflow, you'll see something like this appear in your terminal:
+
+```bash
+[f2/df4b07] runRGI             | 15 of 15 ✔
+[2e/58df60] fastANI            | 1 of 1 ✔
+[-        ] COMBINE_RGI_OUTPUT -
+```
+
+This is Nextflow's way of showing you the real-time progress of your workflow. When you first start your workflow, these lines will appear one by one, and the numbers will update as tasks complete. Let's break down what you're seeing:
+Each line represents a process in your workflow and follows this pattern:
+
+
+```bash
+[unique ID] process name | completed tasks of total tasks status
+```
+
+So in the example above:
+
+The first line `[f2/df4b07] runRGI          | 15 of 15 ✔` shows that:
+
+* `[f2/df4b07]` is the unique ID (or hash) Nextflow assigns to track this process. You can use this hash to find the process's work directory
+* `runRGI` is the name of the process
+* `15 of 15 ✔` tells us all 15 tasks completed successfully (the checkmark ✔ indicates success)
+
+
+The second line `[2e/58df60] fastANI            | 1 of 1 ✔` shows a simpler process that:
+
+* Had just one task to do
+* Completed successfully
+
+
+The last line `[-        ] COMBINE_RGI_OUTPUT -` shows a process that:
+
+* Hasn't started yet (shown by the - symbols)
+* Is waiting for previous processes to complete
+
+## Working working Nextflow and SLURM
+
+When you're running Nextflow on a SLURM cluster, you'll need these basic SLURM commands:
+
+```bash
+# See your running jobs
+squeue -u $USER
+
+# This shows you:
+# JOBID     NAME     USER    STATUS   TIME    NODES
+# 12345     runRGI   john    R        5:23    1
+```
+
+To cancel jobs if needed:
+
+```bash
+# Cancel a specific job
+scancel 12345    # Replace with your job ID
+
+# Cancel all your jobs
+scancel -u $USER
+```
+
+When Nextflow runs with SLURM, each process submits its own job. You can monitor their progress in two ways:
+
+1. Through Nextflow's display (the progress we discussed earlier)
+2. Through SLURM's logs
+
+Your sbatch script specifies where to save the output and error logs, usually with these lines:
+
+```bash
+#SBATCH -e slurm-%j.err
+#SBATCH -o slurm-%j.out
+```
+
+Here, `%j` is replaced with the job ID. These files will contain:
+
+* `.err`: Error messages and standard error output
+* `.out`: The program's standard output, including the Nextflow progress display
+
+You can look at these files while the job is running using:
+
+```bash
+tail -f slurm-12345.err
+```
+This helps you track progress and debug any issues that might come up during your workflow run.
+
+## Solutions
+
+::: {.callout-note collapse="true"}
+## Exercise 1
+
+```groovy
+#!/usr/bin/env nextflow
+nextflow.enable.dsl=2
+
+process FILTER_GENES {
+    input:
+    tuple val(sample_id), path(expression_file)    // Input is a tuple with sample ID and file path
+
+    output:
+    path "${sample_id}_filtered_genes.csv"         // Output filename includes the sample ID
+
+    script:
+    """
+    #!/usr/bin/env python3
+    
+    import pandas as pd
+    import numpy as np
+    
+    # Read the input file
+    data = pd.read_csv("${expression_file}")
+    
+    # Calculate fold change
+    data['fold_change'] = data['expression_after'] / data['expression_before']
+    
+    # Filter based on conditions:
+    # 1. p-value <= 0.05
+    # 2. absolute log2 fold change > 2
+    filtered_data = data[
+        (data['p_value'] <= 0.05) & 
+        (np.log2(data['fold_change'].abs()) > 2)
+    ]
+    
+    # Save results with sample ID in filename
+    filtered_data.to_csv("${sample_id}_filtered_genes.csv", index=False)
+    """
+}
+```
+:::
+
+::: {.callout-note collapse="true"}
+
+## Exercise 2
+
+```groovy
+#!/usr/bin/env nextflow
+nextflow.enable.dsl=2
+
+// First process: Run RGI on genomes
+process RUN_RGI {
+    input:
+    tuple val(species_name), path(genome_file)    // Input tuple with species name and genome file
+    
+    output:
+    path "${species_name}_rgi.txt", emit: rgi_results    // Main RGI results
+    path "${species_name}_log.txt", emit: logs           // Log file
+    
+    script:
+    """
+    # Run RGI to find resistance genes
+    rgi main --input_sequence ${genome_file} --output_file ${species_name}_rgi 
+    
+    # Create a simple log
+    echo "RGI analysis completed for ${species_name}" > ${species_name}_log.txt
+    """
+}
+
+// Second process: Run FastANI
+process RUN_FASTANI {
+    input:
+    path(list_genomes)    // Input all genome files at once
+    
+    output:
+    path "ani_results.tsv", emit: ani_results    // FastANI results
+    
+    script:
+    """
+    # Create a file listing all genomes, one per line
+    ls -1 ${genomes} > genome_list.txt
+ 
+    # Run fastANI using the list file
+    fastANI --ql genome_list.txt --rl genome_list.txt -o ani_results.tsv 
+    """
+}
+
+process COMBINE_RGI_OUTPUT {
+    input:
+    path RGI_files    // Takes all RGI result files
+   
+    output:
+    path "combined_RGI.csv"    // Combined output file
+ 
+    script:
+    """
+    #!/usr/bin/env python3
+    import glob
+    import pandas as pd
+
+    # Identify all files and add them to a list
+    list_input_files = glob.glob("*")
+    list_df = []
+
+    for df in list_input_files:
+        # Extract sample name and read file
+        # rsplit splits on the first occurance of "." from the right
+        sample_id = df.rsplit('.', 1)[0]
+        df_tmp = pd.read_csv(df, sep = "\t")
+
+        # Add column for sample id and append df to list
+        df_tmp["Sample_id"] = sample_id
+        list_df.append(df_tmp)
+
+    # Combine all dfs in list to a signe df and save
+    df_combined = pd.concat(list_df)
+    df_combined.to_csv("combined_RGI.csv", index = False)
+    """
+}
+
+workflow {
+    // Create a channel for your input genome files
+    genome_ch = Channel.fromFilePairs('/storage/genomes/*.fasta', size: 1)
+    
+    // Run RGI on each genome
+    RUN_RGI(genome_ch)
+    
+    // Run FastANI to compare all genomes
+    // We need to get just the genome files from the tuple and collect them
+    RUN_FASTANI(genome_ch.map{ it[1] }.collect())
+    
+    // Combine all RGI results
+    COMBINE_RGI_OUTPUT(RUN_RGI.out.rgi_results.collect())
+}
+```
+:::
+
+::: {.callout-note collapse="true"}
+
+## The final pipeline
+
+```groovy
+#!/usr/bin/env nextflow
 nextflow.enable.dsl=2
 
 workflow {
-
-    list_genomes = Channel.fromFilePairs(params.input_fastq, size = 1)
-
+    list_genomes = Channel.fromFilePairs(params.input_files, size: 1)
     runRGI(list_genomes)
-    fastANI(downloadGenomes.out.genomes.collect()) 
+    fastANI(list_genomes.map { it[1] }.collect()) 
+    COMBINE_RGI_OUTPUT(runRGI.out.ARGs.collect())
 }
 
-params.accessions = [GCF_000005845.2, GCF_000008865.2, GCF_002853715.1, GCF_000013265.1, GCF_003697165.2] 
-
 process runRGI {
-    publishDir "${params.outdir}/rgi", mode: 'copy'
-    container 'docker://quay.io/biocontainers/RGI:3.2.0--py27_2'
+    publishDir "${projectDir}/result/rgi", mode: 'copy'
+    container '/cephyr/NOBACKUP/groups/bbt045_2025/Resources/Nextflow_tutorial/container/RGI.sif'
     cpus 1
     time '5m'
    
    input:
-   path genome
+   tuple val(species_name), path(genome)
 
    output:
-   path "${genome}_rgi.txt", emit: ARGs
+   path "${species_name}_rgi.txt", emit: ARGs
+   path "${species_name}_log.txt", emit: log
 
    script:
    """
-   rgi main -i ${genome} -o ${genome}_rgi -t contig --local
+   rgi main -i ${genome} -o ${species_name}_rgi
     
    # Create a simple log
-   echo "RGI analysis completed for ${species_name}" > ${species_name}_log.txt
+   echo 'RGI analysis completed for ${species_name}' > ${species_name}_log.txt
    """
 }
 
 process fastANI {
-    publishDir "${params.outdir}/ani", mode: 'copy'
-    container 'docker://quay.io/ncbi/fastani:1.34--hb66fcc3_5'
+    publishDir "${projectDir}/result/ani", mode: 'copy'
+    container 'docker://quay.io/biocontainers/fastani:1.34--hb66fcc3_5'
     cpus 10
     time '10m'
    
@@ -1010,12 +1515,17 @@ process fastANI {
 
    script:
    """
-   fastANI --ql ${genomes} --rl ${genomes} -o ani_results.tsv --threads ${task.cpus}
+   # Create a file listing all genomes, one per line
+   ls -1 ${genomes} > genome_list.txt
+
+   # Run fastANI using the list file
+   fastANI --ql genome_list.txt --rl genome_list.txt -o ani_results.tsv --threads ${task.cpus}
    """
 }
 
 process COMBINE_RGI_OUTPUT {
-    publishDir "${params.outdir}/ani", mode: 'copy'
+    publishDir "${projectDir}/result/ani", mode: 'copy'
+    container 'docker://quay.io/biocontainers/pandas:2.2.1'
     cpus 1
     time '1m'
 
@@ -1023,43 +1533,31 @@ process COMBINE_RGI_OUTPUT {
     path RGI_files
    
     output:
-    path "RGI_comb.txt"
+    path "combined_RGI.csv"
  
     shell:
     """
-    cat ${RGI_files} > RGI_comb.txt
+    #!/usr/bin/env python3
+    import glob
+    import pandas as pd
+
+    # Identify all files and add them to a list
+    list_input_files = glob.glob("*")
+    list_df = []
+
+    for df in list_input_files:
+        # Extract sample name and read file
+        # rsplit splits on the first occurance of "." from the right
+        sample_id = df.rsplit('.', 1)[0]
+        df_tmp = pd.read_csv(df, sep = "\t")
+
+        # Add column for sample id and append df to list
+        df_tmp["Sample_id"] = sample_id
+        list_df.append(df_tmp)
+
+    # Combine all dfs in list to a signe df and save
+    df_combined = pd.concat(list_df)
+    df_combined.to_csv("combined_RGI.csv", index = False)
     """
 }
-```
-### nextflow.config
-
-```groovy
-apptainer {
-    apptainer.enabled = true
-    autoMounts = true
-}
-
-profiles {
-        process.cache = true
-        process.executor = 'slurm'
-        process.scratch = false 
-        clusterOptions = 
-
-}
-```
-
-```bash
-#!/usr/bin/env bash
-#SBATCH -A {project_id} -p vera 
-#SBATCH -J my_first_pipeline
-#SBATCH -c 1
-#SBATCH -t 00:30:00
-#SBATCH --error={PATH}/err/job.%J.err 
-#SBATCH --output={PATH}/err/job.%J.out 
-
-# Unload all modules and load Nextflow
-module purge
-module load Nextflow
-
-nextflow run main.nf -resume 
-```
+:::
