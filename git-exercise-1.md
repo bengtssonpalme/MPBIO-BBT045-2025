@@ -104,7 +104,7 @@ The staging area is now cleared and if you run `git status` again it should tell
 
 Now that the current state of the project is saved, you can always compare future states to this one or come back to it.
 
-To get the **list of all commits** made to a repository in reverse chronologiacl order run:
+To get the **list of all commits** made to a repository in reverse chronological order run:
 
 ```bash
 git log
@@ -131,7 +131,7 @@ ___
 
 # Part 2 - Making changes
 
-Your ski trip is next week and the weather forecast says it will be very cold. Add some warm clother to your packing list. 
+Your ski trip is next week and the weather forecast says it will be very cold. Add some warm clothes to your packing list. 
 
 ## Keeping track of new work
 
@@ -205,7 +205,7 @@ git add equipment.txt
 git commit -m "add warm clothes"
 ```
 
-Now that you have commited, inspect the log:
+Now that you have committed, inspect the log:
 
 ```bash
 git log
@@ -245,7 +245,7 @@ By now you should know the drill: modify, add and commit. You can run `git statu
 
 It's the day before your ski trip and you get a message from you AirBnB host: unfortunately the sauna is broken (˙◠˙). This means that you will not need your swimsuit and you can remove it from your packing list.  
 
-We should then revert the `equipment.txt` file to one of its previous versions using the **`git checkout <commit ID> <file>`**. This commans updates the working directory version of the specified file to match its state in the given commit. 
+We should then revert the `equipment.txt` file to one of its previous versions using the **`git checkout <commit ID> <file>`**. This command updates the working directory version of the specified file to match its state in the given commit. 
 
 ### Visual example
 *Before running the `git checkout` command the `<file>` matches the version in *Commit 3*. Here’s how the repository looks like before checking out the file:*
@@ -271,7 +271,7 @@ git checkout <commit-2> <file>
     |
     o  Commit 1
     ```
-*To save the change, the file needs to be commited:*
+*To save the change, the file needs to be committed:*
 ```bash 
 git commit -m "Revert <file> to its state in Commit 2"
 ```
@@ -367,20 +367,20 @@ ___
 # Extras
 The information in this section is just for your own knowledge and understanding of Git. It is good to know that these things exist even though we don't have the time to cover them in this tutorial. 
 
-## Undoing all uncommited changes
+## Undoing all uncommitted changes
 The `HEAD`tag refers to the latest commit on the current branch. It represents the current state of the repository.
-If we run `git checkout HEAD equipment.txt` we replace the version of the file in our working directory with the version in the latest commit &rarr; This command undoes any uncommitted changesto the file, restoring it to its last committed state.
+If we run `git checkout HEAD equipment.txt` we replace the version of the file in our working directory with the version in the latest commit &rarr; This command undoes any uncommitted changes to the file, restoring it to its last committed state.
   * *Unstaged changes are overwritten* &rarr; If you’ve modified the file in your working directory but haven’t staged or committed those changes, this command will discard them.
   * *Staged changes are not affected* &rarr; If the file has changes staged for commit, running the command does not affect the staged changes, it only updates the working copy.
 > You can archive the same with the `git restore` command.
 > ```bash
 > git restore <file>
 > ```
-> This command will discard all the local changes and revert the file to its last commited state. 
+> This command will discard all the local changes and revert the file to its last committed state. 
 
 
 ## Undoing changes made by a specific commit
-In this tutorial we have looked at how to go back to a *previous verion of a file* . You can also perform similar operations to undo all the changes done by a specific commit using `git revert <commit ID>`. This command is a safe and history-preserving way to undo a specific commit: it creates a new commit that undoes the changes made by the specified commit.
+In this tutorial we have looked at how to go back to a *previous version of a file* . You can also perform similar operations to undo all the changes done by a specific commit using `git revert <commit ID>`. This command is a safe and history-preserving way to undo a specific commit: it creates a new commit that undoes the changes made by the specified commit.
 Instead of removing the commit from the repository’s history, it reverses the changes made by the specified commit while preserving the repository’s history.
 This ensures that:
 * The repository’s history remains intact (linear and traceable).

@@ -50,7 +50,7 @@ output:
 
 <hr />
 
-## Tutorial 2: Intro to Python programming for data analysis
+## Tutorial 2: Introduction to Python programming for data analysis
 
 **Tutorial**
 
@@ -110,45 +110,44 @@ Do this **before** you start with the tutorial.
 
 <hr />
 
-## Tutorial: Nextflow
+## Tutorial 4: Sequencing Technologies
 
-[Exercises](Nextflow_tutorial/Nextflow_tutorial.html)
-
-<hr />
-
-## Tutorial: Sequencing Technologies
-
-[Exercises](seq_tech/seq_tech_tutorial_py.html)
+[Tutorial](seq_tech/seq_tech_tutorial_py.html)
 
 <hr />
 
+## Tutorial 5: Introduction to Algorithmic Thinking
 
-## Tutorial: Metagenomics and Single-Cell workflows
+[Tutorial](intro_to_algos/intro_to_algos_2025.html)
 
-[Exercise](single_cell/sc_analysis.html)
-
-<hr />
-
-
-## Tutorial: Introduction to Algorithmic Thinking
-
-[Exercise](intro_to_algos/intro_to_algos_2025.html)
+[Here](python_benchmarking.html) you can find a comparison of the time needed by some of the methods you used to work with lists and Pandas data frames during the tutorial. If you want to try it yourself, you can download the jupyter notebook from [here](https://github.com/bengtssonpalme/MPBIO-BBT045-2025/blob/master/python_benchmaking.ipynb)
 
 <hr />
 
+## Tutorial 6: Nextflow
 
-## Tutorial: Gene prediction/annotation
-* [Exercise 1](gene-prediction-exercise.html)
+[Tutorial](Nextflow_tutorial/Nextflow_tutorial.html)
 
 <hr />
 
-
-## Tutorial: Phylogeny
+## Tutorial 7: Phylogeny
 
 * [Tutorial](https://v-varga.github.io/BBT045-Phylo-2024/Tutorial/PhyloTutorial_py.html)
 * [Homework](https://v-varga.github.io/BBT045-Phylo-2024/Homework/PhyloHomework_py.html)
 * [Phylogeny website](https://v-varga.github.io/BBT045-Phylo-2024/)
-* [Phylogney GitHub Repository](https://github.com/V-Varga/BBT045-Phylo-2024/tree/main?tab=readme-ov-file)
+* [Phylogeny GitHub Repository](https://github.com/V-Varga/BBT045-Phylo-2024/tree/main?tab=readme-ov-file)
+
+<hr />
+
+## Tutorial 8: Gene prediction/annotation
+
+* [Tutorial](gene-prediction-exercise.html)
+
+<hr />
+
+## Tutorial: Metagenomics and Single-Cell workflows
+
+[Tutorial](single_cell/sc_analysis.html)
 
 <hr />
 
