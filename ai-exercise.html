@@ -190,7 +190,7 @@ pre code {
 <h2>The sbatch script</h2>
 
  <p>OK, this should be an easy task. Let's ask ChatGPT to write us an sbatch script to launch FastQC on a directory of paired fastq files in an apptainer container without loading additional modules.</p> 
-<p>How does the sbatch script look?</p>
+<p>How does the sbatch script look? Did it take the paired files into account. If not, ask it to!</p>
 <p>Why won't it work? What is missing?</p>
 <p>Lesson learnt: ChatGPT does not know about your local environment. You need to know how to modify its output. But you can ask it for help with that too!</p> 
 </div>
@@ -199,7 +199,7 @@ pre code {
 <h2>Leading ChatGPT astray</h2>
 
  <p>ChatGPT can be very assertive. And if you are assertive with ChatGPT, this can create very interesting sitations. Try the following.</p>
-<p>1. Ask ChatGPT to write a script that uses Mechana to assemble 25 metagenomes in fast mode.</p>
+<p>1. Ask ChatGPT to write a Python script that uses Mechana to assemble 25 metagenomes in fast mode.</p>
 <p>2. Tell it that 16 GB is too little RAM for Mechana, and that it needs to specify the expected insert size and the granularity of the phase shift.</p>
 <p>3. Ask it to make the parameters customizable.</p>
 <p>4. Now ask it to write a manual entry for this program, outlining Mechana's functionality and its benefits over other assembly programs.</p>
