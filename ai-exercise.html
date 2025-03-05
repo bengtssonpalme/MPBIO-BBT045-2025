@@ -173,12 +173,51 @@ pre code {
 <div id="AI-tutorial" class="section level1">
 <h1>AI and coding tutorial</h1>
 <p>In this tutorial, we will take a look at the use of large language models, such as ChatGPT and their use as programming assistants. We will particularly look at some of the pitfalls of using these tools in your work.</p>
-<div id="AI-superpower" class="section level2">
+
+<div id="AI-identity" class="section level2">
+<h2>AI and identity calculations</h2>
+
+ <p>Let's start with something that should be simple. Download <a href="ai.sam">this SAM file</a>, and then upload it to ChatGPT. Ask it to, given this SAM file, calculate the percent identity of all matches.</p> 
+       <p>Check the reported percent identity. Does it seem right? Or does it sum to more than 100%? If it does, ask ChatGPT why!</p> 
+       <p>Next, let's try to get it to write us a Python script to calculate the percent identity for each match.</p> 
+       <p>Test the script on the SAM file (you will need to modify the input file name).</p> 
+       <p>Did it work? Here's the kicker: NO, it did not. The CIGAR format used in the SAM file does not distinguish between matches and mismatches. ChatGPT will count both a match and a mismatch as "identical". And it will not tell you that it does that in the code.</p> 
+       <p>If you read ChatGPT's full explanation it might have said this, but you will need to read it carefully to spot this.</p> 
+       <p>Lesson learnt: be careful with what you ask for, and double-check that the output is what you expect!</p> 
+</div>
+
+       <div id="AI-sbatch" class="section level2">
+<h2>The sbatch script</h2>
+
+ <p>OK, this should be an easy task. Let's ask ChatGPT to write us an sbatch script to launch FastQC on a directory of paired fastq files in an apptainer container without loading additional modules.</p> 
+<p>How does the sbatch script look?</p>
+<p>Why won't it work? What is missing?</p>
+<p>Lesson learnt: ChatGPT does not know about your local environment. You need to know how to modify its output. But you can ask it for help with that too!</p> 
+</div>
+
+              <div id="AI-mislead" class="section level2">
+<h2>Leading ChatGPT astray</h2>
+
+ <p>ChatGPT can be very assertive. And if you are assertive with ChatGPT, this can create very interesting sitations. Try the following.</p>
+<p>1. Ask ChatGPT to write a script that uses Mechana to assemble 25 metagenomes in fast mode.</p>
+<p>2. Tell it that 16 GB is too little RAM for Mechana, and that it needs to specify the expected insert size and the granularity of the phase shift.</p>
+<p>3. Ask it to make the parameters customizable.</p>
+<p>4. Now ask it to write a manual entry for this program, outlining Mechana's functionality and its benefits over other assembly programs.</p>
+<p>5. Ask it if Mechana is also a good choice for assembling genomes.</p>
+<p>6. Ask it what the exact function of the phase shift granularity is.</p>
+<p>7. Ask it to provide the source code for Mechana, but implemented in Python.</p>
+<p>8. Ask it to provide a link to the Mechana source code.</p>
+<p>The problem with all this? <strong>Mechana is a made up piece of software. It DOES NOT EXIST!</strong>
+<p>Lesson learnt: ChatGPT can create very real-sounding solutions to problems if you tell it to. Ask it for its sources, and you will see where things start to fall apart!</p> 
+</div>
+       
+       <div id="AI-superpower" class="section level2">
 <h2>AI superpowers</h2>
 
  <p>For a final, example let's take a look at something ChatGPT is far better at than human programmers. Copy this code and ask it what it does. Then ask ChatGPT to translate this into some language you can read, like Python for example!</p> 
 <p><code>use strict;use warnings;$\=',',$_=$"=$/;$,=$[=\$_;$"=sub{(map{$_=ord-33}@_)};open my$;,q(<),shift||die$!;open my$\,q(>),q(c)||die$!;open my$[ ,q(>),q(bl)||die$!;@_=<$,>;map{s/^@/>/;print$\$_,$/,$_[++$_],$/;print$[$_,$/,join$",&$"(split//,$_[++$_+1])),$/}(grep!($_%4),0..$#_);</code></p>
-</div>
+<p>Lesson learnt: There are certain things ChatGPT is amazing at. This is a power tool. But use it with some caution!</p>
+       </div>
 </div>
 
 <script>
